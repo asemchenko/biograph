@@ -1,9 +1,13 @@
 package fun.asem.biograph.webapp.domain;
 
+import lombok.Builder;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
 
+@Data
+@Builder
 public class User {
     private Long userId;
     private String nickname;

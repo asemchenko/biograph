@@ -1,5 +1,62 @@
 package fun.asem.biograph.webapp.service.registration;
 
-public class RegistrationServiceImpl {
+import fun.asem.biograph.webapp.domain.User;
+import fun.asem.biograph.webapp.dto.ErrorDescription;
+import fun.asem.biograph.webapp.dto.RegistrationRequest;
+import fun.asem.biograph.webapp.dto.ServerResponse;
+import fun.asem.biograph.webapp.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.Instant;
+
+@Service
+@RequiredArgsConstructor
+public class RegistrationServiceImpl implements RegistrationService {
+    private final UserRepository userRepository;
+
+    @Transactional
+    @Override
+    public ServerResponse signUp(RegistrationRequest request) {
+        ServerResponse response = new ServerResponse();
+        if (!checkDataDuplicates(request, response)) {
+            userRepository.save(createUserFrom(request));
+            response.setStatus(ServerResponse.ResponseStatus.OK);
+        }
+        return response;
+    }
+
+    private boolean checkDataDuplicates(RegistrationRequest request, ServerResponse response) {
+        if (userRepository.existsByNickname(request.getNickname())) {
+            response.setStatus(ServerResponse.ResponseStatus.ERROR);
+            response.setData(ErrorDescription.builder().message("This nickname is already taken").build());
+            return true;
+        }
+        if (userRepository.existsByCurrentEmail(request.getEmail())) {
+            /* FIXME asem
+                 Think about situation when an attacker created an account with someone's email
+                 In such case account will not be active, but real user will not be able to register
+                 Maybe, an ability to drop account should be included in email-confirmation letter
+             */
+            response.setStatus(ServerResponse.ResponseStatus.ERROR);
+            response.setData(ErrorDescription.builder().message("This email is already taken").build());
+            return true;
+        }
+        return false;
+    }
+
+    private User createUserFrom(RegistrationRequest request) {
+        User user = User
+                .builder()
+                .nickname(request.getNickname())
+                .currentEmail(request.getEmail())
+                .creationTime(Instant.now())
+                .emailConfirmed(Boolean.FALSE)
+                .isCompromised(Boolean.FALSE)
+                .build();
+        // TODO asem add generation and encryption of databaseMasterKey field
+        // TODO asem add passwordHash and hashFunctionType fields initialization;
+        return user;
+    }
 }
