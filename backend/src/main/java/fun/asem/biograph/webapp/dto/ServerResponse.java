@@ -2,9 +2,11 @@ package fun.asem.biograph.webapp.dto;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+@Builder
 @Data
 public class ServerResponse {
     private ResponseStatus status;
