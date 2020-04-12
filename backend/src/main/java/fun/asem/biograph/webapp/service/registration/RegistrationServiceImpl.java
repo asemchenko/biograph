@@ -19,7 +19,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Transactional
     @Override
     public ServerResponse signUp(RegistrationRequest request) {
-        ServerResponse response = new ServerResponse();
+        ServerResponse response = ServerResponse.builder().build();
         if (!checkDataDuplicates(request, response)) {
             userRepository.save(createUserFrom(request));
             response.setStatus(ServerResponse.ResponseStatus.OK);
