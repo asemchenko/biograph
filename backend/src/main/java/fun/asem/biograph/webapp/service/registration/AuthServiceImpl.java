@@ -6,6 +6,7 @@ import fun.asem.biograph.webapp.dto.RegistrationRequest;
 import fun.asem.biograph.webapp.dto.ServerResponse;
 import fun.asem.biograph.webapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,8 +14,9 @@ import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
-public class RegistrationServiceImpl implements RegistrationService {
+public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
@@ -54,9 +56,10 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .creationTime(Instant.now())
                 .emailConfirmed(Boolean.FALSE)
                 .isCompromised(Boolean.FALSE)
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .hashFunctionType(User.HashFunctionType.SPRING_BCRYPT)
                 .build();
         // TODO asem add generation and encryption of databaseMasterKey field
-        // TODO asem add passwordHash and hashFunctionType fields initialization;
         return user;
     }
 }

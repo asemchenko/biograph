@@ -1,14 +1,19 @@
 package fun.asem.biograph.webapp.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
+import javax.persistence.*;
 import java.time.Instant;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "users")
 @Data
 @Builder
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
     private String nickname;
     /**
@@ -49,7 +54,13 @@ public class User {
          * AES128 with server key (stored in environment variable). AES-128 encryption is need for
          * key rotation
          */
-        SHA3_ARGON2_AES128(0);
+        SHA3_ARGON2_AES128(0),
+        /**
+         * Spring's Security Password Encoder based on BCrypt
+         *
+         * @see org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+         */
+        SPRING_BCRYPT(1);
         private final int id;
 
     }

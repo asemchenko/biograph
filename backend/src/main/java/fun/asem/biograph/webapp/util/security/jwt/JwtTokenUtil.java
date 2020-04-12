@@ -1,22 +1,26 @@
 package fun.asem.biograph.webapp.util.security.jwt;
 
+import com.nimbusds.jose.util.Base64;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @Component
 public class JwtTokenUtil {
+    @Value("${jwt.validityTimeMinutes}")
+    private int TOKEN_VALIDITY_TIME;
     @Value("${jwt.secret}")
-    private String secret;
+    private String SECRET;
 
     public String getUsername(String jwtToken) {
         return getClaimsFromToken(jwtToken).getSubject();
@@ -28,7 +32,7 @@ public class JwtTokenUtil {
             return userDetails.getUsername()
                     .equals(
                             Jwts.parser()
-                                    .setSigningKey(secret)
+                                    .setSigningKey(SECRET)
                                     .parseClaimsJws(jwtToken)
                                     .getBody()
                                     .getSubject()
@@ -48,19 +52,26 @@ public class JwtTokenUtil {
     }
 
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = Collections.emptyMap();
+        Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
-                .setExpiration(Date.from(Instant.now().plus(60, ChronoUnit.HOURS)))
+                .setExpiration(Date.from(Instant.now().plus(TOKEN_VALIDITY_TIME, ChronoUnit.MINUTES)))
                 .setNotBefore(Date.from(Instant.now()))
                 .setIssuedAt(Date.from(Instant.now()))
-                .setId("someId") // FIXME asem generate strong random identifier here
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .setId(generateRandomJwtIdentifier()) // FIXME asem generate strong random identifier here
+                .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }
 
+    private String generateRandomJwtIdentifier() {
+        byte[] idBytes = new byte[128];
+        // FIXME refactor asem - google can be SecureRandom moved to class field - is it thread-safe?
+        new SecureRandom().nextBytes(idBytes);
+        return Base64.encode(idBytes).toString();
+    }
+
     private Claims getClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
     }
 }

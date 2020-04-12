@@ -23,8 +23,8 @@ public class JwtUserDetailsService implements UserDetailsService {
                 user.getPasswordHash(),
                 true,
                 true,
-                user.getIsCompromised(),
                 true,
+                !user.getIsCompromised(),
                 Collections.emptyList()
         );
     }
