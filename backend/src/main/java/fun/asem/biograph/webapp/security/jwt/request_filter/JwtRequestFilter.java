@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -50,7 +49,7 @@ public class JwtRequestFilter extends AuthenticationFilter {
     }
 
     private Optional<String> parseJwtTokenFromRequest(HttpServletRequest request) {
-        String header = request.getHeader("Authentication");
+        String header = request.getHeader("Authorization");
         if (!Objects.isNull(header) && header.startsWith(JWT_REQUEST_KEYWORD)) {
             return Optional.of(header.substring(JWT_REQUEST_KEYWORD.length()));
         } else {
