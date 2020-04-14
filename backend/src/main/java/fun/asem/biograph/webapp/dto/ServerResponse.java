@@ -27,7 +27,12 @@ public class ServerResponse {
     public enum ResponseStatus {
         OK(0),
         ERROR(1),
-        WARNING(2);
+        WARNING(2),
+        /**
+         * 'data' key contains the following json object:
+         * {"redirectUrl":"some url"}
+         */
+        REDIRECT(3);
         private final int code;
     }
 }
