@@ -50,7 +50,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**", "/oauth2/**").permitAll()
+                // TODO asem probably "/home" endpoint should be removed from here in production - it is here just for test
+                .antMatchers("/api/auth/**", "/oauth2/**", "/api/storage/connect", "/home/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)

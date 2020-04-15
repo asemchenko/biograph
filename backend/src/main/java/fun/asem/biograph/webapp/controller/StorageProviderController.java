@@ -1,33 +1,43 @@
 package fun.asem.biograph.webapp.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import fun.asem.biograph.webapp.domain.StorageProviderType;
 import fun.asem.biograph.webapp.domain.User;
-import fun.asem.biograph.webapp.dto.AddStorageProviderRequest;
-import fun.asem.biograph.webapp.dto.ServerResponse;
 import fun.asem.biograph.webapp.service.storage.StorageProviderService;
 import fun.asem.biograph.webapp.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
-import java.security.Principal;
-import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/storage")
-@RestController
+@Controller
 public class StorageProviderController {
     private final StorageProviderService storageProviderService;
     private final UserService userService;
 
-    @PostMapping
-    public ServerResponse connectStorageProvider(@RequestBody @Valid AddStorageProviderRequest request, Principal principal) {
-        if (request.getProvider() == StorageProviderType.GOOGLE) {
+    @PostMapping("/connect")
+    public ResponseEntity<Object> connectStorageProvider(@RequestParam(name = "provider", required = true) String providerName,
+                                                         @RequestParam(name = "userId", required = true) Long userId) {
+        if (providerName.equalsIgnoreCase("google")) {
+            Optional<User> user = userService.findUserByUserId(userId);
+            String redirectUrl = user.map(storageProviderService::getAuthorizationUrl).orElseThrow(NoSuchElementException::new);
+            // preparing redirect response
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Location", redirectUrl);
+            // saving userId to cookie with lifetime = 60 seconds
+            headers.add("Set-Cookie", "userId=" + userId.toString() + ";Max-Age=60; Path=/");
+            return new ResponseEntity<>(headers, HttpStatus.TEMPORARY_REDIRECT);
+        } else {
+            throw new UnsupportedOperationException("Unknown provider: " + providerName);
+        }
+        /*if (request.getProvider() == StorageProviderType.GOOGLE) {
             User user = userService.getUserByUserDetails(principal.getName());
             String authorizationUrl = storageProviderService.getAuthorizationUrl(user);
             try {
@@ -40,6 +50,6 @@ public class StorageProviderController {
             }
         } else {
             throw new UnsupportedOperationException("Sorry, this provider is not supported yet");
-        }
+        }*/
     }
 }

@@ -8,4 +8,6 @@ public interface UserService {
     Optional<User> findUserByEmail(String username);
 
     User getUserByUserDetails(String username);
+
+    Optional<User> findUserByUserId(Long userId);
 }

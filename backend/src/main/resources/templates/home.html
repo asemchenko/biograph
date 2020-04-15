@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="style.css" rel="stylesheet">
+    <title>Biograph</title>
+</head>
+<body>
+<h1>Welcome to Biograph project</h1>
+<form action="/api/storage/connect" method="post">
+    <span>[JUST FOR QUICK TEST] Input your user id here:</span><input min="1" name="userId" required type="number">
+    <input name="provider" type="hidden" value="google">
+    <br>
+    <input type="submit" value="Connect with google">
+</form>
+</body>
+</html>

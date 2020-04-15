@@ -13,5 +13,5 @@ public interface StorageProviderService {
      * @param code temporary code, that is used to request an access token from the
      *             storage provider
      */
-    void acceptOauth2CallbackCode(String code);
+    void acceptOauth2CallbackCode(String code, String userId);
 }

@@ -21,4 +21,9 @@ public class UserServiceImpl implements UserService {
     public User getUserByUserDetails(String username) {
         return userRepository.getByCurrentEmail(username);
     }
+
+    @Override
+    public Optional<User> findUserByUserId(Long userId) {
+        return userRepository.findById(userId);
+    }
 }
