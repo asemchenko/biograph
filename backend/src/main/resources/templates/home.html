@@ -16,5 +16,15 @@
     <br>
     <input type="submit" value="Connect with google">
 </form>
+<hr>
+<h2>Upload file to application specific folder on your Google Drive</h2>
+<form action="/api/storage/uploadFile" enctype="multipart/form-data" method="post">
+    <input id="fileupload" name="file" required type="file"/>
+    <br>
+    <input id="submit" type="submit" value="submit"/>
+</form>
+<hr>
+<h2>List already uploaded files</h2>
+<span>Click <a href="/api/storage/listFiles">here</a> to view files that Biograph stores on your Google Drive</span>
 </body>
 </html>

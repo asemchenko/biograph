@@ -59,7 +59,7 @@ public class JwtTokenUtil {
                 .setExpiration(Date.from(Instant.now().plus(TOKEN_VALIDITY_TIME, ChronoUnit.MINUTES)))
                 .setNotBefore(Date.from(Instant.now()))
                 .setIssuedAt(Date.from(Instant.now()))
-                .setId(generateRandomJwtIdentifier()) // FIXME asem generate strong random identifier here
+                .setId(generateRandomJwtIdentifier())
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
     }

@@ -1,6 +1,10 @@
 package fun.asem.biograph.webapp.service.storage;
 
+import com.google.api.services.drive.model.FileList;
 import fun.asem.biograph.webapp.domain.User;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public interface StorageProviderService {
     String getAuthorizationUrl(User user);
@@ -14,4 +18,10 @@ public interface StorageProviderService {
      *             storage provider
      */
     void acceptOauth2CallbackCode(String code, String userId);
+
+    String uploadFile(String fileName, InputStream file, String userId);
+
+    FileList listFiles(String userId);
+
+    void downloadFileInto(String fileId, String userId, OutputStream destinationStream);
 }
