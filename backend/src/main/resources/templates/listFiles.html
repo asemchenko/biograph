@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Biograph</title>
+</head>
+<body>
+<h1>Here is the list of files stored in your GoogleDrive biograph-specific folder</h1>
+<table>
+    <tr>
+        <th>Internal google's file identifier</th>
+        <th>File name</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="file: ${files}">
+        <td th:text="${file.id}"></td>
+        <td th:text="${file.name}"></td>
+        <td>
+            <form action="/api/storage/downloadFile" method="get">
+                <input name="fileId" th:value="${file.id}" type="hidden">
+                <input type="submit" value="download">
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
