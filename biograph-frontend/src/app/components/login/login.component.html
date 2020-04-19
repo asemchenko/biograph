@@ -1,0 +1,38 @@
+<form (ngSubmit)="onFormSubmit()" [formGroup]="form" action="" class="login-form">
+  <h1>Sign in to Biograph</h1>
+  <mat-divider class="divider-line"></mat-divider>
+
+  <mat-form-field appearance="outline" class="login-form-field">
+    <mat-label>Enter your email</mat-label>
+    <input [(ngModel)]="email" formControlName="email" matInput placeholder="username@example.com" type="email">
+    <mat-icon matSuffix>send</mat-icon>
+  </mat-form-field>
+  <div *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)"
+       class="validation-error alert alert-danger">
+
+    <div *ngIf="emailField.errors.required">
+      Email is required.
+    </div>
+    <div *ngIf="emailField.errors.email">
+      Enter a valid email
+    </div>
+  </div>
+  <mat-form-field appearance="outline" class="login-form-field">
+    <mat-label>Enter your password</mat-label>
+    <input [(ngModel)]="password" formControlName="password" matInput type="password">
+    <mat-icon matSuffix>lock</mat-icon>
+  </mat-form-field>
+  <div *ngIf="passwordField.invalid && (passwordField.dirty || passwordField.touched)"
+       class="validation-error alert alert-danger">
+
+    <div *ngIf="passwordField.errors.required">
+      Password is required.
+    </div>
+    <div *ngIf="passwordField.errors.minlength">
+      Password should consist of at least 12 chars
+    </div>
+  </div>
+  <mat-divider class="divider-line"></mat-divider>
+
+  <button [disabled]="form.invalid" color="primary" mat-raised-button type="submit">Sign in</button>
+</form>
