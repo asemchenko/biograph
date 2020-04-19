@@ -1,8 +1,8 @@
-<form [formGroup]="form" action="" class="login-form">
+<form (ngSubmit)="onFormSubmit()" [formGroup]="form" action="" class="login-form">
   <h1>Sign in to Biograph</h1>
   <mat-divider class="divider-line"></mat-divider>
 
-  <mat-form-field (submit)="onFormSubmit()" appearance="outline" class="login-form-field">
+  <mat-form-field appearance="outline" class="login-form-field">
     <mat-label>Enter your email</mat-label>
     <input [(ngModel)]="email" formControlName="email" matInput placeholder="username@example.com" type="email">
     <mat-icon matSuffix>send</mat-icon>

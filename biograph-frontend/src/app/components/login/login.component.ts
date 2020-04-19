@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../services/auth/auth.service';
+import {ResponseStatus} from '../../models/ServerResponse';
+import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +17,9 @@ export class LoginComponent implements OnInit {
   email;
   password;
 
-  constructor() {
-  }
-
-  ngOnInit(): void {
+  constructor(private authService: AuthService,
+              private snackBarService: SnackBarService
+  ) {
   }
 
   get emailField() {
@@ -28,8 +30,18 @@ export class LoginComponent implements OnInit {
     return this.form.get('password');
   }
 
-  onFormSubmit() {
+  ngOnInit(): void {
+  }
 
+  onFormSubmit() {
+    console.log('Sending authentication request...');
+    this.authService.authenticate(this.email, this.password).subscribe(r => {
+      if (r.status === ResponseStatus.OK) {
+        this.snackBarService.openSuccessSnackBar('Authentication successful');
+      } else {
+        this.snackBarService.openErrorSnackBar(r.data);
+      }
+    });
   }
 
 }
