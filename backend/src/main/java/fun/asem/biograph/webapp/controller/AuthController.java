@@ -1,6 +1,7 @@
 package fun.asem.biograph.webapp.controller;
 
 import fun.asem.biograph.webapp.dto.AuthorizationRequest;
+import fun.asem.biograph.webapp.dto.ErrorDescription;
 import fun.asem.biograph.webapp.dto.RegistrationRequest;
 import fun.asem.biograph.webapp.dto.ServerResponse;
 import fun.asem.biograph.webapp.service.registration.AuthService;
@@ -56,23 +57,24 @@ public class AuthController {
         } catch (DisabledException e) {
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.ERROR)
-                    .data("Your account was disabled because of an suspicious activity")
                     .build();
+            response.setData(ErrorDescription.builder().message("Your account was disabled because of an suspicious activity").build());
         } catch (BadCredentialsException e) {
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.ERROR)
-                    .data("Invalid credentials")
                     .build();
+            response.setData(ErrorDescription.builder().message("Invalid credentials").build());
         } catch (CredentialsExpiredException e) {
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.ERROR)
-                    .data("Credentials has been expired")
                     .build();
+            response.setData(ErrorDescription.builder().message("Credentials has been expired").build());
         } catch (AuthenticationException e) {
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.ERROR)
-                    .data("Authentication error")
                     .build();
+            response.setData(ErrorDescription.builder().message("Authentication error").build());
+
         }
         return new ResponseEntity<ServerResponse>(response, httpHeaders, HttpStatus.OK);
     }

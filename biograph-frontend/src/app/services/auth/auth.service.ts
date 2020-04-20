@@ -15,4 +15,8 @@ export class AuthService {
   authenticate(email: string, password: string): Observable<ServerResponse> {
     return this.httpClient.post<ServerResponse>(API_URLS.LOGIN_URL, {email, password});
   }
+
+  register(email: string, nickname: string, password: string): Observable<ServerResponse> {
+    return this.httpClient.post<ServerResponse>(API_URLS.REGISTER_URL, {email, nickname, password});
+  }
 }

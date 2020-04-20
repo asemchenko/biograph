@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
 import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
+import {ResponseStatus} from '../../models/ServerResponse';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -17,7 +19,8 @@ export class RegistrationComponent implements OnInit {
   passwordConfirmation;
 
   constructor(private authService: AuthService,
-              private snackBarService: SnackBarService
+              private snackBarService: SnackBarService,
+              private router: Router
   ) {
   }
 
@@ -43,13 +46,12 @@ export class RegistrationComponent implements OnInit {
 
   onFormSubmit() {
     console.log('Sending registration request...');
-    /*this.authService.authenticate(this.email, this.password).subscribe(r => {
+    this.authService.register(this.email, this.nickname, this.password).subscribe(r => {
+      this.snackBarService.showMessage('Registration successful', r);
       if (r.status === ResponseStatus.OK) {
-        this.snackBarService.openSuccessSnackBar('Authentication successful');
-      } else {
-        this.snackBarService.openErrorSnackBar(r.data);
+        this.router.navigateByUrl('/login');
       }
-    });*/
+    });
 
   }
 
