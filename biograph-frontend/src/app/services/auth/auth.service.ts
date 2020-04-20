@@ -13,6 +13,7 @@ export class AuthService {
   }
 
   authenticate(email: string, password: string): Observable<ServerResponse> {
+    console.log('[AuthService] Sending authentication request...');
     return this.httpClient.post<ServerResponse>(API_URLS.LOGIN_URL, {email, password});
   }
 

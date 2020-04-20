@@ -25,6 +25,9 @@ import {HomeComponent} from './components/home/home.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {EffectsModule} from '@ngrx/effects';
 import {AuthEffects} from './store/effects/auth.effects';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from './store/app.state';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 const appRoutes: Routes = [
   {
@@ -75,6 +78,10 @@ const appRoutes: Routes = [
     MatToolbarModule,
     MatListModule,
     EffectsModule.forRoot([AuthEffects]),
+    StoreModule.forRoot(reducers, {}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 10
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

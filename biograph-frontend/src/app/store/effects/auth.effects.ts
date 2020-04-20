@@ -4,7 +4,10 @@ import {Router} from '@angular/router';
 import {AuthActionTypes, LogIn, LogInFailure, LogInSuccess} from '../actions/auth.actions';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import {of} from 'rxjs';
+import {ServerResponse} from '../../models/ServerResponse';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class AuthEffects {
   @Effect()
   LogIn = this.actions
@@ -15,11 +18,18 @@ export class AuthEffects {
         this.authService
           .authenticate(payload.email, payload.password)
           .pipe(
-            map(user => new LogInSuccess({user})),
+            map((response: ServerResponse) => new LogInSuccess({user: JSON.parse(response.data)})),
             catchError(error => of(new LogInFailure(error))),
           ),
       ),
     );
+
+  constructor(
+    private actions: Actions,
+    private authService: AuthService,
+    private router: Router
+  ) {
+  }
 
   /*  @Effect()
     LogIn: Observable<any> = this.actions.pipe(
@@ -37,11 +47,4 @@ export class AuthEffects {
       }),
       map((action: LogIn) => action.payload)
     );*/
-
-  constructor(
-    private actions: Actions,
-    private authService: AuthService,
-    private router: Router
-  ) {
-  }
 }

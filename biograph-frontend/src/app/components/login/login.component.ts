@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   onFormSubmit() {
-    console.log('Sending authentication request...');
+    console.log('Dispatching "LogIn" action to the store...');
     this.store.dispatch(new LogIn({email: this.email, password: this.password}));
     /*this.authService.authenticate(this.email, this.password).subscribe(r => {
       this.snackBarService.showMessage('Authentication successful', r);

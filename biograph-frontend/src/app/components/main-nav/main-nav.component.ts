@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import {getIsLoggedIn} from '../../store/app.state';
 
 @Component({
   selector: 'app-main-nav',
@@ -16,7 +18,13 @@ export class MainNavComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  isLoggedIn: Observable<boolean>;
+
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private store: Store
+  ) {
+    this.isLoggedIn = store.select(getIsLoggedIn);
   }
 
 }

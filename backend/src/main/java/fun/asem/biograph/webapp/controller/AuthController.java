@@ -5,6 +5,7 @@ import fun.asem.biograph.webapp.dto.ErrorDescription;
 import fun.asem.biograph.webapp.dto.RegistrationRequest;
 import fun.asem.biograph.webapp.dto.ServerResponse;
 import fun.asem.biograph.webapp.service.registration.AuthService;
+import fun.asem.biograph.webapp.service.user.UserService;
 import fun.asem.biograph.webapp.util.security.jwt.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,7 @@ public class AuthController {
     private final AuthService authService;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     @PostMapping("/signUp")
     public ServerResponse signUp(@RequestBody @Valid RegistrationRequest registrationRequest) {
@@ -51,8 +53,8 @@ public class AuthController {
             String token = jwtTokenUtil.generateToken(userDetails);
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.OK)
-                    .data(null)
                     .build();
+            response.setData(userService.getUserByUserDetails(userDetails.getUsername()));
             httpHeaders.add("Authentication", "Bearer " + token);
         } catch (DisabledException e) {
             response = ServerResponse.builder()
