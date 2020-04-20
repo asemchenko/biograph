@@ -23,6 +23,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
 import {HomeComponent} from './components/home/home.component';
 import {RegistrationComponent} from './components/registration/registration.component';
+import {EffectsModule} from '@ngrx/effects';
+import {AuthEffects} from './store/effects/auth.effects';
 
 const appRoutes: Routes = [
   {
@@ -72,6 +74,7 @@ const appRoutes: Routes = [
     LayoutModule,
     MatToolbarModule,
     MatListModule,
+    EffectsModule.forRoot([AuthEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent]

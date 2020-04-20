@@ -65,3 +65,4 @@ public class User {
 
     }
 }
+//TODO asem IMPORTANT add JsonIgnore for security-sensitive fields ( create getter and mark it with JsonIgnore) ( as I remember, check in prev project)
