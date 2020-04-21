@@ -6,12 +6,11 @@
                fixedInViewport>
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a (click)="drawer.toggle()" *ngIf="isLoggedIn | async; else notLoggedIn" [routerLink]="['/register']"
-         mat-list-item>Sign up</a>
+      <a (click)="logout()" *ngIf="isLoggedIn | async; else notLoggedIn"
+         mat-list-item>Sign out</a>
       <ng-template #notLoggedIn>
         <a (click)="drawer.toggle()" [routerLink]="['/login']" mat-list-item>Sign in</a>
         <a (click)="drawer.toggle()" [routerLink]="['/register']" mat-list-item>Sign up</a>
-        <a (click)="drawer.toggle()" [routerLink]="['/register']" mat-list-item>{{isLoggedIn | async }}</a>
       </ng-template>
       <a mat-list-item></a>
       <a (click)="drawer.toggle()" [routerLink]="['/home']" mat-list-item>Home</a>

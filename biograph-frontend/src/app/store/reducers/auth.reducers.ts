@@ -18,13 +18,16 @@ export function reducer(state = initialState, action: All): State {
   switch (action.type) {
     case AuthActionTypes.LOGIN_SUCCESS: {
       console.log('[auth.reducer] Got action: LOGIN_SUCCESS');
-      console.log('[auth.reducer] Previous state: ', state);
       return {
         ...state,
         isAuthenticated: true,
         user: action.payload.user,
         errorMessage: null,
       };
+    }
+    case AuthActionTypes.LOGOUT: {
+      console.log('[auth.reducer] Got action: LOGOUT');
+      return initialState;
     }
     default: {
       console.log('[auth.reducer] Got action: ', action.type);
