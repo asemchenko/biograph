@@ -1,9 +1,11 @@
 package fun.asem.biograph.webapp.controller;
 
 import fun.asem.biograph.webapp.dto.AuthorizationRequest;
+import fun.asem.biograph.webapp.dto.ErrorDescription;
 import fun.asem.biograph.webapp.dto.RegistrationRequest;
 import fun.asem.biograph.webapp.dto.ServerResponse;
 import fun.asem.biograph.webapp.service.registration.AuthService;
+import fun.asem.biograph.webapp.service.user.UserService;
 import fun.asem.biograph.webapp.util.security.jwt.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +33,7 @@ public class AuthController {
     private final AuthService authService;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     @PostMapping("/signUp")
     public ServerResponse signUp(@RequestBody @Valid RegistrationRequest registrationRequest) {
@@ -38,8 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<ServerResponse> signIn(@RequestBody @Valid AuthorizationRequest authorizationRequest) {
-        HttpHeaders httpHeaders = new HttpHeaders();
+    public ServerResponse signIn(@RequestBody @Valid AuthorizationRequest authorizationRequest) {
         ServerResponse response;
         try {
             // checking user credentials
@@ -50,31 +52,32 @@ public class AuthController {
             String token = jwtTokenUtil.generateToken(userDetails);
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.OK)
-                    .data(null)
                     .build();
-            httpHeaders.add("Authentication", "Bearer " + token);
+            response.setData(userService.getUserByUserDetails(userDetails.getUsername()));
+            response.setAuthToken("Bearer " + token);
         } catch (DisabledException e) {
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.ERROR)
-                    .data("Your account was disabled because of an suspicious activity")
                     .build();
+            response.setData(ErrorDescription.builder().message("Your account was disabled because of an suspicious activity").build());
         } catch (BadCredentialsException e) {
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.ERROR)
-                    .data("Invalid credentials")
                     .build();
+            response.setData(ErrorDescription.builder().message("Invalid credentials").build());
         } catch (CredentialsExpiredException e) {
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.ERROR)
-                    .data("Credentials has been expired")
                     .build();
+            response.setData(ErrorDescription.builder().message("Credentials has been expired").build());
         } catch (AuthenticationException e) {
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.ERROR)
-                    .data("Authentication error")
                     .build();
+            response.setData(ErrorDescription.builder().message("Authentication error").build());
+
         }
-        return new ResponseEntity<ServerResponse>(response, httpHeaders, HttpStatus.OK);
+        return response;
     }
 
     private void authenticateWithSpringAuthenticationManager(String email, String password) {

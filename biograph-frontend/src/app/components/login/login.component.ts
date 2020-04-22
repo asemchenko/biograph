@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
-import {ResponseStatus} from '../../models/ServerResponse';
 import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
+import {AppState} from '../../store/app.state';
+import {Store} from '@ngrx/store';
+import {LogIn} from 'src/app/store/actions/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,8 @@ export class LoginComponent implements OnInit {
   password;
 
   constructor(private authService: AuthService,
-              private snackBarService: SnackBarService
+              private snackBarService: SnackBarService,
+              private store: Store<AppState>
   ) {
   }
 
@@ -34,14 +37,13 @@ export class LoginComponent implements OnInit {
   }
 
   onFormSubmit() {
-    console.log('Sending authentication request...');
-    this.authService.authenticate(this.email, this.password).subscribe(r => {
+    console.log('Dispatching "LogIn" action to the store...');
+    this.store.dispatch(new LogIn({email: this.email, password: this.password}));
+    /*this.authService.authenticate(this.email, this.password).subscribe(r => {
+      this.snackBarService.showMessage('Authentication successful', r);
       if (r.status === ResponseStatus.OK) {
-        this.snackBarService.openSuccessSnackBar('Authentication successful');
-      } else {
-        this.snackBarService.openErrorSnackBar(r.data);
       }
-    });
+    });*/
   }
 
 }

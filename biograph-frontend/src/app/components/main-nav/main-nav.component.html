@@ -1,0 +1,34 @@
+<mat-sidenav-container class="sidenav-container" hasBackdrop="true">
+  <mat-sidenav #drawer [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="'side'"
+               [opened]="(isHandset$ | async) === false"
+               class="sidenav"
+               fixedInViewport>
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a (click)="logout()" *ngIf="isLoggedIn | async; else notLoggedIn"
+         mat-list-item>Sign out</a>
+      <ng-template #notLoggedIn>
+        <a (click)="drawer.toggle()" [routerLink]="['/login']" mat-list-item>Sign in</a>
+        <a (click)="drawer.toggle()" [routerLink]="['/register']" mat-list-item>Sign up</a>
+      </ng-template>
+      <a mat-list-item></a>
+      <a (click)="drawer.toggle()" [routerLink]="['/home']" mat-list-item>Home</a>
+      <a href="#" mat-list-item>About</a>
+      <a href="#" mat-list-item>Support</a>
+      <a href="#" mat-list-item>Donate</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        (click)="drawer.toggle()"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        type="button">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Biograph</span>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>

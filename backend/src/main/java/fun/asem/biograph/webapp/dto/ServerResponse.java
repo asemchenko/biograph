@@ -14,7 +14,11 @@ public class ServerResponse {
      * Stores response content (either data or error message, depends on response status value)
      */
     private String data;
-
+    /**
+     * Is used for sending token to front-end. Most times is set to null
+     * It stores token only when server send response for signIn end-point
+     */
+    private String authToken;
     public void setData(Object object) {
         try {
             this.data = new ObjectMapper().writeValueAsString(object);
