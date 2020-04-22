@@ -1,7 +1,7 @@
 package fun.asem.biograph.webapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.Instant;
 
@@ -21,7 +21,9 @@ public class User {
      * FIXME [future] link table with previous email addresses
      */
     private String currentEmail;
+    @JsonIgnore
     private String passwordHash;
+    @JsonIgnore
     private HashFunctionType hashFunctionType;
     private Instant creationTime;
     /**
@@ -45,6 +47,7 @@ public class User {
      * Here is stored the encrypted key for all user's data on the storage(Google Drive, FTP, etc.)
      * Master key is encrypted with <em>encryptionKey=Argon2(user's account password)</em>
      */
+    @JsonIgnore
     private String databaseMasterKey;
 
     @RequiredArgsConstructor
@@ -65,4 +68,3 @@ public class User {
 
     }
 }
-//TODO asem IMPORTANT add JsonIgnore for security-sensitive fields ( create getter and mark it with JsonIgnore) ( as I remember, check in prev project)

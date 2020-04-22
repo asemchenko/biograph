@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {ServerResponse} from '../../models/ServerResponse';
+import {getErrorMessage, ResponseStatus, ServerResponse} from '../../models/ServerResponse';
 import {API_URLS} from '../../../api-urls';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,17 @@ export class AuthService {
 
   authenticate(email: string, password: string): Observable<ServerResponse> {
     console.log('[AuthService] Sending authentication request...');
-    return this.httpClient.post<ServerResponse>(API_URLS.LOGIN_URL, {email, password});
+    return this.httpClient.post<ServerResponse>(API_URLS.LOGIN_URL, {email, password})
+      .pipe(
+        map((r: ServerResponse) => {
+          console.log('[AuthService] Pipe - got response: ', r);
+          if (r.status === ResponseStatus.OK) {
+            return r;
+          } else {
+            throw new Error(getErrorMessage(r));
+          }
+        })
+      );
   }
 
   register(email: string, nickname: string, password: string): Observable<ServerResponse> {

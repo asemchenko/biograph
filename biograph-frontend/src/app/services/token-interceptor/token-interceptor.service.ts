@@ -1,9 +1,17 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {HttpInterceptor} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TokenInterceptorService {
+export class TokenInterceptorService implements HttpInterceptor {
 
-  constructor() { }
+  constructor() {
+  }
+
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return undefined;
+  }
+
+
 }

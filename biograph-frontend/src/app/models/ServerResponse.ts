@@ -1,7 +1,7 @@
 export interface ServerResponse {
   status: ResponseStatus;
   data: string;
-
+  authToken: string;
 }
 
 export function getErrorMessage(response: ServerResponse) {

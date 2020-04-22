@@ -41,8 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<ServerResponse> signIn(@RequestBody @Valid AuthorizationRequest authorizationRequest) {
-        HttpHeaders httpHeaders = new HttpHeaders();
+    public ServerResponse signIn(@RequestBody @Valid AuthorizationRequest authorizationRequest) {
         ServerResponse response;
         try {
             // checking user credentials
@@ -55,7 +54,7 @@ public class AuthController {
                     .status(ServerResponse.ResponseStatus.OK)
                     .build();
             response.setData(userService.getUserByUserDetails(userDetails.getUsername()));
-            httpHeaders.add("Authentication", "Bearer " + token);
+            response.setAuthToken("Bearer " + token);
         } catch (DisabledException e) {
             response = ServerResponse.builder()
                     .status(ServerResponse.ResponseStatus.ERROR)
@@ -78,7 +77,7 @@ public class AuthController {
             response.setData(ErrorDescription.builder().message("Authentication error").build());
 
         }
-        return new ResponseEntity<ServerResponse>(response, httpHeaders, HttpStatus.OK);
+        return response;
     }
 
     private void authenticateWithSpringAuthenticationManager(String email, String password) {
