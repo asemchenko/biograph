@@ -1,7 +1,7 @@
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
-import {AuthActionTypes, LogIn, LogInFailure, LogInSuccess} from '../actions/auth.actions';
+import {AuthActionTypes, LogIn, LogInFailure, LogInSuccess, LogOut} from '../actions/auth.actions';
 import {catchError, exhaustMap, map, tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {ServerResponse} from '../../models/ServerResponse';
@@ -43,6 +43,16 @@ export class AuthEffects {
         this.snackBarService.openSuccessSnackBar('Authentication successful');
       }),
     );
+
+
+  @Effect({dispatch: false})
+  LogOut = this.actions.pipe(
+    ofType<LogOut>(AuthActionTypes.LOGOUT),
+    tap((action: LogOut) => {
+      console.log('[LogOut Effect] Removing token from localStorage');
+      this.storageService.removeAuthToken();
+    })
+  );
 
   constructor(
     private actions: Actions,

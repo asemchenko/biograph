@@ -14,7 +14,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MainNavComponent} from './components/main-nav/main-nav.component';
@@ -28,6 +28,7 @@ import {AuthEffects} from './store/effects/auth.effects';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from './store/app.state';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {TokenInterceptorService} from './services/token-interceptor/token-interceptor.service';
 
 const appRoutes: Routes = [
   {
@@ -83,7 +84,13 @@ const appRoutes: Routes = [
       maxAge: 10
     })
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

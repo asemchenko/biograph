@@ -1,16 +1,28 @@
 import {Injectable} from '@angular/core';
-import {HttpInterceptor} from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AppStorageService} from '../app-storage/app-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenInterceptorService implements HttpInterceptor {
 
-  constructor() {
+  constructor(
+    private storageService: AppStorageService
+  ) {
   }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return undefined;
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const authToken = this.storageService.getAuthToken();
+    if (authToken) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: authToken,
+        }
+      });
+    }
+    return next.handle(request);
   }
 
 

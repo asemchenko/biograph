@@ -20,4 +20,8 @@ export class AppStorageService {
   getAuthToken(): string {
     return localStorage.getItem(this.authTokenKeyName);
   }
+
+  removeAuthToken(): void {
+    localStorage.removeItem(this.authTokenKeyName);
+  }
 }
