@@ -2,6 +2,7 @@ package fun.asem.biograph.webapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
 import javax.persistence.*;
 import java.time.Instant;
 
@@ -45,10 +46,13 @@ public class User {
     private Boolean isCompromised;
     /**
      * Here is stored the encrypted key for all user's data on the storage(Google Drive, FTP, etc.)
+     * Also this key is used to encrypt sensitive fields ( like event's description )
      * Master key is encrypted with <em>encryptionKey=Argon2(user's account password)</em>
+     *
+     * @see Event#description
      */
     @JsonIgnore
-    private String databaseMasterKey;
+    private String masterKey;
 
     @RequiredArgsConstructor
     public enum HashFunctionType {
