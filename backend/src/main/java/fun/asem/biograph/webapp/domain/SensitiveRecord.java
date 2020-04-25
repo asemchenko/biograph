@@ -18,5 +18,5 @@ public class SensitiveRecord {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long sensitiveRecordId;
     private String data;
-    private String encryptedKey;
+    private String encryptionAlgorithm;
 }

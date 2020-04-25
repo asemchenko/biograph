@@ -32,6 +32,15 @@ export class AuthEffects {
     );
 
   @Effect({dispatch: false})
+  LogInFailure = this.actions
+    .pipe(
+      ofType<LogInFailure>(AuthActionTypes.LOGIN_FAILURE),
+      tap((action: LogInFailure) => {
+        this.storageService.removeAuthToken();
+      })
+    );
+
+  @Effect({dispatch: false})
   LogInSuccess = this.actions
     .pipe(
       ofType<LogInSuccess>(AuthActionTypes.LOGIN_SUCCESS),
