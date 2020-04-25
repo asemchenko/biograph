@@ -7,6 +7,17 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Grant can be issued to the next objects:
+ * <ul>
+ *     <li>Event</li>
+ *     <li>Category</li>
+ *     <li>Tag</li>
+ * </ul>
+ * One grant can not give access to more than one object
+ * <br>
+ * If such logic is required - each object must have own grant
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +32,8 @@ public class Grant {
     @JoinColumn(name = "user_id")
     private User user;
     private Long eventId;
+    private Long categoryId;
+    private Long tagId;
     @Enumerated(EnumType.STRING)
     private AccessType accessType;
 

@@ -18,7 +18,12 @@ public class Parameter {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long parameterId;
     private Long eventId;
-    private String value;
+    /**
+     * contains parameter value
+     */
+    @OneToOne
+    @JoinColumn(name = "sensitive_record_id")
+    private SensitiveRecord data;
     @ManyToOne
     @JoinColumn(name = "attribute_id")
     private Attribute attribute;

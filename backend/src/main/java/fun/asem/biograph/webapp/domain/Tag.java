@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -17,10 +18,13 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long tagId;
-    private String tagName;
     /**
-     * @see Event#encryptionAlgorithm
+     * contains tag name
      */
-    private String encryptionAlgorithm;
+    @OneToOne
+    @JoinColumn(name = "sensitiveRecordId")
+    private SensitiveRecord data;
     private String tagColor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tagId")
+    private List<Grant> grants;
 }

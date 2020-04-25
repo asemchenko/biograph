@@ -17,6 +17,12 @@ public class Attribute {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long attributeId;
+    /**
+     * contains attribute name
+     */
+    @OneToOne
+    @JoinColumn(name = "sensitive_record_id")
+    private SensitiveRecord data;
 
     public enum AttributeType {
         NUMBER,
