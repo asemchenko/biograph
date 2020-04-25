@@ -1,4 +1,21 @@
 <div class="container">
-  <h1 class="categories-header">Categories</h1>
+  <h1 class="categories-header"> Categories </h1>
   <app-search-bar class="search-bar"></app-search-bar>
+  <table [dataSource]="dataSource" class="mat-elevation-z8 categories-table" mat-table matSort>
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Name</th>
+      <td *matCellDef="let category" mat-cell> {{category.name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="creationTime">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Creation time</th>
+      <td *matCellDef="let category" mat-cell> {{category.creationTime}} </td>
+    </ng-container>
+    <ng-container matColumnDef="totalEvents">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Total events</th>
+      <td *matCellDef="let category" mat-cell> {{category.totalEvents}} </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: columnsToDisplay" mat-row></tr>
+  </table>
 </div>

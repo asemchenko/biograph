@@ -29,10 +29,12 @@ import {StoreModule} from '@ngrx/store';
 import {reducers} from './store/app.state';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {TokenInterceptorService} from './services/token-interceptor/token-interceptor.service';
-import { CategoriesPageComponent } from './components/categories-page/categories-page.component';
-import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import {CategoriesPageComponent} from './components/categories-page/categories-page.component';
+import {SearchBarComponent} from './components/search-bar/search-bar.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
 
 const appRoutes: Routes = [
   {
@@ -94,7 +96,9 @@ const appRoutes: Routes = [
       maxAge: 10
     }),
     MatAutocompleteModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTableModule,
+    MatSortModule
   ],
   providers: [
     {
