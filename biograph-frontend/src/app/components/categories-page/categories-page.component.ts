@@ -35,7 +35,7 @@ export class CategoriesPageComponent implements OnInit {
     this.dialog.open(
       NewCategoryDialogComponent,
       {
-        width: '400px'
+        width: 'min(700px, 95vw)'
       }
     );
   }
