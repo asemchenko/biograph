@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -18,12 +19,17 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long categoryId;
-    private String categoryName;
-    private String description;
     /**
-     * User can assign custom color to event category
+     * Stores:
+     * <ul>
+     *     <li><b>name</b> - the name of category</li>
+     *     <li><b>color</b> - user can assign custom color to category</li>
+     * </ul>
      */
-    private String color;
+    @OneToOne
+    @JoinColumn(name = "sensitive_record_id")
+    private SensitiveRecord data;
+    private Instant creationTime;
     @ManyToMany
     @JoinTable(
             name = "category_attributes",
@@ -31,4 +37,6 @@ public class Category {
             inverseJoinColumns = {@JoinColumn(name = "attribute_id")}
     )
     private List<Attribute> attributes;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
+    private List<Grant> grants;
 }

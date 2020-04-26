@@ -13,16 +13,9 @@ import {LogOut} from '../../store/actions/auth.actions';
 })
 export class MainNavComponent {
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
-
   isLoggedIn: Observable<boolean>;
 
   constructor(
-    private breakpointObserver: BreakpointObserver,
     private store: Store
   ) {
     this.isLoggedIn = store.select(getIsLoggedIn);

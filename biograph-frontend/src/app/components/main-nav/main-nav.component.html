@@ -1,18 +1,20 @@
 <mat-sidenav-container class="sidenav-container" hasBackdrop="true">
-  <mat-sidenav #drawer [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+  <mat-sidenav #drawer
                [mode]="'side'"
-               [opened]="(isHandset$ | async) === false"
+               [opened]="false"
                class="sidenav"
                fixedInViewport>
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a (click)="logout()" *ngIf="isLoggedIn | async; else notLoggedIn"
-         mat-list-item>Sign out</a>
+      <ng-container *ngIf="isLoggedIn | async; else notLoggedIn">
+        <a (click)="drawer.toggle()" mat-list-item [routerLink]="['/categories']">Categories</a>
+        <a (click)="logout()" mat-list-item>Sign out</a>
+      </ng-container>
       <ng-template #notLoggedIn>
         <a (click)="drawer.toggle()" [routerLink]="['/login']" mat-list-item>Sign in</a>
         <a (click)="drawer.toggle()" [routerLink]="['/register']" mat-list-item>Sign up</a>
       </ng-template>
-      <a mat-list-item></a>
+      <mat-divider></mat-divider>
       <a (click)="drawer.toggle()" [routerLink]="['/home']" mat-list-item>Home</a>
       <a href="#" mat-list-item>About</a>
       <a href="#" mat-list-item>Support</a>

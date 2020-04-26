@@ -29,6 +29,14 @@ import {StoreModule} from '@ngrx/store';
 import {reducers} from './store/app.state';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {TokenInterceptorService} from './services/token-interceptor/token-interceptor.service';
+import {CategoriesPageComponent} from './components/categories-page/categories-page.component';
+import {SearchBarComponent} from './components/search-bar/search-bar.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatTableModule} from '@angular/material/table';
+import {MatSortModule} from '@angular/material/sort';
+import {NewCategoryDialogComponent} from './components/categories-page/new-category-dialog/new-category-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 const appRoutes: Routes = [
   {
@@ -42,6 +50,10 @@ const appRoutes: Routes = [
   {
     path: 'register',
     component: RegistrationComponent
+  },
+  {
+    path: 'categories',
+    component: CategoriesPageComponent
   },
   // TODO asem add routes here as soon as other components will be created
   {
@@ -59,7 +71,10 @@ const appRoutes: Routes = [
     TabsComponent,
     MainNavComponent,
     HomeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    CategoriesPageComponent,
+    SearchBarComponent,
+    NewCategoryDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +97,12 @@ const appRoutes: Routes = [
     StoreModule.forRoot(reducers, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 10
-    })
+    }),
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatTableModule,
+    MatSortModule,
+    MatDialogModule
   ],
   providers: [
     {

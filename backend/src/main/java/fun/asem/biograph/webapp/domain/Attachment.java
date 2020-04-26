@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.Instant;
 
 @Entity
 @NoArgsConstructor
@@ -19,12 +18,15 @@ public class Attachment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long attachmentId;
     private Long eventId;
-    private String fileName;
-    private String description;
-    private Instant creationTime;
     /**
-     * Filename on the cloud storage. Pretty long random string ( for guarantee unique )
+     * Contains the next properties
+     * <ul>
+     *     <li>fileName</li>
+     *     <li>description</li>
+     *     <li>fileNameInStorage</li>
+     * </ul>
      */
-    private String fileNameInStorage;
-    private String encryptionAlgorithm;
+    @OneToOne
+    @JoinColumn(name = "sensitive_record_id")
+    private SensitiveRecord data;
 }

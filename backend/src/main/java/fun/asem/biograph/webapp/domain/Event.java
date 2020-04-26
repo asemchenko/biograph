@@ -19,12 +19,12 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long eventId;
-    private String name;
-    private String description;
     /**
-     * Determines algorithm that was used to encrypt sensitive fields
+     * Contains event name and description
      */
-    private String encryptionAlgorithm;
+    @OneToOne
+    @JoinColumn(name = "sensitive_record_id")
+    private SensitiveRecord data;
     private Instant startDatetime;
     private Instant endDatetime;
     private Instant creationTime;

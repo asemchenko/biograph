@@ -1,0 +1,34 @@
+@import "../../common";
+
+.container {
+  text-align: center;
+}
+
+.categories-header {
+  .header;
+  margin-top: @normal-margin-top;
+}
+
+.categories-table {
+  width: 100%;
+  margin-top: @normal-margin-top;
+}
+
+.mat-cell {
+  text-align: center;
+}
+
+.create-category-button {
+  display: block;
+  margin: auto;
+}
+
+::ng-deep .mat-sort-header-container {
+  justify-content: center;
+  /* The missing piece */
+  margin-right: -18px;
+}
+
+.search-bar {
+  margin: auto;
+}
