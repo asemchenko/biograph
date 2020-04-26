@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
+import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {NewCategoryDialogComponent} from './new-category-dialog/new-category-dialog.component';
@@ -12,7 +12,7 @@ import {Category} from '../../models/Category';
 })
 export class CategoriesPageComponent implements OnInit {
     readonly columnsToDisplay = ['name', 'creationTime', 'totalEvents'];
-    readonly CATEGORIES: Category[] = [
+    readonly allCategories: Category[] = [
         {
             categoryId: 1,
             name: 'Fitness',
@@ -59,9 +59,9 @@ export class CategoriesPageComponent implements OnInit {
             attributes: []
         },
     ];
-    dataSource = new MatTableDataSource(this.CATEGORIES);
-
+    dataSource = new MatTableDataSource(this.allCategories);
     @ViewChild(MatSort, {static: true}) sort: MatSort;
+    @ViewChild(MatTable, {static: true}) table: MatTable<Category>;
 
     constructor(
         public dialog: MatDialog
@@ -81,4 +81,14 @@ export class CategoriesPageComponent implements OnInit {
         );
     }
 
+    search(searchQuery: string) {
+        const searchQueryLowerCase = searchQuery.toLowerCase();
+        const filteredCategories = this.allCategories.filter(category => {
+            return category.name.toLowerCase().includes(searchQueryLowerCase);
+        });
+        this.dataSource = new MatTableDataSource(
+            filteredCategories
+        );
+        this.table.renderRows();
+    }
 }
