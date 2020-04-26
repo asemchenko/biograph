@@ -25,5 +25,5 @@ My bachelor diploma project in KPI
 - [ ] Default value for event attribute
 
 ### Tasks that are optional - FRONTEND
-- [ ] Snackbars
-- [ ] Tooltips
+- [x] Snackbars
+- [x] Tooltips
