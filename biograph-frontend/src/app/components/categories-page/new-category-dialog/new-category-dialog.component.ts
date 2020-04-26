@@ -4,12 +4,13 @@ import {MatSort} from '@angular/material/sort';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {Attribute} from '../../../models/Attribute';
 
-const STUB_ATTRIBUTES = [
-  {attributeId: 1, name: 'Weight', description: 'Stub description'},
-  {attributeId: 2, name: 'Cardio', description: 'Stub description'},
-  {attributeId: 3, name: 'Squat', description: 'Stub description'},
-  {attributeId: 4, name: 'Push-up', description: 'Stub description'},
+const STUB_ATTRIBUTES: Attribute[] = [
+  {attributeId: 1, name: 'Weight', description: 'Stub description', creationTime: 0},
+  {attributeId: 2, name: 'Cardio', description: 'Stub description', creationTime: 0},
+  {attributeId: 3, name: 'Squat', description: 'Stub description', creationTime: 0},
+  {attributeId: 4, name: 'Push-up', description: 'Stub description', creationTime: 0},
 ];
 
 @Component({
@@ -60,10 +61,10 @@ export class NewCategoryDialogComponent implements OnInit {
     return (attribute && attribute.name) ? attribute.name : '';
   }
 
-  addAttribute(attributeName: string) {
+  addAttribute() {
     // TODO implement adding existing attribute
     this.categoryAttributes.push(
-      {attributeId: null, name: attributeName, description: ''}
+      this.searchAttributeFormControl.value
     );
     this.updateAttributesTable();
   }

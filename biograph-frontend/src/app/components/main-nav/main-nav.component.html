@@ -8,6 +8,7 @@
     <mat-nav-list>
       <ng-container *ngIf="isLoggedIn | async; else notLoggedIn">
         <a (click)="drawer.toggle()" mat-list-item [routerLink]="['/categories']">Categories</a>
+        <a (click)="drawer.toggle()" [routerLink]="['/metrics']" mat-list-item>Metrics</a>
         <a (click)="logout()" mat-list-item>Sign out</a>
       </ng-container>
       <ng-template #notLoggedIn>

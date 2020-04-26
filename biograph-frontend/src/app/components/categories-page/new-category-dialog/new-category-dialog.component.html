@@ -31,17 +31,17 @@
 
 
     <!--    Add attribute-->
-    <h3 class="attributes-header">Attributes</h3>
+    <h3 class="attributes-header">Metrics</h3>
     <form>
       <mat-form-field appearance="outline" class="category-dialog-form-field">
-        <mat-label>Attribute name</mat-label>
+        <mat-label>Metric name</mat-label>
         <input #attributeNameInput
                [formControl]="searchAttributeFormControl"
                [matAutocomplete]="attributeNameAutocomplete"
                matInput
                placeholder="Ex. 'Weight'"
                type="text">
-        <mat-hint align="start">Existing attribute or a new one</mat-hint>
+        <mat-hint align="start">Find an existing metric</mat-hint>
       </mat-form-field>
       <mat-autocomplete #attributeNameAutocomplete [displayWith]="searchAttributeDisplayFn">
         <mat-option *ngFor="let attribute of searchFilteredAttributes | async" [value]="attribute">
@@ -49,7 +49,7 @@
         </mat-option>
       </mat-autocomplete>
       <button
-        (click)="addAttribute(attributeNameInput.value); attributeNameInput.value = ''; searchAttributeFormControl.setValue('')"
+        (click)="addAttribute(); attributeNameInput.value = ''; searchAttributeFormControl.setValue('')"
         [disabled]="!attributeNameInput.value"
         class="add-attribute-button"
         mat-stroked-button>Add
@@ -61,7 +61,14 @@
     <table [dataSource]="attributes" class="attributes-table" mat-table matSort>
       <ng-container matColumnDef="name">
         <th *matHeaderCellDef mat-header-cell mat-sort-header> Attribute name</th>
-        <td *matCellDef="let attribute" mat-cell> {{attribute.name}} </td>
+        <td *matCellDef="let attribute"
+            mat-cell>
+          <span
+            [matTooltip]="attribute.description"
+            matTooltipPosition="right">
+            {{attribute.name}}
+          </span>
+        </td>
       </ng-container>
       <ng-container matColumnDef="remove">
         <th *matHeaderCellDef mat-header-cell> Action</th>

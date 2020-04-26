@@ -6,7 +6,14 @@
   <table [dataSource]="dataSource" class="mat-elevation-z8 categories-table" mat-table matSort>
     <ng-container matColumnDef="name">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Name</th>
-      <td *matCellDef="let category" mat-cell> {{category.name}} </td>
+      <td *matCellDef="let category"
+          mat-cell>
+        <span
+          [matTooltip]="category.description"
+          matTooltipPosition="right">
+          {{category.name}}
+        </span>
+      </td>
     </ng-container>
     <ng-container matColumnDef="creationTime">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Creation time</th>
