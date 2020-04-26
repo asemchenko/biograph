@@ -11,17 +11,17 @@ import {Category} from '../../models/Category';
     styleUrls: ['./categories-page.component.less']
 })
 export class CategoriesPageComponent implements OnInit {
-    readonly columnsToDisplay = ['name', 'creationTime', 'totalEvents'];
-    readonly allCategories: Category[] = [
-        {
-            categoryId: 1,
-            name: 'Fitness',
-            color: 'green',
-            creationTime: 135468,
-            totalEvents: 10,
-            description: 'Stub description',
-            attributes: []
-        },
+    readonly columnsToDisplay = ['name', 'creationTime', 'totalEvents', 'attributes', 'color'];
+  readonly allCategories: Category[] = [
+    {
+      categoryId: 1,
+      name: 'Fitness',
+      color: 'green',
+      creationTime: 135468,
+      totalEvents: 10,
+      description: 'Stub description',
+      attributes: []
+    },
         {
             categoryId: 2,
             name: 'Family',
