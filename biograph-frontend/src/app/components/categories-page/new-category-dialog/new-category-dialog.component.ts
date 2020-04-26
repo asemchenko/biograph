@@ -63,9 +63,9 @@ export class NewCategoryDialogComponent implements OnInit {
 
   addAttribute() {
     // TODO implement adding existing attribute
-    this.categoryAttributes.push(
-      this.searchAttributeFormControl.value
-    );
+    const attribute = this.searchAttributeFormControl.value;
+    this.removeAttributeFromCollection(attribute, this.allAttributes);
+    this.categoryAttributes.push(attribute);
     this.updateAttributesTable();
   }
 
@@ -75,11 +75,18 @@ export class NewCategoryDialogComponent implements OnInit {
     this.attributesTable.renderRows();
   }
 
-  removeAttribute(attribute: any) {
-    const index = this.categoryAttributes.indexOf(attribute, 0);
-    if (index > -1) {
-      this.categoryAttributes.splice(index, 1);
-    }
+  removeAttribute(attribute: Attribute) {
+    this.removeAttributeFromCollection(attribute, this.categoryAttributes);
+    this.allAttributes.push(attribute);
+    this.searchAttributeFormControl.setValue(this.searchAttributeFormControl.value);
     this.updateAttributesTable();
+    console.log(this.allAttributes);
+  }
+
+  private removeAttributeFromCollection(attribute: Attribute, collection: Attribute[]): void {
+    const index = collection.indexOf(attribute, 0);
+    if (index > -1) {
+      collection.splice(index, 1);
+    }
   }
 }
