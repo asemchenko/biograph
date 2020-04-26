@@ -104,7 +104,7 @@ const appRoutes: Routes = [
     MatTableModule,
     MatSortModule,
     MatDialogModule,
-    ColorPickerModule
+    ColorPickerModule,
   ],
   providers: [
     {

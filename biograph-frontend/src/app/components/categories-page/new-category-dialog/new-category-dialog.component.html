@@ -32,17 +32,29 @@
 
     <!--    Add attribute-->
     <h3 class="attributes-header">Attributes</h3>
-    <mat-form-field appearance="outline" class="category-dialog-form-field">
-      <mat-label>Attribute name</mat-label>
-      <input #attributeNameInput matInput placeholder="Ex. 'Weight'" type="text">
-      <mat-hint align="start">Existing attribute or a new one</mat-hint>
-    </mat-form-field>
-    <button
-      (click)="addAttribute(attributeNameInput.value); attributeNameInput.value = ''"
-      [disabled]="!attributeNameInput.value"
-      class="add-attribute-button"
-      mat-stroked-button>Add
-    </button>
+    <form>
+      <mat-form-field appearance="outline" class="category-dialog-form-field">
+        <mat-label>Attribute name</mat-label>
+        <input #attributeNameInput
+               [formControl]="searchAttributeFormControl"
+               [matAutocomplete]="attributeNameAutocomplete"
+               matInput
+               placeholder="Ex. 'Weight'"
+               type="text">
+        <mat-hint align="start">Existing attribute or a new one</mat-hint>
+      </mat-form-field>
+      <mat-autocomplete #attributeNameAutocomplete [displayWith]="searchAttributeDisplayFn">
+        <mat-option *ngFor="let attribute of searchFilteredAttributes | async" [value]="attribute">
+          {{attribute.name}}
+        </mat-option>
+      </mat-autocomplete>
+      <button
+        (click)="addAttribute(attributeNameInput.value); attributeNameInput.value = ''; searchAttributeFormControl.setValue('')"
+        [disabled]="!attributeNameInput.value"
+        class="add-attribute-button"
+        mat-stroked-button>Add
+      </button>
+    </form>
     <mat-divider></mat-divider>
 
     <!--    Category attributes table -->
