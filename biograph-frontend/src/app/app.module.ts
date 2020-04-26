@@ -35,6 +35,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
+import {NewCategoryDialogComponent} from './components/categories-page/new-category-dialog/new-category-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 const appRoutes: Routes = [
   {
@@ -71,7 +73,8 @@ const appRoutes: Routes = [
     HomeComponent,
     RegistrationComponent,
     CategoriesPageComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    NewCategoryDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +101,8 @@ const appRoutes: Routes = [
     MatAutocompleteModule,
     MatChipsModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatDialogModule
   ],
   providers: [
     {

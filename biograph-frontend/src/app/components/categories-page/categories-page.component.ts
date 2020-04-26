@@ -1,6 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
+import {MatDialog} from '@angular/material/dialog';
+import {NewCategoryDialogComponent} from './new-category-dialog/new-category-dialog.component';
 
 @Component({
   selector: 'app-categories-page',
@@ -20,11 +22,22 @@ export class CategoriesPageComponent implements OnInit {
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor() {
+  constructor(
+    public dialog: MatDialog
+  ) {
   }
 
   ngOnInit(): void {
     this.dataSource.sort = this.sort;
+  }
+
+  openNewCategoryDialog() {
+    this.dialog.open(
+      NewCategoryDialogComponent,
+      {
+        width: '400px'
+      }
+    );
   }
 
 }
