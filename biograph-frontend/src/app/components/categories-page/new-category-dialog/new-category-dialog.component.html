@@ -3,20 +3,96 @@
   <form class="new-category-form">
     <mat-form-field class="category-dialog-form-field">
       <mat-label>Name</mat-label>
-      <input #categoryName matInput placeholder="Ex. 'Fitness'" type="text">
+      <input #catName
+             [(ngModel)]="category.name"
+             [ngModelOptions]="{standalone:true}"
+             matInput
+             placeholder="Ex. 'Fitness'"
+             type="text">
       <mat-hint align="start"><strong>Be concise, don't use long names</strong></mat-hint>
-      <mat-hint align="end">{{categoryName.value.length}} / {{categoryNameMaxLength}}</mat-hint>
+      <mat-hint align="end">{{catName.value.length}} / {{categoryNameMaxLength}}</mat-hint>
     </mat-form-field>
     <mat-form-field class="category-dialog-form-field">
       <mat-label>Description</mat-label>
-      <textarea class="category-description-input" matInput placeholder="Ex. 'For tracking my working out in the gym'"
+      <textarea [(ngModel)]="category.description"
+                [ngModelOptions]="{standalone:true}"
+                class="category-description-input"
+                matInput
+                placeholder="Ex. 'For tracking my working out in the gym'"
                 type="text"></textarea>
       <mat-hint align="start"><strong>Add short description to your category</strong></mat-hint>
     </mat-form-field>
+    <br>
+    <div class="color-form-field">
+      <mat-hint>Customize color</mat-hint>
+      <br>
+      <input [(colorPicker)]="category.color"
+             [style.background]="category.color"
+             class="category-color-picker"
+             cpDialogDisplay="popup"
+             cpDisableInput="true"
+             cpPosition="top"
+             cpPositionOffset="-430%"
+             type="button"/>
+    </div>
+
+
+    <mat-divider></mat-divider>
+
+
+    <!--    Add attribute-->
+    <h3 class="attributes-header">Metrics</h3>
+    <form>
+      <mat-form-field appearance="outline" class="category-dialog-form-field">
+        <mat-label>Metric name</mat-label>
+        <input #attributeNameInput
+               [formControl]="searchAttributeFormControl"
+               [matAutocomplete]="attributeNameAutocomplete"
+               matInput
+               placeholder="Ex. 'Weight'"
+               type="text">
+        <mat-hint align="start">Find an existing metric</mat-hint>
+      </mat-form-field>
+      <mat-autocomplete #attributeNameAutocomplete [displayWith]="searchAttributeDisplayFn">
+        <mat-option *ngFor="let attribute of searchFilteredAttributes | async" [value]="attribute">
+          {{attribute.name}}
+        </mat-option>
+      </mat-autocomplete>
+      <button
+        (click)="addAttribute(); attributeNameInput.value = ''; searchAttributeFormControl.setValue('')"
+        [disabled]="!attributeNameInput.value"
+        class="add-attribute-button"
+        mat-stroked-button>Add
+      </button>
+    </form>
+    <mat-divider></mat-divider>
+
+    <!--    Category attributes table -->
+    <table [dataSource]="attributes" class="attributes-table" mat-table matSort>
+      <ng-container matColumnDef="name">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Attribute name</th>
+        <td *matCellDef="let attribute"
+            mat-cell>
+          <span
+            [matTooltip]="attribute.description"
+            matTooltipPosition="right">
+            {{attribute.name}}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="remove">
+        <th *matHeaderCellDef mat-header-cell> Action</th>
+        <td *matCellDef="let attribute" mat-cell>
+          <button (click)="removeAttribute(attribute)" color="warn" mat-stroked-button>Remove</button>
+        </td>
+      </ng-container>
+      <tr *matHeaderRowDef="attributeTableDisplayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: attributeTableDisplayedColumns" mat-row></tr>
+    </table>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions class="dialog-actions">
   <button color="warn" mat-button mat-dialog-close>Cancel</button>
   <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
-  <button [mat-dialog-close]="true" color="primary" mat-button>Create</button>
+  <button [mat-dialog-close]="category" color="primary" mat-button>Create</button>
 </mat-dialog-actions>

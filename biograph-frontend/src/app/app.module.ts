@@ -37,6 +37,9 @@ import {MatTableModule} from '@angular/material/table';
 import {MatSortModule} from '@angular/material/sort';
 import {NewCategoryDialogComponent} from './components/categories-page/new-category-dialog/new-category-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import {ColorPickerModule} from 'ngx-color-picker';
+import {AttributesPageComponent} from './components/attributes-page/attributes-page.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 const appRoutes: Routes = [
   {
@@ -54,6 +57,10 @@ const appRoutes: Routes = [
   {
     path: 'categories',
     component: CategoriesPageComponent
+  },
+  {
+    path: 'metrics',
+    component: AttributesPageComponent
   },
   // TODO asem add routes here as soon as other components will be created
   {
@@ -74,7 +81,8 @@ const appRoutes: Routes = [
     RegistrationComponent,
     CategoriesPageComponent,
     SearchBarComponent,
-    NewCategoryDialogComponent
+    NewCategoryDialogComponent,
+    AttributesPageComponent
   ],
   imports: [
     BrowserModule,
@@ -102,7 +110,9 @@ const appRoutes: Routes = [
     MatChipsModule,
     MatTableModule,
     MatSortModule,
-    MatDialogModule
+    MatDialogModule,
+    ColorPickerModule,
+    MatTooltipModule,
   ],
   providers: [
     {

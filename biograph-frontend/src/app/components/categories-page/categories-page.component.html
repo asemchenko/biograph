@@ -1,12 +1,19 @@
 <div class="container">
   <h1 class="categories-header"> Categories </h1>
-  <app-search-bar class="search-bar"></app-search-bar>
+  <app-search-bar (valueChanged)="search($event)" class="search-bar"></app-search-bar>
   <button (click)="openNewCategoryDialog()" class="create-category-button" color="primary" mat-raised-button>New
   </button>
   <table [dataSource]="dataSource" class="mat-elevation-z8 categories-table" mat-table matSort>
     <ng-container matColumnDef="name">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Name</th>
-      <td *matCellDef="let category" mat-cell> {{category.name}} </td>
+      <td *matCellDef="let category"
+          mat-cell>
+        <span
+          [matTooltip]="category.description"
+          matTooltipPosition="right">
+          {{category.name}}
+        </span>
+      </td>
     </ng-container>
     <ng-container matColumnDef="creationTime">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Creation time</th>
@@ -15,6 +22,19 @@
     <ng-container matColumnDef="totalEvents">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Total events</th>
       <td *matCellDef="let category" mat-cell> {{category.totalEvents}} </td>
+    </ng-container>
+    <ng-container matColumnDef="attributes">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Total metrics</th>
+      <td *matCellDef="let category" mat-cell> {{category.attributes.length}} </td>
+    </ng-container>
+    <ng-container matColumnDef="color">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Color</th>
+      <td *matCellDef="let category" mat-cell>
+        <input [(colorPicker)]="category.color"
+               [style.background]="category.color"
+               class="category-color-picker"
+               disabled="true">
+      </td>
     </ng-container>
 
     <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
