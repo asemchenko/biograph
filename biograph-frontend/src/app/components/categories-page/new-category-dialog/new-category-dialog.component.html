@@ -3,13 +3,22 @@
   <form class="new-category-form">
     <mat-form-field class="category-dialog-form-field">
       <mat-label>Name</mat-label>
-      <input #categoryName matInput placeholder="Ex. 'Fitness'" type="text">
+      <input #catName
+             [(ngModel)]="category.name"
+             [ngModelOptions]="{standalone:true}"
+             matInput
+             placeholder="Ex. 'Fitness'"
+             type="text">
       <mat-hint align="start"><strong>Be concise, don't use long names</strong></mat-hint>
-      <mat-hint align="end">{{categoryName.value.length}} / {{categoryNameMaxLength}}</mat-hint>
+      <mat-hint align="end">{{catName.value.length}} / {{categoryNameMaxLength}}</mat-hint>
     </mat-form-field>
     <mat-form-field class="category-dialog-form-field">
       <mat-label>Description</mat-label>
-      <textarea class="category-description-input" matInput placeholder="Ex. 'For tracking my working out in the gym'"
+      <textarea [(ngModel)]="category.description"
+                [ngModelOptions]="{standalone:true}"
+                class="category-description-input"
+                matInput
+                placeholder="Ex. 'For tracking my working out in the gym'"
                 type="text"></textarea>
       <mat-hint align="start"><strong>Add short description to your category</strong></mat-hint>
     </mat-form-field>
@@ -17,7 +26,8 @@
     <div class="color-form-field">
       <mat-hint>Customize color</mat-hint>
       <br>
-      <input [(colorPicker)]="color" [style.background]="color"
+      <input [(colorPicker)]="category.color"
+             [style.background]="category.color"
              class="category-color-picker"
              cpDialogDisplay="popup"
              cpDisableInput="true"
@@ -84,5 +94,5 @@
 <mat-dialog-actions class="dialog-actions">
   <button color="warn" mat-button mat-dialog-close>Cancel</button>
   <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
-  <button [mat-dialog-close]="true" color="primary" mat-button>Create</button>
+  <button [mat-dialog-close]="category" color="primary" mat-button>Create</button>
 </mat-dialog-actions>

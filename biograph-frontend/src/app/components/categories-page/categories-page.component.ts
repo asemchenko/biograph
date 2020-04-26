@@ -59,7 +59,9 @@ export class CategoriesPageComponent implements OnInit {
             attributes: []
         },
     ];
+    // TODO asem maybe it is better to make data source reactive ( no need to call table.renderRows() each time )
     dataSource = new MatTableDataSource(this.allCategories);
+    currentSearchQuery = '';
     @ViewChild(MatSort, {static: true}) sort: MatSort;
     @ViewChild(MatTable, {static: true}) table: MatTable<Category>;
 
@@ -73,22 +75,35 @@ export class CategoriesPageComponent implements OnInit {
     }
 
     openNewCategoryDialog() {
-        this.dialog.open(
+        const dialogRef = this.dialog.open(
             NewCategoryDialogComponent,
             {
                 width: 'min(700px, 95vw)'
             }
         );
+        dialogRef.afterClosed().subscribe((newCategory: Category) => {
+            console.log('Got new category: ', newCategory);
+            // TODO add backend request for save
+            newCategory.creationTime = new Date().getTime();
+            this.allCategories.push(newCategory);
+            this.search(this.currentSearchQuery);
+        });
     }
 
     search(searchQuery: string) {
+        this.currentSearchQuery = searchQuery;
         const searchQueryLowerCase = searchQuery.toLowerCase();
         const filteredCategories = this.allCategories.filter(category => {
             return category.name.toLowerCase().includes(searchQueryLowerCase);
         });
+        this.updateTableView(filteredCategories);
+    }
+
+    private updateTableView(filteredCategories: Category[]) {
         this.dataSource = new MatTableDataSource(
             filteredCategories
         );
+        this.dataSource.sort = this.sort;
         this.table.renderRows();
     }
 }
