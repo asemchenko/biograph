@@ -26,7 +26,7 @@ export class AttributesPageComponent implements OnInit {
       description: 'My height in meters',
       totalCategories: 1,
       totalMeasurements: 10,
-      creationTime: 1588098739285
+      creationTime: 1588098721285
     },
     {
       attributeId: 3,
@@ -34,7 +34,7 @@ export class AttributesPageComponent implements OnInit {
       description: 'Cardio exercising time ( in minutes )',
       totalCategories: 2,
       totalMeasurements: 15,
-      creationTime: 1588098739285
+      creationTime: 1582095707385
     },
     {
       attributeId: 4,
@@ -42,15 +42,15 @@ export class AttributesPageComponent implements OnInit {
       description: 'My heart rate before start exercising',
       totalCategories: 2,
       totalMeasurements: 18,
-      creationTime: 1588098739285
+      creationTime: 1588398780945
     },
     {
       attributeId: 5,
-      name: 'Weight',
-      description: 'My weight in kg',
-      totalCategories: 1,
+      name: 'Feeling',
+      description: 'How I feel myself after event ( from 1 to 10 )',
+      totalCategories: 10,
       totalMeasurements: 8,
-      creationTime: 1588098739285
+      creationTime: 1588098709185
     },
   ];
   /**

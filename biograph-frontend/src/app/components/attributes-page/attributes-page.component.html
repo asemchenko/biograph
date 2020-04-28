@@ -7,7 +7,7 @@
     color="primary"
     mat-raised-button>New
   </button>
-  <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table matSort>
+  <table [dataSource]="dataSource" class="mat-elevation-z8 attributes-table" mat-table matSort>
     <ng-container matColumnDef="name">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Name</th>
       <td *matCellDef="let attribute" mat-cell>
@@ -33,7 +33,7 @@
     <ng-container matColumnDef="creationTime">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Creation time</th>
       <td *matCellDef="let attribute" mat-cell>
-        {{attribute.creationTime}}
+        {{attribute.creationTime | date: 'MM/dd/yyyy hh:mm'}}
       </td>
     </ng-container>
     <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
