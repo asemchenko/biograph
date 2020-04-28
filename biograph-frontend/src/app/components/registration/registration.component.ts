@@ -62,15 +62,6 @@ export class RegistrationComponent implements OnInit {
     };
   }
 
-  private initFormGroup() {
-    this.form = new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      nickname: new FormControl(null, [Validators.required, Validators.minLength(4)]),
-      password: new FormControl(null, [Validators.required, Validators.minLength(12)]),
-      passwordConfirmation: new FormControl(null, [Validators.required, this.passwordConfirmationValidator()])
-    });
-  }
-
   getEmailValidationErrorMessage() {
     if (this.emailField.hasError('required')) {
       return 'Email is required';
@@ -97,5 +88,14 @@ export class RegistrationComponent implements OnInit {
       return 'Enter your password again';
     }
     return 'Passwords are not similar';
+  }
+
+  private initFormGroup() {
+    this.form = new FormGroup({
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      nickname: new FormControl(null, [Validators.required, Validators.minLength(4)]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(12)]),
+      passwordConfirmation: new FormControl(null, [Validators.required, this.passwordConfirmationValidator()])
+    });
   }
 }

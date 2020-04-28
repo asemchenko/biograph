@@ -4,6 +4,7 @@
   <mat-form-field appearance="outline" class="login-form-field">
     <mat-label>Enter your email</mat-label>
     <input [(ngModel)]="email" formControlName="email" matInput placeholder="username@example.com" type="email">
+    <mat-hint align="start">Enter a valid email address</mat-hint>
     <mat-icon matSuffix>send</mat-icon>
     <mat-error *ngIf="emailField.invalid">
       {{getEmailValidationErrorMessage()}}

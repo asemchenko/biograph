@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
-import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Observable} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {getIsLoggedIn} from '../../store/app.state';
 import {LogOut} from '../../store/actions/auth.actions';
