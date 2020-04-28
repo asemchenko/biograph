@@ -5,12 +5,15 @@
       <mat-label>Name</mat-label>
       <input #catName
              [(ngModel)]="category.name"
-             [ngModelOptions]="{standalone:true}"
+             [formControl]="categoryNameFormControl"
              matInput
              placeholder="Ex. 'Fitness'"
-             type="text">
+             required type="text">
       <mat-hint align="start"><strong>Be concise, don't use long names</strong></mat-hint>
       <mat-hint align="end">{{catName.value.length}} / {{categoryNameMaxLength}}</mat-hint>
+      <mat-error *ngIf="categoryNameFormControl.invalid">
+        {{getCategoryNameValidationErrorMessage()}}
+      </mat-error>
     </mat-form-field>
     <mat-form-field class="category-dialog-form-field">
       <mat-label>Description</mat-label>
@@ -94,5 +97,6 @@
 <mat-dialog-actions class="dialog-actions">
   <button color="warn" mat-button mat-dialog-close>Cancel</button>
   <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
-  <button [mat-dialog-close]="category" color="primary" mat-button>Create</button>
+  <button [disabled]="categoryNameFormControl.invalid" [mat-dialog-close]="category" color="primary" mat-button>Create
+  </button>
 </mat-dialog-actions>

@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
-import {FormControl} from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {Attribute} from '../../../models/Attribute';
@@ -43,7 +43,7 @@ export class NewCategoryDialogComponent implements OnInit {
   searchFilteredAttributes: Observable<any[]>;
   attributes = new MatTableDataSource(this.category.attributes);
   searchAttributeFormControl = new FormControl();
-
+  categoryNameFormControl = new FormControl('', [Validators.required, Validators.maxLength(this.categoryNameMaxLength)]);
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatTable) attributesTable: MatTable<any>;
 
@@ -98,5 +98,12 @@ export class NewCategoryDialogComponent implements OnInit {
     this.searchAttributeFormControl.setValue(this.searchAttributeFormControl.value);
     this.updateAttributesTable();
     console.log(this.allAttributes);
+  }
+
+  getCategoryNameValidationErrorMessage() {
+    if (this.categoryNameFormControl.hasError('required')) {
+      return 'Category name is required';
+    }
+    return 'Category name is limited by ' + this.categoryNameMaxLength;
   }
 }
