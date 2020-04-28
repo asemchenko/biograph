@@ -97,8 +97,10 @@ export class AttributesPageComponent implements OnInit {
     );
     dialogRef.afterClosed().subscribe((newAttribute: Attribute) => {
       console.log('Got new attribute: ', newAttribute);
-      this.allAttributes.push(newAttribute);
-      this.search(this.currentSearchQuery);
+      if (newAttribute) {
+        this.allAttributes.push(newAttribute);
+        this.search(this.currentSearchQuery);
+      }
     });
   }
 
