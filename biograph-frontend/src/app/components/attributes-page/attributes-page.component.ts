@@ -3,6 +3,8 @@ import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {Attribute} from '../../models/Attribute';
 import {MatSort} from '@angular/material/sort';
 import {Category} from '../../models/Category';
+import {MatDialog} from '@angular/material/dialog';
+import {NewAttributeDialogComponent} from './new-attribute-dialog/new-attribute-dialog.component';
 
 @Component({
   selector: 'app-attributes-page',
@@ -65,7 +67,9 @@ export class AttributesPageComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatTable, {static: true}) table: MatTable<Category>;
 
-  constructor() {
+  constructor(
+    public dialog: MatDialog,
+  ) {
   }
 
   ngOnInit(): void {
@@ -85,7 +89,17 @@ export class AttributesPageComponent implements OnInit {
   }
 
   openNewAttributeDialog() {
-
+    const dialogRef = this.dialog.open(
+      NewAttributeDialogComponent,
+      {
+        width: 'min(700px, 95vw)'
+      }
+    );
+    dialogRef.afterClosed().subscribe((newAttribute: Attribute) => {
+      console.log('Got new attribute: ', newAttribute);
+      this.allAttributes.push(newAttribute);
+      this.search(this.currentSearchQuery);
+    });
   }
 
   private updateTableView() {

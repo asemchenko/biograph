@@ -1,0 +1,53 @@
+<h2 class="text-center" mat-dialog-title>Create new metric</h2>
+<mat-dialog-content>
+  <form class="new-attribute-form">
+    <mat-form-field class="attribute-dialog-form-field">
+      <mat-label>Name</mat-label>
+      <input #attributeNameInput
+             [(ngModel)]="attribute.name"
+             [formControl]="attributeNameFormControl"
+             matInput
+             placeholder="Ex. 'Weight'"
+             required type="text">
+      <mat-hint align="start"><strong>Be concise, don't use long names</strong></mat-hint>
+      <mat-hint align="end">{{attributeNameInput.value.length}} / {{attributeNameMaxLength}}</mat-hint>
+      <mat-error *ngIf="attributeNameFormControl.invalid">
+        {{getAttributeNameValidationErrorMessage()}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="attribute-dialog-form-field">
+      <mat-label>Description</mat-label>
+      <textarea [(ngModel)]="attribute.description"
+                [ngModelOptions]="{standalone:true}"
+                class="attribute-description-input"
+                matInput
+                placeholder="Ex. 'My weight in kilograms'"
+                type="text"></textarea>
+      <mat-hint align="start"><strong>Add short description to your metric</strong></mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Metric type</mat-label>
+      <mat-select [formControl]="attributeTypeFormControl" required>
+        <mat-option *ngFor="let attributeType of attributeTypesList" [value]="attributeType">
+          {{attributeType.name}}
+        </mat-option>
+      </mat-select>
+      <mat-hint align="start">{{attributeTypeFormControl.value.description}}</mat-hint>
+      <mat-error *ngIf="attributeTypeFormControl.invalid">
+        Metric type is required
+      </mat-error>
+    </mat-form-field>
+    <h3 class="constraints-header">Metric constraints</h3>
+    <ng-container *ngIf="this.attributeTypeFormControl.value === this.attributeTypes.number">
+      <span>Here will be number constraints</span>
+    </ng-container>
+    <ng-container *ngIf="this.attributeTypeFormControl.value === this.attributeTypes.enumeration">
+      <span>Here will be enumeration constraints</span>
+    </ng-container>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions">
+  <button color="warn" mat-button mat-dialog-close>Cancel</button>
+  <button [disabled]="formGroup.invalid" [mat-dialog-close]="attribute" color="primary" mat-button>Create
+  </button>
+</mat-dialog-actions>
