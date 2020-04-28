@@ -70,4 +70,32 @@ export class RegistrationComponent implements OnInit {
       passwordConfirmation: new FormControl(null, [Validators.required, this.passwordConfirmationValidator()])
     });
   }
+
+  getEmailValidationErrorMessage() {
+    if (this.emailField.hasError('required')) {
+      return 'Email is required';
+    }
+    return 'Enter a valid email';
+  }
+
+  getNicknameValidationErrorMessage() {
+    if (this.nicknameField.hasError('required')) {
+      return 'Nickname is required';
+    }
+    return 'Nickname should consists of at least 4 chars';
+  }
+
+  getPasswordValidationErrorMessage() {
+    if (this.passwordField.hasError('required')) {
+      return 'Password is required';
+    }
+    return 'Password should consist of at least 12 chars';
+  }
+
+  getPasswordConfirmationErrorMessage() {
+    if (this.passwordConfirmationField.hasError('required')) {
+      return 'Enter your password again';
+    }
+    return 'Passwords are not similar';
+  }
 }

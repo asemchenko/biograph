@@ -1,70 +1,48 @@
 <form (ngSubmit)="onFormSubmit()" [formGroup]="form" action="" class="login-form">
   <h1>Join to Biograph</h1>
   <mat-divider class="divider-line"></mat-divider>
-  <!--  ============= EMAIL INPUT FIELD =======================-->
   <mat-form-field appearance="outline" class="login-form-field">
     <mat-label>Enter your email</mat-label>
     <input [(ngModel)]="email" formControlName="email" matInput placeholder="username@example.com" type="email">
     <mat-icon matSuffix>send</mat-icon>
+    <mat-error *ngIf="emailField.invalid">
+      {{getEmailValidationErrorMessage()}}
+    </mat-error>
   </mat-form-field>
-  <div *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)"
-       class="validation-error alert alert-danger">
-
-    <div *ngIf="emailField.errors.required">
-      Email is required.
-    </div>
-    <div *ngIf="emailField.errors.email">
-      Enter a valid email
-    </div>
-  </div>
-  <!--  ============= NICKNAME INPUT FIELD =======================-->
   <mat-form-field appearance="outline" class="login-form-field">
     <mat-label>Enter nickname</mat-label>
-    <input [(ngModel)]="nickname" formControlName="nickname" matInput placeholder="alexJohns" type="text">
+    <input #nicknameInput [(ngModel)]="nickname" formControlName="nickname" matInput placeholder="alexJohns"
+           type="text">
     <mat-icon matSuffix>account_circle</mat-icon>
+    <mat-hint align="start">Nickname must consist of at least 4 chars</mat-hint>
+    <mat-hint *ngIf="nicknameInput.value.length < 4" align="end">{{nicknameInput.value.length}} / 4</mat-hint>
+    <mat-error *ngIf="nicknameField.invalid">
+      {{getNicknameValidationErrorMessage()}}
+    </mat-error>
   </mat-form-field>
-  <div *ngIf="nicknameField.invalid && (nicknameField.dirty || nicknameField.touched)"
-       class="validation-error alert alert-danger">
-
-    <div *ngIf="nicknameField.errors.required">
-      Nickname is required
-    </div>
-    <div *ngIf="nicknameField.errors.minlength">
-      Nickname should consists of at least 4 chars
-    </div>
-  </div>
-  <!--  ============= PASSWORD INPUT FIELD =======================-->
   <mat-form-field appearance="outline" class="login-form-field">
     <mat-label>Enter your password</mat-label>
-    <input [(ngModel)]="password" formControlName="password" matInput type="password">
+    <input #passwordInput [(ngModel)]="password" formControlName="password" matInput type="password">
+    <mat-hint align="start">Be secure - password must consist of at least 12 chars</mat-hint>
+    <mat-hint *ngIf="passwordInput.value.length < 12 " align="end">{{passwordInput.value.length}} / 12</mat-hint>
     <mat-icon matSuffix>lock</mat-icon>
+    <mat-error *ngIf="passwordField.invalid">
+      {{getPasswordValidationErrorMessage()}}
+    </mat-error>
   </mat-form-field>
-  <div *ngIf="passwordField.invalid && (passwordField.dirty || passwordField.touched)"
-       class="validation-error alert alert-danger">
-
-    <div *ngIf="passwordField.errors.required">
-      Password is required.
-    </div>
-    <div *ngIf="passwordField.errors.minlength">
-      Password should consist of at least 12 chars
-    </div>
-  </div>
-  <!--  ============= PASSWORD CONFIRMATION INPUT FIELD =======================-->
   <mat-form-field appearance="outline" class="login-form-field">
     <mat-label>Enter your password again</mat-label>
-    <input [(ngModel)]="passwordConfirmation" formControlName="passwordConfirmation" matInput type="password">
+    <input #passwordConfirmationInput [(ngModel)]="passwordConfirmation" formControlName="passwordConfirmation" matInput
+           type="password">
+    <mat-hint *ngIf="passwordConfirmationInput.value.length !== passwordInput.value.length"
+              align="end">
+      {{passwordConfirmationInput.value.length }} / {{passwordInput.value.length}}
+    </mat-hint>
     <mat-icon matSuffix>lock</mat-icon>
+    <mat-error *ngIf="passwordConfirmationField.invalid">
+      {{getPasswordConfirmationErrorMessage()}}
+    </mat-error>
   </mat-form-field>
-  <div
-    *ngIf="passwordConfirmationField.invalid && (passwordConfirmationField.dirty || passwordConfirmationField.touched)"
-    class="validation-error alert alert-danger">
-    <div *ngIf="passwordConfirmationField.errors.required">
-      Enter your password again
-    </div>
-    <div *ngIf="passwordConfirmationField.errors.passwordsSimilarity">
-      Passwords are not similar
-    </div>
-  </div>
   <mat-divider class="divider-line"></mat-divider>
 
   <button [disabled]="form.invalid" color="primary" mat-raised-button type="submit">Sign up</button>
