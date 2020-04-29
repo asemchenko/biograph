@@ -16,10 +16,46 @@ import {Category} from '../../../models/Category';
 export class NewCategoryDialogComponent implements OnInit {
   // TODO asem remove
   STUB_ATTRIBUTES: Attribute[] = [
-    {attributeId: 1, name: 'Weight', description: 'Stub description', creationTime: 0, totalMeasurements: 0, totalCategories: 0},
-    {attributeId: 2, name: 'Cardio', description: 'Stub description', creationTime: 0, totalMeasurements: 0, totalCategories: 0},
-    {attributeId: 3, name: 'Squat', description: 'Stub description', creationTime: 0, totalMeasurements: 0, totalCategories: 0},
-    {attributeId: 4, name: 'Push-up', description: 'Stub description', creationTime: 0, totalMeasurements: 0, totalCategories: 0},
+    {
+      attributeId: 1,
+      name: 'Weight',
+      description: 'Stub description',
+      creationTime: 0,
+      totalMeasurements: 0,
+      totalCategories: 0,
+      attributeType: 'NUMBER',
+      constraint: null
+    },
+    {
+      attributeId: 2,
+      name: 'Cardio',
+      description: 'Stub description',
+      creationTime: 0,
+      totalMeasurements: 0,
+      totalCategories: 0,
+      attributeType: 'NUMBER',
+      constraint: null
+    },
+    {
+      attributeId: 3,
+      name: 'Squat',
+      description: 'Stub description',
+      creationTime: 0,
+      totalMeasurements: 0,
+      totalCategories: 0,
+      attributeType: 'NUMBER',
+      constraint: null
+    },
+    {
+      attributeId: 4,
+      name: 'Push-up',
+      description: 'Stub description',
+      creationTime: 0,
+      totalMeasurements: 0,
+      totalCategories: 0,
+      attributeType: 'NUMBER',
+      constraint: null
+    },
   ];
 
   readonly categoryNameMaxLength = 50;

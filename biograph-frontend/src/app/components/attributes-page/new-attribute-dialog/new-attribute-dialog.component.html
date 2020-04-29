@@ -4,7 +4,6 @@
     <mat-form-field class="attribute-dialog-form-field">
       <mat-label>Name</mat-label>
       <input #attributeNameInput
-             [(ngModel)]="attribute.name"
              [formControl]="attributeNameFormControl"
              matInput
              placeholder="Ex. 'Weight'"
@@ -41,7 +40,7 @@
       <ng-container *ngIf="this.attributeTypeFormControl.value === this.attributeTypes.number">
         <mat-form-field class="attribute-dialog-form-field__left-aligned">
           <mat-label>Constraint type</mat-label>
-          <mat-select #numberConstraintTypeSelect>
+          <mat-select #numberConstraintTypeSelect [formControl]="attributeConstraintNameFormControl">
             <mat-option value="noConstraints">No constraints</mat-option>
             <mat-option value="between">Between</mat-option>
             <mat-option value="lessThan">Less than</mat-option>
@@ -49,35 +48,41 @@
           </mat-select>
           <mat-hint *ngIf="numberConstraintTypeSelect.value">Inclusively</mat-hint>
         </mat-form-field>
-        <div *ngIf="numberConstraintTypeSelect.value === 'between'">
-          <mat-form-field appearance="outline" class="short-number-form-field">
-            <mat-label class="centered-label">min</mat-label>
-            <input matInput placeholder="10" type="number">
-          </mat-form-field>
-          <span>and</span>
-          <mat-form-field appearance="outline" class="short-number-form-field">
-            <mat-label>max</mat-label>
-            <input matInput placeholder="20" type="number">
-          </mat-form-field>
+        <div>
+          <ng-container
+            *ngIf="(numberConstraintTypeSelect.value === 'greaterThan') || (numberConstraintTypeSelect.value === 'between')">
+            <mat-form-field class="short-number-form-field">
+              <mat-label>min</mat-label>
+              <input [formControl]="numberTypeMinValueConstraint" matInput placeholder="10" type="number">
+              <mat-error *ngIf="numberTypeMinValueConstraint.invalid">
+                Invalid
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+          <span *ngIf="numberConstraintTypeSelect.value === 'between'">and</span>
+          <ng-container
+            *ngIf="(numberConstraintTypeSelect.value === 'lessThan') || (numberConstraintTypeSelect.value === 'between')">
+            <mat-form-field class="short-number-form-field">
+              <mat-label>max</mat-label>
+              <input [formControl]="numberTypeMaxValueConstraint" matInput placeholder="20" type="number">
+              <mat-error *ngIf="numberTypeMaxValueConstraint.invalid">
+                Invalid
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
         </div>
-        <ng-container *ngIf="numberConstraintTypeSelect.value === 'lessThan'">
-          <mat-form-field appearance="outline" class="short-number-form-field">
-            <mat-label>Max</mat-label>
-            <input matInput placeholder="20" type="number">
-          </mat-form-field>
-        </ng-container>
-        <ng-container *ngIf="numberConstraintTypeSelect.value === 'greaterThan'">
-          <mat-form-field appearance="outline" class="short-number-form-field">
-            <mat-label>Min</mat-label>
-            <input matInput placeholder="10" type="number">
-          </mat-form-field>
-        </ng-container>
       </ng-container>
       <ng-container *ngIf="this.attributeTypeFormControl.value === this.attributeTypes.enumeration">
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>List of string values</mat-label>
-          <input matInput placeholder="Ex. 'Yes,No,Maybe'" type="text">
+          <input [formControl]="enumAttributeTypePossibleValuesConstraint"
+                 matInput placeholder="Ex. 'Yes,No,Maybe'"
+                 required
+                 type="text">
           <mat-hint>Separate values by comma</mat-hint>
+          <mat-error *ngIf="enumAttributeTypePossibleValuesConstraint.invalid">
+            Required
+          </mat-error>
         </mat-form-field>
       </ng-container>
     </div>
@@ -85,6 +90,7 @@
 </mat-dialog-content>
 <mat-dialog-actions class="dialog-actions">
   <button color="warn" mat-button mat-dialog-close>Cancel</button>
-  <button [disabled]="formGroup.invalid" [mat-dialog-close]="attribute" color="primary" mat-button>Create
+  <button [disabled]="formGroup.invalid || !checkConstraintsValid()" [mat-dialog-close]="collectAttribute()"
+          color="primary" mat-button>Create
   </button>
 </mat-dialog-actions>

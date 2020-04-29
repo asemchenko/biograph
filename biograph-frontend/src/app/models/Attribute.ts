@@ -14,4 +14,20 @@ export interface Attribute {
    * Amount of categories that use is attribute
    */
   totalCategories: number;
+  /**
+   * Either 'NUMBER' or 'ENUMERATION'
+   */
+  attributeType: string;
+  constraint: {
+    name: string,
+    /**
+     * For 'ENUMERATION' type - list of possible values
+     */
+    values: string[],
+    /**
+     * For 'NUMBER' type - minimal and maximum values ( inclusively )
+     */
+    min: number,
+    max: number
+  };
 }
