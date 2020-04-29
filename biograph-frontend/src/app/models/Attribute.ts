@@ -23,7 +23,7 @@ export interface Attribute {
     /**
      * For 'ENUMERATION' type - list of possible values
      */
-    values: string[],
+    possibleValues: string,
     /**
      * For 'NUMBER' type - minimal and maximum values ( inclusively )
      */

@@ -46,7 +46,7 @@
             <mat-option value="lessThan">Less than</mat-option>
             <mat-option value="greaterThan">Greater than</mat-option>
           </mat-select>
-          <mat-hint *ngIf="numberConstraintTypeSelect.value">Inclusively</mat-hint>
+          <mat-hint *ngIf="numberConstraintTypeSelect.value && numberConstraintTypeSelect.value !== 'noConstraints'">Inclusively</mat-hint>
         </mat-form-field>
         <div>
           <ng-container

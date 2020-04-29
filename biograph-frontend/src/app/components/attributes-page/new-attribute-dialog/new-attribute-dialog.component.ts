@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Attribute} from '../../../models/Attribute';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AttributeService} from '../../../services/attribute/attribute.service';
 
 @Component({
   selector: 'app-new-attribute-dialog',
@@ -20,7 +21,7 @@ export class NewAttributeDialogComponent implements OnInit {
       name: null,
       min: null,
       max: null,
-      values: []
+      possibleValues: null
     }
   };
   readonly attributeNameMaxLength = 50;
@@ -42,7 +43,9 @@ export class NewAttributeDialogComponent implements OnInit {
   ];
   attributeTypeConstraintName: string;
 
-  constructor() {
+  constructor(
+    private attributeService: AttributeService
+  ) {
   }
 
   get attributeNameFormControl() {
@@ -91,7 +94,10 @@ export class NewAttributeDialogComponent implements OnInit {
         break;
       default:
         if (this.attribute.attributeType === this.attributeTypes.enumeration.name) {
-          this.attribute.constraint.values = this.enumAttributeTypePossibleValuesConstraint.value.split(',').map(value => value.trim());
+          this.attribute.constraint.possibleValues = this.enumAttributeTypePossibleValuesConstraint.value
+            .split(',')
+            .map(value => value.trim())
+            .join(',');
         }
         break;
     }

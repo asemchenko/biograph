@@ -18,12 +18,7 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long tagId;
-    /**
-     * contains tag name
-     */
-    @OneToOne
-    @JoinColumn(name = "sensitiveRecordId")
-    private SensitiveRecord data;
+    private String name;
     private String tagColor;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tagId")
     private List<Grant> grants;

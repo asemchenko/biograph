@@ -1,0 +1,20 @@
+package fun.asem.biograph.webapp.service.grant;
+
+import fun.asem.biograph.webapp.domain.Grant;
+import fun.asem.biograph.webapp.domain.User;
+import fun.asem.biograph.webapp.repository.GrantRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@AllArgsConstructor
+@Service
+public class GrantServiceImpl implements GrantService {
+    private final GrantRepository grantRepository;
+
+    @Override
+    public List<Grant> getAttributeOwnerGrants(User user) {
+        return grantRepository.findAllByUserAndAccessTypeAndAttributeIdIsNotNull(user, Grant.AccessType.OWNER);
+    }
+}

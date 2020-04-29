@@ -5,6 +5,7 @@ import {MatSort} from '@angular/material/sort';
 import {Category} from '../../models/Category';
 import {MatDialog} from '@angular/material/dialog';
 import {NewAttributeDialogComponent} from './new-attribute-dialog/new-attribute-dialog.component';
+import {AttributeService} from '../../services/attribute/attribute.service';
 
 @Component({
   selector: 'app-attributes-page',
@@ -79,6 +80,7 @@ export class AttributesPageComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
+    private attributeService: AttributeService
   ) {
   }
 
@@ -108,6 +110,9 @@ export class AttributesPageComponent implements OnInit {
     dialogRef.afterClosed().subscribe((newAttribute: Attribute) => {
       console.log('Got new attribute: ', newAttribute);
       if (newAttribute) {
+        this.attributeService.createNewAttribute(newAttribute).subscribe(response => {
+          console.log('Got response: ', response);
+        });
         this.allAttributes.push(newAttribute);
         this.search(this.currentSearchQuery);
       }

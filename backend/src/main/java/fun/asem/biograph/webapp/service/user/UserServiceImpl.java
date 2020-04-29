@@ -18,8 +18,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUserDetails(String username) {
-        return userRepository.getByCurrentEmail(username);
+    public User getUserByUserDetails(String email) {
+        return userRepository.getByCurrentEmail(email);
     }
 
     @Override
