@@ -1,6 +1,6 @@
 package fun.asem.biograph.webapp.configuration;
 
-import fun.asem.biograph.webapp.dto.AuthorizationRequest;
+import fun.asem.biograph.webapp.dto.model.AuthorizationRequest;
 import fun.asem.biograph.webapp.security.jwt.request_filter.AuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

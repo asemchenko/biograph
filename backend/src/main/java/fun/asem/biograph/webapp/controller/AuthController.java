@@ -1,16 +1,13 @@
 package fun.asem.biograph.webapp.controller;
 
-import fun.asem.biograph.webapp.dto.AuthorizationRequest;
-import fun.asem.biograph.webapp.dto.ErrorDescription;
-import fun.asem.biograph.webapp.dto.RegistrationRequest;
-import fun.asem.biograph.webapp.dto.ServerResponse;
+import fun.asem.biograph.webapp.dto.model.AuthorizationRequest;
+import fun.asem.biograph.webapp.dto.model.ErrorDescription;
+import fun.asem.biograph.webapp.dto.model.RegistrationRequest;
+import fun.asem.biograph.webapp.dto.model.ServerResponse;
 import fun.asem.biograph.webapp.service.registration.AuthService;
 import fun.asem.biograph.webapp.service.user.UserService;
 import fun.asem.biograph.webapp.util.security.jwt.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;

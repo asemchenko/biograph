@@ -1,5 +1,7 @@
 package fun.asem.biograph.webapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,16 +21,9 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long categoryId;
-    /**
-     * Stores:
-     * <ul>
-     *     <li><b>name</b> - the name of category</li>
-     *     <li><b>color</b> - user can assign custom color to category</li>
-     * </ul>
-     */
-    @OneToOne
-    @JoinColumn(name = "sensitive_record_id")
-    private SensitiveRecord data;
+    private String name;
+    private String description;
+    private String color;
     private Instant creationTime;
     @ManyToMany
     @JoinTable(
@@ -37,6 +32,12 @@ public class Category {
             inverseJoinColumns = {@JoinColumn(name = "attribute_id")}
     )
     private List<Attribute> attributes;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
     private List<Grant> grants;
+
+    @JsonGetter("totalEvents")
+    private Long getTotalEvents() {
+        return 0L;
+    }
 }

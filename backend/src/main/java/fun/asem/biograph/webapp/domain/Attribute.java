@@ -1,11 +1,14 @@
 package fun.asem.biograph.webapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -17,15 +20,39 @@ public class Attribute {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long attributeId;
-    /**
-     * contains attribute name
-     */
-    @OneToOne
-    @JoinColumn(name = "sensitive_record_id")
-    private SensitiveRecord data;
+    private String name;
+    private String description;
+    private Instant creationTime;
+    @Enumerated(EnumType.STRING)
+    private AttributeType attributeType;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "constraint_id")
+    private Constraint constraint;
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "attributeId")
+    private List<Grant> grants;
+    // TODO asem add spring @Formula or @Query here
+    private Long totalMeasurements;
+    private Long totalCategories;
 
     public enum AttributeType {
         NUMBER,
-        // maybe in future there will be BOOLEAN, DATE, STRING, ENUM_STRING ( like checkbox ), etc.
+        ENUMERATION
+    }
+
+    @Entity
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Table(name = "constraints")
+    @Data
+    @Builder
+    public static class Constraint {
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        private Long id;
+        private String name;
+        private String possibleValues;
+        private Double min;
+        private Double max;
     }
 }

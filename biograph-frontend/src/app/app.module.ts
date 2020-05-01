@@ -40,6 +40,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {ColorPickerModule} from 'ngx-color-picker';
 import {AttributesPageComponent} from './components/attributes-page/attributes-page.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {NewAttributeDialogComponent} from './components/attributes-page/new-attribute-dialog/new-attribute-dialog.component';
+import {MatSelectModule} from '@angular/material/select';
+import {StringToDatePipe} from './pipes/string-to-date.pipe';
 
 const appRoutes: Routes = [
   {
@@ -82,7 +85,9 @@ const appRoutes: Routes = [
     CategoriesPageComponent,
     SearchBarComponent,
     NewCategoryDialogComponent,
-    AttributesPageComponent
+    AttributesPageComponent,
+    NewAttributeDialogComponent,
+    StringToDatePipe
   ],
   imports: [
     BrowserModule,
@@ -113,6 +118,7 @@ const appRoutes: Routes = [
     MatDialogModule,
     ColorPickerModule,
     MatTooltipModule,
+    MatSelectModule,
   ],
   providers: [
     {

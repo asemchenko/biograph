@@ -34,13 +34,15 @@ public class Grant {
     private Long eventId;
     private Long categoryId;
     private Long tagId;
+    private Long attributeId;
     @Enumerated(EnumType.STRING)
     private AccessType accessType;
+
     /**
      * encryptedAccessKey = AES(accessKey, Argon2(user's password))
      * accessKey - key, that is used to decrypt sensitive data of associated with this grant object
      */
-    private String encryptedAccessKey;
+    /* private String encryptedAccessKey;*/
 
     public enum AccessType {
         READ_ONLY,

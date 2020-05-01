@@ -1,4 +1,4 @@
-package fun.asem.biograph.webapp.dto;
+package fun.asem.biograph.webapp.dto.model;
 
 import lombok.Builder;
 import lombok.Data;

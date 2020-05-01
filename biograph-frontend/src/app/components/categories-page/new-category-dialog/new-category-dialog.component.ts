@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
-import {FormControl} from '@angular/forms';
+import {FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {Attribute} from '../../../models/Attribute';
@@ -16,10 +16,46 @@ import {Category} from '../../../models/Category';
 export class NewCategoryDialogComponent implements OnInit {
   // TODO asem remove
   STUB_ATTRIBUTES: Attribute[] = [
-    {attributeId: 1, name: 'Weight', description: 'Stub description', creationTime: 0},
-    {attributeId: 2, name: 'Cardio', description: 'Stub description', creationTime: 0},
-    {attributeId: 3, name: 'Squat', description: 'Stub description', creationTime: 0},
-    {attributeId: 4, name: 'Push-up', description: 'Stub description', creationTime: 0},
+    {
+      attributeId: 1,
+      name: 'Weight',
+      description: 'Stub description',
+      creationTime: new Date().toISOString(),
+      totalMeasurements: 0,
+      totalCategories: 0,
+      attributeType: 'NUMBER',
+      constraint: null
+    },
+    {
+      attributeId: 2,
+      name: 'Cardio',
+      description: 'Stub description',
+      creationTime: new Date().toISOString(),
+      totalMeasurements: 0,
+      totalCategories: 0,
+      attributeType: 'NUMBER',
+      constraint: null
+    },
+    {
+      attributeId: 3,
+      name: 'Squat',
+      description: 'Stub description',
+      creationTime: new Date().toISOString(),
+      totalMeasurements: 0,
+      totalCategories: 0,
+      attributeType: 'NUMBER',
+      constraint: null
+    },
+    {
+      attributeId: 4,
+      name: 'Push-up',
+      description: 'Stub description',
+      creationTime: new Date().toISOString(),
+      totalMeasurements: 0,
+      totalCategories: 0,
+      attributeType: 'NUMBER',
+      constraint: null
+    },
   ];
 
   readonly categoryNameMaxLength = 50;
@@ -43,7 +79,7 @@ export class NewCategoryDialogComponent implements OnInit {
   searchFilteredAttributes: Observable<any[]>;
   attributes = new MatTableDataSource(this.category.attributes);
   searchAttributeFormControl = new FormControl();
-
+  categoryNameFormControl = new FormControl('', [Validators.required, Validators.maxLength(this.categoryNameMaxLength)]);
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatTable) attributesTable: MatTable<any>;
 
@@ -98,5 +134,12 @@ export class NewCategoryDialogComponent implements OnInit {
     this.searchAttributeFormControl.setValue(this.searchAttributeFormControl.value);
     this.updateAttributesTable();
     console.log(this.allAttributes);
+  }
+
+  getCategoryNameValidationErrorMessage() {
+    if (this.categoryNameFormControl.hasError('required')) {
+      return 'Category name is required';
+    }
+    return 'Category name is limited by ' + this.categoryNameMaxLength;
   }
 }

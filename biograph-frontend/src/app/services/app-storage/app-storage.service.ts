@@ -8,10 +8,10 @@ import {Injectable} from '@angular/core';
 })
 export class AppStorageService {
 
+  private readonly authTokenKeyName = 'authToken';
+
   constructor() {
   }
-
-  private readonly authTokenKeyName = 'authToken';
 
   putAuthToken(token: string): void {
     localStorage.setItem(this.authTokenKeyName, token);

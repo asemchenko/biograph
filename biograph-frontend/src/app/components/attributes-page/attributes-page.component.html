@@ -1,1 +1,48 @@
-<p>attributes-page works!</p>
+<div class="container">
+  <h1 class="attributes-header"> Metrics </h1>
+  <app-search-bar (valueChanged)="search($event)"></app-search-bar>
+  <button
+    (click)="openNewAttributeDialog()"
+    class="block-centered-button"
+    color="primary"
+    mat-raised-button>New
+  </button>
+  <table [dataSource]="dataSource" class="mat-elevation-z8 attributes-table" mat-table matSort>
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Name</th>
+      <td *matCellDef="let attribute" mat-cell>
+        <span
+          [matTooltip]="attribute.description"
+          matTooltipPosition="right">
+          {{attribute.name}}
+        </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="attributeType">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Type</th>
+      <td *matCellDef="let attribute" class="text-capitalize" mat-cell>
+        {{attribute.attributeType.toLowerCase()}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="totalMeasurements">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Total measurements</th>
+      <td *matCellDef="let attribute" mat-cell>
+        {{attribute.totalMeasurements}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="totalCategories">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Total categories</th>
+      <td *matCellDef="let attribute" mat-cell>
+        {{attribute.totalCategories}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="creationTime">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Creation time</th>
+      <td *matCellDef="let attribute" mat-cell>
+        {{ attribute.creationTime | stringToDate | date: 'MM/dd/yyyy hh:mm'}}
+      </td>
+    </ng-container>
+    <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: columnsToDisplay" mat-row></tr>
+  </table>
+</div>

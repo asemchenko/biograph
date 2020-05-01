@@ -4,13 +4,18 @@ import {Observable} from 'rxjs';
 import {getErrorMessage, ResponseStatus, ServerResponse} from '../../models/ServerResponse';
 import {API_URLS} from '../../../api-urls';
 import {map} from 'rxjs/operators';
+import {User} from '../../models/User';
+import {Store} from '@ngrx/store';
+import {getCurrentUser} from '../../store/app.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private store: Store) {
   }
 
   authenticate(email: string, password: string): Observable<ServerResponse> {
@@ -30,5 +35,9 @@ export class AuthService {
 
   register(email: string, nickname: string, password: string): Observable<ServerResponse> {
     return this.httpClient.post<ServerResponse>(API_URLS.REGISTER_URL, {email, nickname, password});
+  }
+
+  getCurrentUser(): Observable<User> {
+    return this.store.select(getCurrentUser);
   }
 }

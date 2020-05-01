@@ -1,0 +1,98 @@
+<h2 class="text-center" mat-dialog-title>Create new metric</h2>
+<mat-dialog-content>
+  <form class="new-attribute-form">
+    <mat-form-field class="attribute-dialog-form-field">
+      <mat-label>Name</mat-label>
+      <input #attributeNameInput
+             [formControl]="attributeNameFormControl"
+             matInput
+             placeholder="Ex. 'Weight'"
+             required type="text">
+      <mat-hint align="start"><strong>Be concise, don't use long names</strong></mat-hint>
+      <mat-hint align="end">{{attributeNameInput.value.length}} / {{attributeNameMaxLength}}</mat-hint>
+      <mat-error *ngIf="attributeNameFormControl.invalid">
+        {{getAttributeNameValidationErrorMessage()}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="attribute-dialog-form-field">
+      <mat-label>Description</mat-label>
+      <textarea [(ngModel)]="attribute.description"
+                [ngModelOptions]="{standalone:true}"
+                class="attribute-description-input"
+                matInput
+                placeholder="Ex. 'My weight in kilograms'"
+                type="text"></textarea>
+      <mat-hint align="start"><strong>Add short description to your metric</strong></mat-hint>
+    </mat-form-field>
+    <div class="attribute-type-definition">
+      <mat-form-field class="attribute-dialog-form-field__left-aligned">
+        <mat-label>Metric type</mat-label>
+        <mat-select [formControl]="attributeTypeFormControl" required>
+          <mat-option *ngFor="let attributeType of attributeTypesList" [value]="attributeType">
+            {{attributeType.name}}
+          </mat-option>
+        </mat-select>
+        <mat-hint align="start">{{attributeTypeFormControl.value.description}}</mat-hint>
+        <mat-error *ngIf="attributeTypeFormControl.invalid">
+          Metric type is required
+        </mat-error>
+      </mat-form-field>
+      <ng-container *ngIf="this.attributeTypeFormControl.value === this.attributeTypes.number">
+        <mat-form-field class="attribute-dialog-form-field__left-aligned">
+          <mat-label>Constraint type</mat-label>
+          <mat-select #numberConstraintTypeSelect [formControl]="attributeConstraintNameFormControl">
+            <mat-option value="noConstraints">No constraints</mat-option>
+            <mat-option value="between">Between</mat-option>
+            <mat-option value="lessThan">Less than</mat-option>
+            <mat-option value="greaterThan">Greater than</mat-option>
+          </mat-select>
+          <mat-hint *ngIf="numberConstraintTypeSelect.value && numberConstraintTypeSelect.value !== 'noConstraints'">
+            Inclusively
+          </mat-hint>
+        </mat-form-field>
+        <div>
+          <ng-container
+            *ngIf="(numberConstraintTypeSelect.value === 'greaterThan') || (numberConstraintTypeSelect.value === 'between')">
+            <mat-form-field class="short-number-form-field">
+              <mat-label>min</mat-label>
+              <input [formControl]="numberTypeMinValueConstraint" matInput placeholder="10" type="number">
+              <mat-error *ngIf="numberTypeMinValueConstraint.invalid">
+                Invalid
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+          <span *ngIf="numberConstraintTypeSelect.value === 'between'">and</span>
+          <ng-container
+            *ngIf="(numberConstraintTypeSelect.value === 'lessThan') || (numberConstraintTypeSelect.value === 'between')">
+            <mat-form-field class="short-number-form-field">
+              <mat-label>max</mat-label>
+              <input [formControl]="numberTypeMaxValueConstraint" matInput placeholder="20" type="number">
+              <mat-error *ngIf="numberTypeMaxValueConstraint.invalid">
+                Invalid
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="this.attributeTypeFormControl.value === this.attributeTypes.enumeration">
+        <mat-form-field>
+          <mat-label>List of string values</mat-label>
+          <input [formControl]="enumAttributeTypePossibleValuesConstraint"
+                 matInput placeholder="Ex. 'Yes,No,Maybe'"
+                 required
+                 type="text">
+          <mat-hint>Separate values by comma</mat-hint>
+          <mat-error *ngIf="enumAttributeTypePossibleValuesConstraint.invalid">
+            Required
+          </mat-error>
+        </mat-form-field>
+      </ng-container>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions">
+  <button color="warn" mat-button mat-dialog-close>Cancel</button>
+  <button [disabled]="formGroup.invalid || !checkConstraintsValid()" [mat-dialog-close]="collectAttribute()"
+          color="primary" mat-button>Create
+  </button>
+</mat-dialog-actions>

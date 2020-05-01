@@ -39,11 +39,19 @@ export class LoginComponent implements OnInit {
   onFormSubmit() {
     console.log('Dispatching "LogIn" action to the store...');
     this.store.dispatch(new LogIn({email: this.email, password: this.password}));
-    /*this.authService.authenticate(this.email, this.password).subscribe(r => {
-      this.snackBarService.showMessage('Authentication successful', r);
-      if (r.status === ResponseStatus.OK) {
-      }
-    });*/
   }
 
+  getEmailValidationErrorMessage() {
+    if (this.emailField.hasError('required')) {
+      return 'Email is required';
+    }
+    return 'Enter a valid email';
+  }
+
+  getPasswordValidationErrorMessage() {
+    if (this.passwordField.hasError('required')) {
+      return 'Password is required';
+    }
+    return 'Password should consist of at least 12 chars';
+  }
 }

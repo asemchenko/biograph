@@ -1,4 +1,4 @@
-package fun.asem.biograph.webapp.dto;
+package fun.asem.biograph.webapp.dto.model;
 
 import fun.asem.biograph.webapp.domain.StorageProviderType;
 import lombok.Data;

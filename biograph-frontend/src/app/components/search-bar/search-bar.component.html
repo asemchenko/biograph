@@ -1,10 +1,10 @@
-  <mat-form-field class="search-form-field" appearance="outline">
-    <mat-label>Search</mat-label>
-    <input (input)="valueUpdated()" [(ngModel)]="value" matInput placeholder="For example, 'Fitness'"
-           type="text">
-    <ng-container matSuffix>
-      <button [disabled]="true" aria-label="Search" mat-button mat-icon-button>
-        <mat-icon>search</mat-icon>
-      </button>
-    </ng-container>
-  </mat-form-field>
+<mat-form-field appearance="outline" class="search-form-field">
+  <mat-label>Search</mat-label>
+  <input (input)="valueUpdated()" [(ngModel)]="value" matInput placeholder="For example, 'Fitness'"
+         type="text">
+  <ng-container matSuffix>
+    <button [disabled]="true" aria-label="Search" mat-button mat-icon-button>
+      <mat-icon>search</mat-icon>
+    </button>
+  </ng-container>
+</mat-form-field>

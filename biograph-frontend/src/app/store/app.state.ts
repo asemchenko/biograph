@@ -11,3 +11,4 @@ export const reducers: ActionReducerMap<AppState> = {
 
 const getAuthState = (state: AppState) => state.authState;
 export const getIsLoggedIn = createSelector(getAuthState, auth.getIsLoggedIn);
+export const getCurrentUser = createSelector(getAuthState, auth.getCurrentUser);

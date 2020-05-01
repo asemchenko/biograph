@@ -1,6 +1,6 @@
 package fun.asem.biograph.webapp.controller;
 
-import fun.asem.biograph.webapp.dto.ServerResponse;
+import fun.asem.biograph.webapp.dto.model.ServerResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
