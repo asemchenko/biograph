@@ -13,4 +13,6 @@ public interface GrantService {
      * @return
      */
     List<Grant> getAttributeOwnerGrants(User user);
+
+    Grant createGrant(Grant grant);
 }

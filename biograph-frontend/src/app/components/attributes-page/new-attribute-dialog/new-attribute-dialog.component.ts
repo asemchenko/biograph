@@ -41,7 +41,6 @@ export class NewAttributeDialogComponent implements OnInit {
     this.attributeTypes.number,
     this.attributeTypes.enumeration
   ];
-  attributeTypeConstraintName: string;
 
   constructor(
     private attributeService: AttributeService
@@ -100,6 +99,9 @@ export class NewAttributeDialogComponent implements OnInit {
             .join(',');
         }
         break;
+    }
+    if (this.attribute.attributeType) {
+      this.attribute.attributeType = this.attribute.attributeType.toUpperCase();
     }
     return this.attribute;
   }

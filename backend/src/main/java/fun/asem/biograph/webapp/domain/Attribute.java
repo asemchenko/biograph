@@ -1,6 +1,5 @@
 package fun.asem.biograph.webapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -22,24 +22,18 @@ public class Attribute {
     private Long attributeId;
     private String name;
     private String description;
-    private String creationTime;
+    private Instant creationTime;
+    @Enumerated(EnumType.STRING)
     private AttributeType attributeType;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "constraint_id")
     private Constraint constraint;
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "attributeId")
     private List<Grant> grants;
-
-    @JsonGetter("totalMeasurements")
-    private Long getTotalMeasurements() {
-        return 0L;
-    }
-
-    @JsonGetter("totalCategories")
-    private Long getTotalCategories() {
-        return 0L;
-    }
+    // TODO asem add spring @Formula or @Query here
+    private Long totalMeasurements;
+    private Long totalCategories;
 
     public enum AttributeType {
         NUMBER,

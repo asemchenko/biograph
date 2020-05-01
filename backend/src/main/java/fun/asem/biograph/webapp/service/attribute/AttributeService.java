@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface AttributeService {
     List<Attribute> getAllAttributesOwnedByUser(User user);
+
+    Attribute create(Attribute attribute, User user);
 }

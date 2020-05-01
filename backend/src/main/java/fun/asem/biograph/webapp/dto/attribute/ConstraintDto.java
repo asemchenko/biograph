@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 
 @Data
 public class ConstraintDto {
+    private Long id;
     @Size(min = 1)
     private String name;
     private String possibleValues;

@@ -1,5 +1,7 @@
 package fun.asem.biograph;
 
+import fun.asem.biograph.webapp.domain.Attribute;
+import fun.asem.biograph.webapp.dto.attribute.ResponseAttributeDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +12,12 @@ public class BiographApplication {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper mapper = new ModelMapper();
+        mapper
+                .createTypeMap(Attribute.class, ResponseAttributeDto.class)
+                .<String>addMapping(src -> src.getAttributeType().toString(), ((destination, value) -> destination.setAttributeType(value)));
+        return mapper;
+
     }
 
     public static void main(String[] args) {

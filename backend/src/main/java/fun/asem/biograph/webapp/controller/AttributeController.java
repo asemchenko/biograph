@@ -3,6 +3,8 @@ package fun.asem.biograph.webapp.controller;
 import fun.asem.biograph.webapp.domain.Attribute;
 import fun.asem.biograph.webapp.domain.User;
 import fun.asem.biograph.webapp.dto.attribute.CreateAttributeDto;
+import fun.asem.biograph.webapp.dto.attribute.ResponseAttributeDto;
+import fun.asem.biograph.webapp.exceptions.UnauthorizedException;
 import fun.asem.biograph.webapp.service.attribute.AttributeService;
 import fun.asem.biograph.webapp.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@RequestMapping("/api/attribute")
+@RequestMapping("/api/")
 @RestController
 @RequiredArgsConstructor
 public class AttributeController {
@@ -23,21 +26,34 @@ public class AttributeController {
     private final ModelMapper modelMapper;
 
     /**
-     * Returns list of all attributes that are owned by current user
-     *
-     * @return
+     * @return Returns list of all attributes that are owned by current user
      */
-    @GetMapping
-    public List<Attribute> getUserAttributes(Principal principal) {
-        return attributeService.getAllAttributesOwnedByUser(getUser(principal));
+    @GetMapping("/users/{userId}/attributes")
+    public List<ResponseAttributeDto> getUserAttributes(@PathVariable Long userId, Principal principal) {
+        User user = getUser(principal);
+        checkAccess(userId, user);
+        return attributeService.getAllAttributesOwnedByUser(user)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public Attribute createAttribute(@RequestBody @Valid CreateAttributeDto createAttributeDto) {
+    @PostMapping("/users/{userId}/attributes")
+    public ResponseAttributeDto createAttribute(
+            @RequestBody @Valid CreateAttributeDto createAttributeDto,
+            @PathVariable Long userId,
+            Principal principal) {
         Attribute attribute = convertToEntity(createAttributeDto);
-        System.out.println(attribute);
-        return attribute;
+        User user = getUser(principal);
+        checkAccess(userId, user);
+        return convertToDto(attributeService.create(attribute, user));
+    }
+
+    private void checkAccess(Long userId, User user) {
+        if (!user.getUserId().equals(userId)) {
+            throw new UnauthorizedException();
+        }
     }
 
     private User getUser(Principal principal) {
@@ -46,5 +62,11 @@ public class AttributeController {
 
     private Attribute convertToEntity(CreateAttributeDto dto) {
         return modelMapper.map(dto, Attribute.class);
+    }
+
+    private ResponseAttributeDto convertToDto(Attribute attribute) {
+
+        ResponseAttributeDto dto = modelMapper.map(attribute, ResponseAttributeDto.class);
+        return dto;
     }
 }
