@@ -1,4 +1,4 @@
-package fun.asem.biograph.webapp.dto;
+package fun.asem.biograph.webapp.dto.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +19,7 @@ public class ServerResponse {
      * It stores token only when server send response for signIn end-point
      */
     private String authToken;
+
     public void setData(Object object) {
         try {
             this.data = new ObjectMapper().writeValueAsString(object);

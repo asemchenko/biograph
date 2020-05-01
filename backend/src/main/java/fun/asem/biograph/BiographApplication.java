@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class BiographApplication {
 
+    public static void main(String[] args) {
+        SpringApplication.run(BiographApplication.class, args);
+    }
+
     @Bean
     public Mapper dtoMapper() {
         return DozerBeanMapperBuilder.buildDefault();
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(BiographApplication.class, args);
     }
     // TODO asem configure exception handler for all rest endpoints!
     // TODO asem IMPORTANT - проверь чтобы все эндпоинты на вставку чего-то проверяли что поле ид изначально пустое - иначе возможна перезапись чьих-то данных

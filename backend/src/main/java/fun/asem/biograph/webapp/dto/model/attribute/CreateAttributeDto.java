@@ -1,4 +1,4 @@
-package fun.asem.biograph.webapp.dto.attribute;
+package fun.asem.biograph.webapp.dto.model.attribute;
 
 import fun.asem.biograph.webapp.domain.Attribute;
 import lombok.Data;

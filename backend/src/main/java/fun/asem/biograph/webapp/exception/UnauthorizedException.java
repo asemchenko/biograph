@@ -1,4 +1,4 @@
-package fun.asem.biograph.webapp.exceptions;
+package fun.asem.biograph.webapp.exception;
 
 public class UnauthorizedException extends RuntimeException {
     public UnauthorizedException() {

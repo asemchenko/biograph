@@ -1,11 +1,11 @@
 package fun.asem.biograph.webapp.controller;
 
-import com.github.dozermapper.core.Mapper;
 import fun.asem.biograph.webapp.domain.Attribute;
 import fun.asem.biograph.webapp.domain.User;
-import fun.asem.biograph.webapp.dto.attribute.CreateAttributeDto;
-import fun.asem.biograph.webapp.dto.attribute.ResponseAttributeDto;
-import fun.asem.biograph.webapp.exceptions.UnauthorizedException;
+import fun.asem.biograph.webapp.dto.mapper.attribute.AttributeMapper;
+import fun.asem.biograph.webapp.dto.model.attribute.CreateAttributeDto;
+import fun.asem.biograph.webapp.dto.model.attribute.ResponseAttributeDto;
+import fun.asem.biograph.webapp.exception.UnauthorizedException;
 import fun.asem.biograph.webapp.service.attribute.AttributeService;
 import fun.asem.biograph.webapp.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class AttributeController {
     private final UserService userService;
     private final AttributeService attributeService;
-    private final Mapper dtoMapper;
+    private final AttributeMapper dtoMapper = AttributeMapper.INSTANCE;
 
     /**
      * @return Returns list of all attributes that are owned by current user
@@ -61,10 +61,10 @@ public class AttributeController {
     }
 
     private Attribute convertToEntity(CreateAttributeDto dto) {
-        return dtoMapper.map(dto, Attribute.class);
+        return dtoMapper.createDtoToAttribute(dto);
     }
 
     private ResponseAttributeDto convertToDto(Attribute attribute) {
-        return dtoMapper.map(attribute, ResponseAttributeDto.class);
+        return dtoMapper.attributeToDto(attribute);
     }
 }
