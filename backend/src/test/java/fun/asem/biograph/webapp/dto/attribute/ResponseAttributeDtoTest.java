@@ -1,9 +1,10 @@
 package fun.asem.biograph.webapp.dto.attribute;
 
 
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import fun.asem.biograph.webapp.domain.Attribute;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class ResponseAttributeDtoTest {
-    private final ModelMapper modelMapper = new ModelMapper();
+    private final Mapper dtoMapper = DozerBeanMapperBuilder.buildDefault();
 
     @Test
     public void whenConvertDtoToEntity_thenCorrect() {
@@ -33,7 +34,7 @@ class ResponseAttributeDtoTest {
                 0L,
                 0L
         );
-        ResponseAttributeDto dto = modelMapper.map(attribute, ResponseAttributeDto.class);
+        ResponseAttributeDto dto = dtoMapper.map(attribute, ResponseAttributeDto.class);
         assertEquals("testName", dto.getName());
         assertEquals("test description", dto.getDescription());
         assertEquals(123L, dto.getAttributeId());

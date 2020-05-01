@@ -1,8 +1,7 @@
 package fun.asem.biograph;
 
-import fun.asem.biograph.webapp.domain.Attribute;
-import fun.asem.biograph.webapp.dto.attribute.ResponseAttributeDto;
-import org.modelmapper.ModelMapper;
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,13 +10,8 @@ import org.springframework.context.annotation.Bean;
 public class BiographApplication {
 
     @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper mapper = new ModelMapper();
-        mapper
-                .createTypeMap(Attribute.class, ResponseAttributeDto.class)
-                .<String>addMapping(src -> src.getAttributeType().toString(), ((destination, value) -> destination.setAttributeType(value)));
-        return mapper;
-
+    public Mapper dtoMapper() {
+        return DozerBeanMapperBuilder.buildDefault();
     }
 
     public static void main(String[] args) {

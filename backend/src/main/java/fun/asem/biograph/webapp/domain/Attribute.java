@@ -39,6 +39,14 @@ public class Attribute {
         NUMBER,
         ENUMERATION
     }
+/*
+    @Mapping("attributeType")
+    public String getAttributeTypeStr() {
+        return this.attributeType.toString();
+    }
+    public void setAttributeTypeStr(String type) {
+        this.attributeType = AttributeType.valueOf(type);
+    }*/
 
     @Entity
     @NoArgsConstructor

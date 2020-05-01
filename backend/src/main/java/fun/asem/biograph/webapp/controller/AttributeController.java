@@ -1,5 +1,6 @@
 package fun.asem.biograph.webapp.controller;
 
+import com.github.dozermapper.core.Mapper;
 import fun.asem.biograph.webapp.domain.Attribute;
 import fun.asem.biograph.webapp.domain.User;
 import fun.asem.biograph.webapp.dto.attribute.CreateAttributeDto;
@@ -8,7 +9,6 @@ import fun.asem.biograph.webapp.exceptions.UnauthorizedException;
 import fun.asem.biograph.webapp.service.attribute.AttributeService;
 import fun.asem.biograph.webapp.service.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class AttributeController {
     private final UserService userService;
     private final AttributeService attributeService;
-    private final ModelMapper modelMapper;
+    private final Mapper dtoMapper;
 
     /**
      * @return Returns list of all attributes that are owned by current user
@@ -61,12 +61,10 @@ public class AttributeController {
     }
 
     private Attribute convertToEntity(CreateAttributeDto dto) {
-        return modelMapper.map(dto, Attribute.class);
+        return dtoMapper.map(dto, Attribute.class);
     }
 
     private ResponseAttributeDto convertToDto(Attribute attribute) {
-
-        ResponseAttributeDto dto = modelMapper.map(attribute, ResponseAttributeDto.class);
-        return dto;
+        return dtoMapper.map(attribute, ResponseAttributeDto.class);
     }
 }
