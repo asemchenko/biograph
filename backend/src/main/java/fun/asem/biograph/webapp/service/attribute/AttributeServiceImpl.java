@@ -20,14 +20,12 @@ public class AttributeServiceImpl implements AttributeService {
     private final GrantService grantService;
     private final AttributeRepository attributeRepository;
 
+    @Transactional
     @Override
     public List<Attribute> getAllAttributesOwnedByUser(User user) {
-        return attributeRepository.findAllByAttributeIdIn(
-                grantService.getAttributeOwnerGrants(user)
-                        .stream()
-                        .map(Grant::getAttributeId)
-                        .collect(Collectors.toList())
-        );
+        return grantService.getAttributeOwnerGrants(user).stream()
+                .map(Grant::getAttribute)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -36,8 +34,8 @@ public class AttributeServiceImpl implements AttributeService {
         attribute.setCreationTime(Instant.now());
         Grant grant = Grant.builder()
                 .user(user)
+                .attribute(attribute)
                 .accessType(Grant.AccessType.OWNER)
-                .attributeId(attribute.getAttributeId())
                 .build();
         attribute.setGrants(Collections.singletonList(grant));
         attribute = attributeRepository.save(attribute);

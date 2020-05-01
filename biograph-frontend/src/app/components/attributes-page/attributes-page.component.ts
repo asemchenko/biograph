@@ -6,6 +6,7 @@ import {Category} from '../../models/Category';
 import {MatDialog} from '@angular/material/dialog';
 import {NewAttributeDialogComponent} from './new-attribute-dialog/new-attribute-dialog.component';
 import {AttributeService} from '../../services/attribute/attribute.service';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-attributes-page',
@@ -85,10 +86,16 @@ export class AttributesPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // TODO asem init allAttributes from using backend query
-    this.filteredAttributes = this.allAttributes;
-    this.dataSource = new MatTableDataSource<Attribute>(this.filteredAttributes);
-    this.dataSource.sort = this.sort;
+    console.log('Loading user attributes...');
+    this.attributeService.getAttributesOwnedByCurrentUser().pipe(
+      take(1),
+    ).subscribe((attributes) => {
+      console.log('Got response: ', attributes);
+      this.allAttributes = attributes;
+      this.filteredAttributes = this.allAttributes;
+      this.dataSource = new MatTableDataSource<Attribute>(this.filteredAttributes);
+      this.dataSource.sort = this.sort;
+    });
   }
 
   search(searchQuery: string) {

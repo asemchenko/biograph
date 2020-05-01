@@ -29,7 +29,11 @@ public class Attribute {
     @JoinColumn(name = "constraint_id")
     private Constraint constraint;
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "attributeId")
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "attribute",
+            fetch = FetchType.LAZY)
     private List<Grant> grants;
     // TODO asem add spring @Formula or @Query here
     private Long totalMeasurements;

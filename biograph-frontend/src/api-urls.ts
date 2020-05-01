@@ -7,3 +7,7 @@ export const API_URLS = {
   TEST_URL: environment.BASE_URL + '/home/secured',
   ATTRIBUTE_URL: environment.BASE_URL + '/api/users/{userId}/attributes'
 };
+
+export function insertUserInUrl(url: string, userId: number): string {
+  return url.replace('{userId}', userId.toString());
+}

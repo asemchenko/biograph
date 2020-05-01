@@ -34,7 +34,8 @@ public class Grant {
     private Long eventId;
     private Long categoryId;
     private Long tagId;
-    private Long attributeId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Attribute attribute;
     @Enumerated(EnumType.STRING)
     private AccessType accessType;
 

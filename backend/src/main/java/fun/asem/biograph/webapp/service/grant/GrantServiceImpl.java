@@ -15,7 +15,7 @@ public class GrantServiceImpl implements GrantService {
 
     @Override
     public List<Grant> getAttributeOwnerGrants(User user) {
-        return grantRepository.findAllByUserAndAccessTypeAndAttributeIdIsNotNull(user, Grant.AccessType.OWNER);
+        return grantRepository.findAllByUserAndAccessTypeAndAttributeIsNotNull(user, Grant.AccessType.OWNER);
     }
 
     @Override
