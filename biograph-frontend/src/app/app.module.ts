@@ -42,6 +42,7 @@ import {AttributesPageComponent} from './components/attributes-page/attributes-p
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NewAttributeDialogComponent} from './components/attributes-page/new-attribute-dialog/new-attribute-dialog.component';
 import {MatSelectModule} from '@angular/material/select';
+import {StringToDatePipe} from './pipes/string-to-date.pipe';
 
 const appRoutes: Routes = [
   {
@@ -85,7 +86,8 @@ const appRoutes: Routes = [
     SearchBarComponent,
     NewCategoryDialogComponent,
     AttributesPageComponent,
-    NewAttributeDialogComponent
+    NewAttributeDialogComponent,
+    StringToDatePipe
   ],
   imports: [
     BrowserModule,

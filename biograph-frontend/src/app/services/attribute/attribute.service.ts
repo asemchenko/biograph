@@ -6,7 +6,6 @@ import {catchError, map, mergeMap, take, tap} from 'rxjs/operators';
 import {AuthService} from '../auth/auth.service';
 import {User} from '../../models/User';
 import {Observable, of} from 'rxjs';
-import {log} from 'util';
 
 @Injectable({
   providedIn: 'root'

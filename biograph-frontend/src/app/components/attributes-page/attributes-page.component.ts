@@ -21,7 +21,7 @@ export class AttributesPageComponent implements OnInit {
       description: 'My weight in kg',
       totalCategories: 1,
       totalMeasurements: 10,
-      creationTime: 1588098739285,
+      creationTime: new Date().toISOString(),
       attributeType: 'NUMBER',
       constraint: null
     },
@@ -31,7 +31,7 @@ export class AttributesPageComponent implements OnInit {
       description: 'My height in meters',
       totalCategories: 1,
       totalMeasurements: 10,
-      creationTime: 1588098721285,
+      creationTime: new Date().toISOString(),
       attributeType: 'NUMBER',
       constraint: null
     },
@@ -41,7 +41,7 @@ export class AttributesPageComponent implements OnInit {
       description: 'Cardio exercising time ( in minutes )',
       totalCategories: 2,
       totalMeasurements: 15,
-      creationTime: 1582095707385,
+      creationTime: new Date().toISOString(),
       attributeType: 'NUMBER',
       constraint: null
     },
@@ -51,7 +51,7 @@ export class AttributesPageComponent implements OnInit {
       description: 'My heart rate before start exercising',
       totalCategories: 2,
       totalMeasurements: 18,
-      creationTime: 1588398780945,
+      creationTime: new Date().toISOString(),
       attributeType: 'NUMBER',
       constraint: null
     },
@@ -61,7 +61,7 @@ export class AttributesPageComponent implements OnInit {
       description: 'How I feel myself after event ( from 1 to 10 )',
       totalCategories: 10,
       totalMeasurements: 8,
-      creationTime: 1588098709185,
+      creationTime: new Date().toISOString(),
       attributeType: 'NUMBER',
       constraint: null
     },
@@ -70,7 +70,7 @@ export class AttributesPageComponent implements OnInit {
    * List of attributes that is displayed ( attributes are filtered according to search bar content )
    */
   filteredAttributes: Attribute[];
-  columnsToDisplay = ['name', 'totalMeasurements', 'totalCategories', 'creationTime'];
+  columnsToDisplay = ['name', 'attributeType', 'totalMeasurements', 'totalCategories', 'creationTime'];
   /**
    * String that is currently entered in search bar
    */
@@ -112,9 +112,9 @@ export class AttributesPageComponent implements OnInit {
       if (newAttribute) {
         this.attributeService.createNewAttribute(newAttribute).subscribe(response => {
           console.log('Got response: ', response);
+          this.allAttributes.push(response);
+          this.search(this.currentSearchQuery);
         });
-        this.allAttributes.push(newAttribute);
-        this.search(this.currentSearchQuery);
       }
     });
   }

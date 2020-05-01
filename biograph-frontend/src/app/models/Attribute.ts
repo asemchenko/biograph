@@ -3,9 +3,9 @@ export interface Attribute {
   name: string;
   description: string;
   /**
-   * milliseconds from 1970...
+   * ISO-8601 formatted date
    */
-  creationTime: number;
+  creationTime: string;
   /**
    * Amount of this attribute value
    */
