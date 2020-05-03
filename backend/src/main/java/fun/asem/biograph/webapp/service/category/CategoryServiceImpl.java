@@ -54,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
         return attributes
                 .stream()
                 .map(attribute -> {
-                    Attribute a = attributeService.findAttributeById(attribute.getAttributeId()).orElseThrow(() -> {
+                    Attribute a = attributeService.findAttributeById(attribute.getAttributeId()).<IllegalArgumentException>orElseThrow(() -> {
                         throw new IllegalArgumentException("Attribute must exist!");
                     });
                     if (a.getGrants().stream().anyMatch(g -> g.getUser().getUserId().equals(user.getUserId()) && g.getAccessType() == Grant.AccessType.OWNER)) {

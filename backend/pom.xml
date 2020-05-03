@@ -139,16 +139,17 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.2.6.RELEASE</version>
-                <configuration>
-                    <fork>true</fork>
-                    <mainClass>fun.asem.biograph.BiographApplication</mainClass>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>repackage</goal>
                         </goals>
+                        <configuration>
+                            <classifier>spring-boot</classifier>
+                            <mainClass>
+                                fun.asem.biograph.BiographApplication
+                            </mainClass>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -182,6 +183,9 @@
                 <groupId>com.heroku.sdk</groupId>
                 <artifactId>heroku-maven-plugin</artifactId>
                 <version>3.0.2</version>
+                <configuration>
+                    <appName>biograph</appName>
+                </configuration>
             </plugin>
         </plugins>
     </build>
