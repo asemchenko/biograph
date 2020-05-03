@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -35,8 +36,9 @@ public class Attribute {
             mappedBy = "attribute",
             fetch = FetchType.LAZY)
     private List<Grant> grants;
-    // TODO asem add spring @Formula or @Query here
+    @Formula("( SELECT COUNT(*) FROM parameters WHERE parameters.attribute_id = attribute_id )")
     private Long totalMeasurements;
+    @Formula("( SELECT COUNT(*) FROM category_attributes ca WHERE ca.attribute_id = attribute_id )")
     private Long totalCategories;
 
     public enum AttributeType {

@@ -19,6 +19,11 @@ public class GrantServiceImpl implements GrantService {
     }
 
     @Override
+    public List<Grant> getCategoryOwnerGrants(User user) {
+        return grantRepository.findAllByUserAndAccessTypeAndCategoryIsNotNull(user, Grant.AccessType.OWNER);
+    }
+
+    @Override
     public Grant createGrant(Grant grant) {
         return grantRepository.save(grant);
     }

@@ -4,6 +4,8 @@ import {MatSort} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {NewCategoryDialogComponent} from './new-category-dialog/new-category-dialog.component';
 import {Category} from '../../models/Category';
+import {CategoryService} from '../../services/category/category.service';
+import {mergeMap, take, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-categories-page',
@@ -12,53 +14,7 @@ import {Category} from '../../models/Category';
 })
 export class CategoriesPageComponent implements OnInit {
   readonly columnsToDisplay = ['name', 'creationTime', 'totalEvents', 'attributes', 'color'];
-  readonly allCategories: Category[] = [
-    {
-      categoryId: 1,
-      name: 'Fitness',
-      color: 'green',
-      creationTime: 135468,
-      totalEvents: 10,
-      description: 'Stub description',
-      attributes: []
-    },
-    {
-      categoryId: 2,
-      name: 'Family',
-      color: 'red',
-      creationTime: 32010703000,
-      totalEvents: 20,
-      description: 'Stub description',
-      attributes: []
-    },
-    {
-      categoryId: 3,
-      name: 'Self-development',
-      color: 'blue',
-      creationTime: 0,
-      totalEvents: 7,
-      description: 'Stub description',
-      attributes: []
-    },
-    {
-      categoryId: 4,
-      name: 'Hobby',
-      color: 'grey',
-      creationTime: 68150970000,
-      totalEvents: 24,
-      description: 'Stub description',
-      attributes: []
-    },
-    {
-      categoryId: 5,
-      name: 'Health',
-      color: 'yellow',
-      creationTime: 110150104000,
-      totalEvents: 53,
-      description: 'Stub description',
-      attributes: []
-    },
-  ];
+  allCategories: Category[] = [];
   // TODO asem maybe it is better to make data source reactive ( no need to call table.renderRows() each time )
   dataSource = new MatTableDataSource(this.allCategories);
   currentSearchQuery = '';
@@ -66,12 +22,19 @@ export class CategoriesPageComponent implements OnInit {
   @ViewChild(MatTable, {static: true}) table: MatTable<Category>;
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private categoryService: CategoryService,
   ) {
   }
 
   ngOnInit(): void {
     this.dataSource.sort = this.sort;
+    this.categoryService.getCategoriesOwnedByCurrentUser().pipe(
+      take(1),
+    ).subscribe((categories: Category[]) => {
+      this.allCategories = categories;
+      this.updateTableView(this.allCategories);
+    });
   }
 
   openNewCategoryDialog() {
@@ -81,11 +44,17 @@ export class CategoriesPageComponent implements OnInit {
         width: 'min(700px, 95vw)'
       }
     );
-    dialogRef.afterClosed().subscribe((newCategory: Category) => {
-      console.log('Got new category: ', newCategory);
-      // TODO add backend request for save
-      newCategory.creationTime = new Date().getTime();
-      this.allCategories.push(newCategory);
+    dialogRef.afterClosed().pipe(
+      take(1),
+      tap((newCategory: Category) => {
+        console.log('[categories-page] Got from dialog: ', newCategory);
+      }),
+      mergeMap((newCategory: Category) => {
+        return this.categoryService.createCategory(newCategory);
+      })
+    ).subscribe((createdCategory: Category) => {
+      console.log('[categories-page] Got created category from service: ', createdCategory);
+      this.allCategories.push(createdCategory);
       this.search(this.currentSearchQuery);
     });
   }

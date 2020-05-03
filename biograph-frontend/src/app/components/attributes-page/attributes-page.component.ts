@@ -114,6 +114,7 @@ export class AttributesPageComponent implements OnInit {
         width: 'min(700px, 95vw)'
       }
     );
+    // FIXME asem REFACTOR - subscribe in subscribe ( если забыл как - чекни как реализовано в categories-page.component.ts )
     dialogRef.afterClosed().subscribe((newAttribute: Attribute) => {
       console.log('Got new attribute: ', newAttribute);
       if (newAttribute) {

@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -40,5 +41,23 @@ public class AttributeServiceImpl implements AttributeService {
         attribute.setGrants(Collections.singletonList(grant));
         attribute = attributeRepository.save(attribute);
         return attribute;
+    }
+
+    @Transactional
+    @Override
+    public Optional<Attribute> findAttributeById(Long attributeId) {
+        return attributeRepository.findByAttributeId(attributeId);
+    }
+
+    /**
+     * Contract - values must exists ( can be check by calling findAttributeById method )
+     *
+     * @param attribute attribute to be updated
+     * @return updated attribute
+     * @see AttributeService#findAttributeById(Long)
+     */
+    @Transactional
+    public Attribute update(Attribute attribute) {
+        return attributeRepository.save(attribute);
     }
 }

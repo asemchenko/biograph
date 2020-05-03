@@ -3,9 +3,10 @@ import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {FormControl, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {map, startWith, take} from 'rxjs/operators';
 import {Attribute} from '../../../models/Attribute';
 import {Category} from '../../../models/Category';
+import {AttributeService} from '../../../services/attribute/attribute.service';
 
 
 @Component({
@@ -14,50 +15,6 @@ import {Category} from '../../../models/Category';
   styleUrls: ['./new-category-dialog.component.less']
 })
 export class NewCategoryDialogComponent implements OnInit {
-  // TODO asem remove
-  STUB_ATTRIBUTES: Attribute[] = [
-    {
-      attributeId: 1,
-      name: 'Weight',
-      description: 'Stub description',
-      creationTime: new Date().toISOString(),
-      totalMeasurements: 0,
-      totalCategories: 0,
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 2,
-      name: 'Cardio',
-      description: 'Stub description',
-      creationTime: new Date().toISOString(),
-      totalMeasurements: 0,
-      totalCategories: 0,
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 3,
-      name: 'Squat',
-      description: 'Stub description',
-      creationTime: new Date().toISOString(),
-      totalMeasurements: 0,
-      totalCategories: 0,
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 4,
-      name: 'Push-up',
-      description: 'Stub description',
-      creationTime: new Date().toISOString(),
-      totalMeasurements: 0,
-      totalCategories: 0,
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-  ];
-
   readonly categoryNameMaxLength = 50;
   readonly attributeTableDisplayedColumns = ['name', 'remove'];
   readonly category: Category = {
@@ -72,7 +29,7 @@ export class NewCategoryDialogComponent implements OnInit {
   /**
    * All possible attributes
    */
-  allAttributes = this.STUB_ATTRIBUTES;
+  allAttributes = [];
   /**
    * Attributes that user already add to category
    */
@@ -83,7 +40,9 @@ export class NewCategoryDialogComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatTable) attributesTable: MatTable<any>;
 
-  constructor() {
+  constructor(
+    private attributeService: AttributeService,
+  ) {
   }
 
   private static removeAttributeFromCollection(attribute: Attribute, collection: Attribute[]): void {
@@ -95,6 +54,18 @@ export class NewCategoryDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.attributes.sort = this.sort;
+    this.attributeService.getAttributesOwnedByCurrentUser().pipe(
+      take(1)
+    ).subscribe((attributes: Attribute[]) => {
+      console.log('[new-category-dialog] Got all user attributes: ', attributes);
+      this.allAttributes = attributes;
+      this.updateAttributesTable();
+
+      this.configureSearch();
+    });
+  }
+
+  private configureSearch() {
     this.searchFilteredAttributes = this.searchAttributeFormControl.valueChanges.pipe(
       map(value => typeof value === 'string' ? value : value.name),
       startWith(''),

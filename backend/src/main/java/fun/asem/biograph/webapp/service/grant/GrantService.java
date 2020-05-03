@@ -14,5 +14,7 @@ public interface GrantService {
      */
     List<Grant> getAttributeOwnerGrants(User user);
 
+    List<Grant> getCategoryOwnerGrants(User user);
+
     Grant createGrant(Grant grant);
 }
