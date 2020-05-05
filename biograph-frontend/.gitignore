@@ -44,3 +44,20 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+
+/.vscode
+node_modules
+/.nyc_output
+firebase-debug.log
+yarn.lock
+.npmrc
+
+.idea
+*.iml
+*.tgz
+scripts/*.json
+
+lib/
+dev/
+.firebase/
