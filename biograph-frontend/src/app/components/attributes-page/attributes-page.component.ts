@@ -106,8 +106,8 @@ export class AttributesPageComponent implements OnInit {
     });
     this.updateTableView();
   }
-
   openNewAttributeDialog() {
+    // TODO asem REFACTOR move opening dialog logic to dialog.service
     const dialogRef = this.dialog.open(
       NewAttributeDialogComponent,
       {

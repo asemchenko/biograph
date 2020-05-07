@@ -43,6 +43,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {NewAttributeDialogComponent} from './components/attributes-page/new-attribute-dialog/new-attribute-dialog.component';
 import {MatSelectModule} from '@angular/material/select';
 import {StringToDatePipe} from './pipes/string-to-date.pipe';
+import {EventsPageComponent} from './components/events-page/events-page.component';
+import {EventDialogComponent} from './components/events-page/event-dialog/event-dialog.component';
 
 const appRoutes: Routes = [
   {
@@ -64,6 +66,10 @@ const appRoutes: Routes = [
   {
     path: 'metrics',
     component: AttributesPageComponent
+  },
+  {
+    path: 'events',
+    component: EventsPageComponent
   },
   // TODO asem add routes here as soon as other components will be created
   {
@@ -87,7 +93,9 @@ const appRoutes: Routes = [
     NewCategoryDialogComponent,
     AttributesPageComponent,
     NewAttributeDialogComponent,
-    StringToDatePipe
+    StringToDatePipe,
+    EventsPageComponent,
+    EventDialogComponent
   ],
   imports: [
     BrowserModule,

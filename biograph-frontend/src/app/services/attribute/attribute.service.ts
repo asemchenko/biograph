@@ -18,7 +18,7 @@ export class AttributeService {
   ) {
   }
 
-  createNewAttribute(attribute: Attribute): Observable<Attribute> {
+  public createNewAttribute(attribute: Attribute): Observable<Attribute> {
     return this.authService.getCurrentUser().pipe(
       take(1),
       map((user: User) => user.userId),
@@ -37,7 +37,7 @@ export class AttributeService {
     );
   }
 
-  getAttributesOwnedByCurrentUser(): Observable<Attribute[]> {
+  public getAttributesOwnedByCurrentUser(): Observable<Attribute[]> {
     return this.authService.getCurrentUser().pipe(
       take(1),
       map((user: User) => user.userId),
