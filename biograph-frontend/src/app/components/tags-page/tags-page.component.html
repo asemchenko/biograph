@@ -7,7 +7,7 @@
     color="primary"
     mat-raised-button>New
   </button>
-  <table class="mat-elevation-z8 tags-table" mat-table matSort>
+  <table [dataSource]="dataSource" class="mat-elevation-z8 tags-table" mat-table matSort>
     <ng-container matColumnDef="name">
       <th *matHeaderCellDef mat-header-cell mat-sort-header> Name</th>
       <td *matCellDef="let tag" mat-cell>
@@ -18,7 +18,7 @@
         </span>
       </td>
     </ng-container>
-    <!--<ng-container matColumnDef="totalEvents">
+    <ng-container matColumnDef="totalEvents">
       <th *matHeaderCellDef mat-header-cell mat-sort-header>Total events</th>
       <td *matCellDef="let tag" mat-cell>
         {{tag.totalEvents}}
@@ -29,7 +29,7 @@
       <td *matCellDef="let tag" mat-cell>
         {{ tag.creationTime | stringToDate | date: 'MM/dd/yyyy hh:mm'}}
       </td>
-    </ng-container>-->
+    </ng-container>
     <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
     <tr *matRowDef="let row; columns: columnsToDisplay" mat-row></tr>
   </table>

@@ -16,7 +16,7 @@ export class TagsPageComponent implements OnInit {
   @ViewChild(MatTable, {static: true}) table: MatTable<Tag>;
   filteredTags$: Observable<Tag[]>;
   dataSource: MatTableDataSource<Tag>;
-  readonly columnsToDisplay: ['name'/*, 'totalEvents', 'creationTime'*/];
+  readonly columnsToDisplay = ['name', 'totalEvents', 'creationTime'];
   private allTags: Tag[];
 
   constructor(
