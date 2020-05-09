@@ -19,7 +19,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long tagId;
     private String name;
-    private String tagColor;
+    private String color;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tagId")
     private List<Grant> grants;
 }
