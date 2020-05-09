@@ -11,6 +11,7 @@
 
   &__small-form-field {
     width: ~'min(210px, 70vw)';
+    margin: auto;
   }
 
   &__divider-line {
@@ -30,12 +31,31 @@
 
   &__event-detail-section {
     width: 85%;
-    text-align: left;
+    text-align: center;
     margin: auto;
     margin-bottom: @extra-small-margin;
 
     &__text {
       color: black;
+    }
+
+    &__attachment-form {
+      &__drop-zone {
+        border: medium dashed blue;
+        height: 200px;
+      }
+
+      &__browse-button {
+        display: block;
+      }
+
+      &__area-content {
+        height: 100%;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-around;
+        align-items: center;
+      }
     }
   }
 }

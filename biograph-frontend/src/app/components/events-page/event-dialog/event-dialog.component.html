@@ -53,6 +53,15 @@
         <mat-hint>{{(timeBoundSelect.value && timeBoundSelect.value.description) || '' }}</mat-hint>
       </mat-form-field>
     </section>
+    <section class="event-form__event-detail-section">
+      <ngx-file-drop
+        [multiple]="true"
+        [showBrowseBtn]="true"
+        browseBtnClassName="event_form__event-detail__attachment-form__browse-button"
+        contentClassName="event_form__event-detail__attachment-form__area-content"
+        dropZoneClassName="event-form__event-detail-section__attachment-form__drop-zone"
+        dropZoneLabel="Drop attachments here"></ngx-file-drop>
+    </section>
     <h3 class="event-form__section-header">Event structure</h3>
 
   </form>

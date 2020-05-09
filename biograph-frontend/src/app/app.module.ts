@@ -47,6 +47,8 @@ import {EventsPageComponent} from './components/events-page/events-page.componen
 import {EventDialogComponent} from './components/events-page/event-dialog/event-dialog.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {NgxFileDropModule} from 'ngx-file-drop';
+
 
 const appRoutes: Routes = [
   {
@@ -131,6 +133,7 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    NgxFileDropModule,
   ],
   providers: [
     {
