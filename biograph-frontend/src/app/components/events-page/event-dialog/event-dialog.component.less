@@ -1,6 +1,7 @@
 @import "../../../common";
 @import "../../../colors";
 
+
 .event-form {
   text-align: center;
 
@@ -39,23 +40,42 @@
       color: black;
     }
 
-    &__attachment-form {
-      &__drop-zone {
-        border: medium dashed blue;
-        height: 200px;
-      }
-
-      &__browse-button {
-        display: block;
-      }
-
-      &__area-content {
-        height: 100%;
-        display: flex;
-        flex-flow: column nowrap;
-        justify-content: space-around;
-        align-items: center;
-      }
-    }
   }
+
+  &__attachment-section {
+    margin-top: @small-margin;
+  }
+}
+
+:host ::ng-deep .attachment-form-drop-zone {
+  border: medium dashed @color-gray;
+  height: 100px;
+}
+
+:host ::ng-deep .attachment-form-area-content {
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+:host ::ng-deep .attachment-form-browse-button {
+  border: 1px solid rgba(0, 0, 0, .12);
+  padding: 0 15px;
+  line-height: 34px;
+  background: transparent;
+  border-radius: 5px;
+  font-family: Roboto, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 10px;
+}
+
+:host ::ng-deep .ngx-file-drop__drop-zone-label {
+  font-family: Roboto, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 34px;
 }
