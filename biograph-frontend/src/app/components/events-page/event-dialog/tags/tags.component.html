@@ -3,7 +3,7 @@
     <mat-chip-list #tagsChipList>
       <mat-chip
         (removed)="remove(tag)"
-        *ngFor="let tag of selectedTags"
+        *ngFor="let tag of selectedTags$ | async"
         removable="removable"
         selectable="selectable">
         {{tag.name}}
@@ -16,7 +16,7 @@
         [matAutocomplete]="auto"
         [matChipInputFor]="tagsChipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        placeholder="New fruit...">
+        placeholder="Enter one or few tags">
     </mat-chip-list>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
       <mat-option *ngFor="let tag of filteredTags$ | async" [value]="tag">
