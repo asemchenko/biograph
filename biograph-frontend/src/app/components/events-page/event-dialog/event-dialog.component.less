@@ -1,2 +1,41 @@
 @import "../../../common";
+@import "../../../colors";
 
+.event-form {
+  text-align: center;
+
+  &__form-field {
+    width: 85%;
+    margin: auto;
+  }
+
+  &__small-form-field {
+    width: ~'min(210px, 70vw)';
+  }
+
+  &__divider-line {
+    margin: 10px auto;
+    width: 85%;
+  }
+
+  &__description-input {
+    height: 80px;
+  }
+
+  &__section-header {
+    margin-top: @small-margin;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+
+  &__event-detail-section {
+    width: 85%;
+    text-align: left;
+    margin: auto;
+    margin-bottom: @extra-small-margin;
+
+    &__text {
+      color: black;
+    }
+  }
+}

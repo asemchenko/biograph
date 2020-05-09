@@ -45,6 +45,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {StringToDatePipe} from './pipes/string-to-date.pipe';
 import {EventsPageComponent} from './components/events-page/events-page.component';
 import {EventDialogComponent} from './components/events-page/event-dialog/event-dialog.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 const appRoutes: Routes = [
   {
@@ -127,6 +129,8 @@ const appRoutes: Routes = [
     ColorPickerModule,
     MatTooltipModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [
     {

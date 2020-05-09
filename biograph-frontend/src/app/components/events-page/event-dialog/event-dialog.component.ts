@@ -9,9 +9,22 @@ import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 })
 export class EventDialogComponent implements OnInit {
   private event: Event;
+  readonly eventNameMaxLength = 256;
+  readonly eventTimeBoundOptions = [
+    {
+      optionId: 1,
+      name: 'Not bounded',
+      description: 'No time bounds'
+    },
+    {
+      optionId: 2,
+      name: 'Bounded',
+      description: 'Event has time limits'
+    },
+  ];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private dialogData: { event: Event }
+      @Inject(MAT_DIALOG_DATA) private dialogData: { event: Event }
   ) {
   }
 
