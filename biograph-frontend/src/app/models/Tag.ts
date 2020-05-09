@@ -3,4 +3,6 @@ export interface Tag {
   name: string;
   description: string;
   color: string;
+  totalEvents: number;
+  creationTime: string;
 }

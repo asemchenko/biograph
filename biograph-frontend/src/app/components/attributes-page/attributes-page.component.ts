@@ -15,58 +15,7 @@ import {take} from 'rxjs/operators';
 })
 export class AttributesPageComponent implements OnInit {
   dataSource: MatTableDataSource<Attribute>;
-  allAttributes: Attribute[] = [
-    {
-      attributeId: 1,
-      name: 'Weight',
-      description: 'My weight in kg',
-      totalCategories: 1,
-      totalMeasurements: 10,
-      creationTime: new Date().toISOString(),
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 2,
-      name: 'Height',
-      description: 'My height in meters',
-      totalCategories: 1,
-      totalMeasurements: 10,
-      creationTime: new Date().toISOString(),
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 3,
-      name: 'Cardio',
-      description: 'Cardio exercising time ( in minutes )',
-      totalCategories: 2,
-      totalMeasurements: 15,
-      creationTime: new Date().toISOString(),
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 4,
-      name: 'Heart rate ( before )',
-      description: 'My heart rate before start exercising',
-      totalCategories: 2,
-      totalMeasurements: 18,
-      creationTime: new Date().toISOString(),
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 5,
-      name: 'Feeling',
-      description: 'How I feel myself after event ( from 1 to 10 )',
-      totalCategories: 10,
-      totalMeasurements: 8,
-      creationTime: new Date().toISOString(),
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-  ];
+  allAttributes: Attribute[] = [];
   /**
    * List of attributes that is displayed ( attributes are filtered according to search bar content )
    */

@@ -50,6 +50,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {NgxFileDropModule} from 'ngx-file-drop';
 import {ParameterComponent} from './components/events-page/event-dialog/parameter/parameter.component';
 import {TagsComponent} from './components/events-page/event-dialog/tags/tags.component';
+import {TagsPageComponent} from './components/tags-page/tags-page.component';
 
 
 const appRoutes: Routes = [
@@ -72,6 +73,10 @@ const appRoutes: Routes = [
   {
     path: 'metrics',
     component: AttributesPageComponent
+  },
+  {
+    path: 'tags',
+    component: TagsPageComponent
   },
   {
     path: 'events',
@@ -104,6 +109,7 @@ const appRoutes: Routes = [
     EventDialogComponent,
     ParameterComponent,
     TagsComponent,
+    TagsPageComponent,
   ],
   imports: [
     BrowserModule,
