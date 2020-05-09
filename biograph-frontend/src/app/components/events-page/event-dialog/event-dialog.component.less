@@ -11,8 +11,17 @@
   }
 
   &__small-form-field {
-    width: ~'min(210px, 70vw)';
+    .small-form-field;
+  }
+
+  &__extra-small-form-field {
+    width: ~'min(90px, 25vw)';
     margin: auto;
+  }
+
+  &__time-bound-form-field {
+    margin-top: 5px;
+    margin-left: 10px;
   }
 
   &__divider-line {
@@ -45,6 +54,14 @@
   &__attachment-section {
     margin-top: @small-margin;
   }
+}
+
+.flexbox-row {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: space-between;
 }
 
 :host ::ng-deep .attachment-form-drop-zone {
