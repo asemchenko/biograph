@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
 import {Tag} from '../../models/Tag';
 import {TagService} from '../../services/tag/tag.service';
-import {take} from 'rxjs/operators';
+import {combineLatest, delay, map, take} from 'rxjs/operators';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
+import {Observable, Subject} from 'rxjs';
 
 @Component({
   selector: 'app-tags-page',
@@ -14,10 +14,11 @@ import {MatSort} from '@angular/material/sort';
 export class TagsPageComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatTable, {static: true}) table: MatTable<Tag>;
-  filteredTags$: Observable<Tag[]>;
-  dataSource: MatTableDataSource<Tag>;
   readonly columnsToDisplay = ['name', 'totalEvents', 'creationTime'];
-  private allTags: Tag[];
+  dataSource: MatTableDataSource<Tag> = new MatTableDataSource<Tag>([]);
+  private tags$: Observable<Tag[]>;
+  private currentSearchQuery = '';
+  private searchQuery$ = new Subject<string>();
 
   constructor(
     private tagService: TagService,
@@ -25,29 +26,46 @@ export class TagsPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.tagService.getTagsOwnedByCurrentUser().pipe(
+    this.tags$ = this.tagService.getTagsOwnedByCurrentUser();
+    this.tags$.pipe(
       take(1),
     ).subscribe((tags: Tag[]) => {
-      this.allTags = tags;
-      this.dataSource = new MatTableDataSource<Tag>(this.allTags);
+      this.dataSource = new MatTableDataSource<Tag>(tags);
       this.dataSource.sort = this.sort;
-      console.log('Got all tags: ', this.allTags);
     });
-    // this.filteredTags$ = this.tagService.getTagsOwnedByCurrentUser();
+    // TODO asem add unsubscribe here
+    this.tags$.pipe(
+      // short delay to ensure that table is initialized [dirty hack]
+      delay(1000),
+      combineLatest(
+        this.searchQuery$.pipe(
+          // startWith(''),
+          map(q => q.toLowerCase()),
+        )
+      )
+    ).subscribe(([tags, searchQuery]) => {
+      this.updateTableView(this.filter(tags, searchQuery));
+    });
   }
 
   search(searchQuery: string): void {
-
+    this.currentSearchQuery = searchQuery;
+    const searchQueryLowerCase = searchQuery.toLowerCase();
+    this.searchQuery$.next(searchQueryLowerCase);
   }
 
   openNewTagDialog(): void {
 
   }
 
-  private updateTableView() {
-    this.dataSource = new MatTableDataSource<Tag>(this.allTags);
+  private filter(tags: Tag[], searchQuery: string): Tag[] {
+    return tags.filter(
+      tag => tag.name.toLowerCase().includes(searchQuery) || tag.description.toLowerCase().includes(searchQuery));
+  }
+
+  private updateTableView(tags: Tag[]) {
+    this.dataSource = new MatTableDataSource<Tag>(tags);
     this.dataSource.sort = this.sort;
-    console.log('Before renderRows()');
     this.table.renderRows();
   }
 }
