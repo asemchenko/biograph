@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Tag} from '../../models/Tag';
+import {getStubEmptyTag, Tag} from '../../models/Tag';
 import {TagService} from '../../services/tag/tag.service';
 import {combineLatest, delay, map, take} from 'rxjs/operators';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {Observable, Subject} from 'rxjs';
+import {DialogService} from '../../services/dialog/dialog.service';
 
 @Component({
   selector: 'app-tags-page',
@@ -22,6 +23,7 @@ export class TagsPageComponent implements OnInit {
 
   constructor(
     private tagService: TagService,
+    private dialogService: DialogService,
   ) {
   }
 
@@ -55,7 +57,8 @@ export class TagsPageComponent implements OnInit {
   }
 
   openNewTagDialog(): void {
-
+    // TODO asem - IMPORTANT needs to add created tag to table
+    this.dialogService.openTagDialog(getStubEmptyTag());
   }
 
   private filter(tags: Tag[], searchQuery: string): Tag[] {

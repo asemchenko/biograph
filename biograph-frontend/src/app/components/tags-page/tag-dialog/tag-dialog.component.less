@@ -1,0 +1,25 @@
+@import "../../../common";
+
+.tag-form {
+  text-align: center;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.tag-dialog-form-field {
+  .normal-form-field;
+}
+
+.tag-description-input {
+  height: 40px;
+}
+
+.color-form-field {
+  .tag-dialog-form-field;
+  margin-top: @normal-margin;
+}
+
+// to hide arrow on color picker component
+:host ::ng-deep .arrow {
+  visibility: hidden;
+}

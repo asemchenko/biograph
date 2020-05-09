@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {EventDialogComponent} from '../../components/events-page/event-dialog/event-dialog.component';
 import {Event} from '../../models/Event';
+import {TagDialogComponent} from '../../components/tags-page/tag-dialog/tag-dialog.component';
+import {Tag} from '../../models/Tag';
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +20,9 @@ export class DialogService {
 
   public openEventDialog(event: Event): MatDialogRef<EventDialogComponent> {
     return this.dialog.open(EventDialogComponent, {...this.configuration, data: {event}});
+  }
+
+  public openTagDialog(tag: Tag): MatDialogRef<TagDialogComponent> {
+    return this.dialog.open(TagDialogComponent, {...this.configuration, data: {tag}});
   }
 }

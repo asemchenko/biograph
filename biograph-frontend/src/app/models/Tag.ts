@@ -6,3 +6,15 @@ export interface Tag {
   totalEvents: number;
   creationTime: string;
 }
+
+
+export function getStubEmptyTag(): Tag {
+  return {
+    tagId: null,
+    name: '',
+    description: '',
+    totalEvents: 0,
+    creationTime: new Date().toISOString(),
+    color: null,
+  };
+}

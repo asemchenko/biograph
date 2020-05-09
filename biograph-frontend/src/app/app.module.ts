@@ -51,6 +51,7 @@ import {NgxFileDropModule} from 'ngx-file-drop';
 import {ParameterComponent} from './components/events-page/event-dialog/parameter/parameter.component';
 import {TagsComponent} from './components/events-page/event-dialog/tags/tags.component';
 import {TagsPageComponent} from './components/tags-page/tags-page.component';
+import {TagDialogComponent} from './components/tags-page/tag-dialog/tag-dialog.component';
 
 
 const appRoutes: Routes = [
@@ -110,6 +111,7 @@ const appRoutes: Routes = [
     ParameterComponent,
     TagsComponent,
     TagsPageComponent,
+    TagDialogComponent,
   ],
   imports: [
     BrowserModule,
