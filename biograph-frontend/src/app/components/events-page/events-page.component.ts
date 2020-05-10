@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {EventService} from '../../services/event/event.service';
 import {DialogService} from '../../services/dialog/dialog.service';
-import {getStubEmptyEvent} from '../../models/Event';
+import {Event, getStubEmptyEvent} from '../../models/Event';
+import {mergeMap, take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-events-page',
@@ -22,5 +23,16 @@ export class EventsPageComponent implements OnInit {
   openCreateNewEventDialog() {
     console.log('Opening new event dialog...');
     const dialogRef = this.dialogService.openEventDialog(getStubEmptyEvent());
+    dialogRef.afterClosed().pipe(
+      take(1),
+      mergeMap((newEvent: Event) => {
+        return this.eventService.create(newEvent);
+      }),
+    ).subscribe((event: Event) => {
+      console.log('[events-page] Got created event from service: ', event);
+    });
+    /*dialogRef.afterClosed().subscribe((newEvent: Event) => {
+      this.eventService.create(newEvent)
+    })*/
   }
 }
