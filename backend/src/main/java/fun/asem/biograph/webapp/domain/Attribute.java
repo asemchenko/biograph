@@ -56,6 +56,7 @@ public class Attribute {
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         private Long id;
+        // TODO asem IMPORTANT make enum
         private String name;
         private String possibleValues;
         private Double min;

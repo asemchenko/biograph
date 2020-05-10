@@ -12,4 +12,6 @@ public interface GrantRepository extends JpaRepository<Grant, Long> {
     List<Grant> findAllByUserAndAccessTypeAndCategoryIsNotNull(User user, Grant.AccessType accessType);
 
     List<Grant> findAllByUserAndAccessTypeAndTagIsNotNull(User user, Grant.AccessType accessType);
+
+    List<Grant> findAllByUserAndAccessTypeAndEventIsNotNull(User user, Grant.AccessType accessType);
 }

@@ -113,7 +113,6 @@ export class EventDialogComponent implements OnInit {
     this.event.parameters = this.eventParametersInfo.map((eventParameterInfo: ParameterInfo): Parameter => {
       return {
         parameterId: null,
-        event: null,
         attribute: eventParameterInfo.attribute,
         value: eventParameterInfo.formControl.value,
       };

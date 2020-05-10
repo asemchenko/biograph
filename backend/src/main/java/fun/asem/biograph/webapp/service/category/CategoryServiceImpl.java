@@ -18,6 +18,8 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +33,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public ResponseCategoryDto create(CreateCategoryDto categoryDto, User user) {
-        // TODO asem IMPORTANT add grant creation here
         Category category = categoryMapper.createDtoToEntity(categoryDto);
         // saving attributes
         List<Attribute> attributes = saveAttributes(category.getAttributes(), user);
@@ -66,11 +67,34 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public List<ResponseCategoryDto> getUserCategories(User user) {
         return grantService.getCategoryOwnerGrants(user).stream()
                 .map(Grant::getCategory)
                 .map(categoryMapper::entityToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Category> findCategoryById(Long categoryId) {
+        return categoryRepository.findById(categoryId);
+    }
+
+    @Override
+    public void checkOwnerAccess(Category category, User user) throws UnauthorizedException {
+        // check that user owns event category
+        if (findCategoryById(category.getCategoryId())
+                .orElseThrow(() -> new NoSuchElementException("No category with id: " + category.getCategoryId()))
+                .getGrants()
+                .stream()
+                .noneMatch(grant -> grant.getAccessType() == Grant.AccessType.OWNER && grant.getUser().getUserId().equals(user.getUserId()))) {
+            throw new UnauthorizedException("You are not authorized to access category with categoryId: " + category.getCategoryId());
+        }
+    }
+
+    @Override
+    public Category getById(Long categoryId) {
+        return categoryRepository.getOne(categoryId);
     }
 }

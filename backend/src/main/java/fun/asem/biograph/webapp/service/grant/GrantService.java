@@ -18,5 +18,7 @@ public interface GrantService {
 
     List<Grant> getTagOwnerGrants(User user);
 
+    List<Grant> getEventOwnerGrants(User user);
+
     Grant createGrant(Grant grant);
 }

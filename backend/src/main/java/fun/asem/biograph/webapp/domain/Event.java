@@ -25,9 +25,9 @@ public class Event {
     private Instant endDatetime;
     private Instant creationTime;
     private Instant lastModifiedTime;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", fetch = FetchType.EAGER)
     private List<Parameter> parameters;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", fetch = FetchType.EAGER)
     private List<Attachment> attachments;
     @ManyToMany
     @JoinTable(
@@ -39,6 +39,6 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", fetch = FetchType.LAZY)
     private List<Grant> grants;
 }

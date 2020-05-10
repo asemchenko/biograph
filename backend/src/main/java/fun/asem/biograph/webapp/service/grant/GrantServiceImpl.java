@@ -3,7 +3,6 @@ package fun.asem.biograph.webapp.service.grant;
 import fun.asem.biograph.webapp.domain.Grant;
 import fun.asem.biograph.webapp.domain.User;
 import fun.asem.biograph.webapp.repository.GrantRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +31,10 @@ public class GrantServiceImpl implements GrantService {
     @Override
     public List<Grant> getTagOwnerGrants(User user) {
         return grantRepository.findAllByUserAndAccessTypeAndTagIsNotNull(user, Grant.AccessType.OWNER);
+    }
+
+    @Override
+    public List<Grant> getEventOwnerGrants(User user) {
+        return grantRepository.findAllByUserAndAccessTypeAndEventIsNotNull(user, Grant.AccessType.OWNER);
     }
 }
