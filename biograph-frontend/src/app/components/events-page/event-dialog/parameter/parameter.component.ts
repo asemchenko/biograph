@@ -1,16 +1,13 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Attribute} from '../../../../models/Attribute';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
-import {Observable, Subject} from 'rxjs';
-import {Parameter} from '../../../../models/Parameter';
-import {map, takeUntil, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-parameter',
   templateUrl: './parameter.component.html',
   styleUrls: ['./parameter.component.less']
 })
-export class ParameterComponent implements OnInit, OnDestroy {
+export class ParameterComponent implements OnInit {
   @Input()
   attribute: Attribute;
   formControl: FormControl;
@@ -83,27 +80,9 @@ export class ParameterComponent implements OnInit, OnDestroy {
     this.formControl = this.createFormControl();
     this.parameterInfo = {
       formControl: this.formControl,
-      destroy$: new Subject<void>(),
-      parameter$: this.formControl.valueChanges.pipe(
-        takeUntil(this.parameterInfo.destroy$),
-        tap((value: string) => {
-          console.log('Parameter value changed: ', value);
-        }),
-        map((value: string): Parameter => {
-          return {
-            attribute: this.attribute,
-            event: null,
-            parameterId: null,
-            value,
-          };
-        }))
+      attribute: this.attribute,
     };
     this.parameterInfo$.emit(this.parameterInfo);
-  }
-
-  ngOnDestroy(): void {
-    console.log('Emitting parameter destroy...');
-    this.parameterInfo.destroy$.next();
   }
 
   private createFormControl(): FormControl {
@@ -118,12 +97,9 @@ export class ParameterComponent implements OnInit, OnDestroy {
     }
     return this.formBuilder.control('', validators);
   }
-
-
 }
 
 export interface ParameterInfo {
   formControl: FormControl;
-  parameter$: Observable<Parameter>;
-  destroy$: Subject<void>;
+  attribute: Attribute;
 }

@@ -7,6 +7,7 @@ import {CategoryService} from '../../../services/category/category.service';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ParameterInfo} from './parameter/parameter.component';
 import {Parameter} from '../../../models/Parameter';
+import {Tag} from '../../../models/Tag';
 
 @Component({
   selector: 'app-event-dialog',
@@ -31,7 +32,7 @@ export class EventDialogComponent implements OnInit {
   categories$: Observable<Category[]>;
   formGroup: FormGroup;
   private event: Event;
-  private eventParameters: Observable<Parameter>[] = [];
+  private eventParametersInfo: ParameterInfo[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: { event: Event },
@@ -86,7 +87,7 @@ export class EventDialogComponent implements OnInit {
     this.eventCategoryFormControl.valueChanges.subscribe((category: Category) => {
       this.event.category = category;
       this.parametersFormArray.clear();
-      this.eventParameters = [];
+      this.eventParametersInfo = [];
       this.changeDetector.detectChanges();
     });
     this.eventNameFormControl.valueChanges.subscribe((name: string) => {
@@ -95,13 +96,34 @@ export class EventDialogComponent implements OnInit {
     this.eventDescriptionFormControl.valueChanges.subscribe((description: string) => {
       this.event.description = description;
     });
+    this.eventDateFormControl.valueChanges.subscribe(([startDate, endDate]) => {
+      this.event.startDatetime = new Date(startDate).toISOString();
+      this.event.endDatetime = new Date(endDate).toISOString();
+    });
   }
 
   addParameter(parameterInfo: ParameterInfo) {
     console.log('Adding parameter form control to formArray: ', parameterInfo.formControl);
     this.parametersFormArray.push(parameterInfo.formControl);
-    this.eventParameters.push(parameterInfo.parameter$);
+    this.eventParametersInfo.push(parameterInfo);
     this.changeDetector.detectChanges();
+  }
+
+  collectEvent(): Event {
+    this.event.parameters = this.eventParametersInfo.map((eventParameterInfo: ParameterInfo): Parameter => {
+      return {
+        parameterId: null,
+        event: null,
+        attribute: eventParameterInfo.attribute,
+        value: eventParameterInfo.formControl.value,
+      };
+    });
+    console.log('Collected event: ', this.event);
+    return this.event;
+  }
+
+  onTagListChanged(currentTagList: Tag[]): void {
+    this.event.tags = currentTagList;
   }
 
   private createFormGroup(): FormGroup {

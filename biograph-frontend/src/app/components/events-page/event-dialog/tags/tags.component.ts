@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {TagService} from '../../../../services/tag/tag.service';
 import {Observable, of} from 'rxjs';
 import {Tag} from '../../../../models/Tag';
@@ -15,6 +15,9 @@ import {map, startWith, tap, withLatestFrom} from 'rxjs/operators';
 })
 export class TagsComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  @Output()
+  tagListChange = new EventEmitter<Tag[]>();
+
   tags$: Observable<Tag[]>;
   filteredTags$: Observable<Tag[]>;
   selectedTags: Tag[] = [];
@@ -67,6 +70,7 @@ export class TagsComponent implements OnInit {
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.selectedTags.push(event.option.value);
+    this.tagListChange.emit(this.selectedTags);
     this.tagInput.nativeElement.value = '';
     this.tagFormControl.setValue(null);
   }
@@ -74,6 +78,7 @@ export class TagsComponent implements OnInit {
   remove(tag: Tag) {
     const index = this.selectedTags.indexOf(tag);
     this.selectedTags.splice(index, 1);
+    this.tagListChange.emit(this.selectedTags);
     // [dirty hack] just for showing autocomplete
     const curValue = this.tagInput.nativeElement.value;
     this.tagInput.nativeElement.value = '';
