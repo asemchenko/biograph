@@ -9,6 +9,6 @@
   </button>
   <h3>Here will be all events ( probably with pagination )</h3>
   <div>
-    <app-event-card></app-event-card>
+    <app-event-card *ngFor="let event of filteredEvents$ | async" [event]="event"></app-event-card>
   </div>
 </div>

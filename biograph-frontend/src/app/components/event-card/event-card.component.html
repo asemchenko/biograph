@@ -1,17 +1,21 @@
-<mat-card class="event-card">
-  <mat-card-header>
-    <div [style]="'background-size: cover; background-color: ' + '#13ff00' + ';'" class="event-card__category-color"
-         mat-card-avatar></div>
-    <mat-card-title>Event name</mat-card-title>
-    <mat-card-subtitle>Category name</mat-card-subtitle>
+<mat-card [style]="'border-top-color: ' + event.category.color" class="event-card">
+  <mat-card-header class="event-card__header">
+    <mat-card-title>{{event.name}}</mat-card-title>
+    <mat-card-subtitle>Category: {{event.category.name}}</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content>
-    <p>
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-      standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-      type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-      remaining essentially unchanged.
-    </p>
+  <mat-card-content class="event-card__description-content">
+    <p>{{event.description || 'No description provided' }}</p>
+  </mat-card-content>
+  <mat-card-content *ngIf="event.tags && event.tags.length > 0" class="event-card__content">
+    <mat-chip-list class="event-card__chip-list">
+      <mat-basic-chip
+        *ngFor="let tag of event.tags"
+        [matTooltip]="tag.description"
+        [style]="'border-right-color: ' + tag.color + ';'"
+        class="event-card__tag-chip"
+        disabled="true"
+        selected>{{tag.name}}</mat-basic-chip>
+    </mat-chip-list>
   </mat-card-content>
   <mat-card-actions class="event-card-actions">
     <button
@@ -21,6 +25,7 @@
       matTooltip="View event">
       <mat-icon>open_in_new</mat-icon>
     </button>
+    <div class="event-card-actions__stub"></div>
     <button
       class="event-card-action-button"
       color="warn"
