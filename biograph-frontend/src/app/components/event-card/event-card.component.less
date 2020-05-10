@@ -1,0 +1,79 @@
+@import "../../common";
+@import "../../colors";
+
+.event-card {
+  width: ~"min(300px, 90vw)";
+  max-width: 300px;
+  height: 300px;
+  border-top: thick solid;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+
+  &__header {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+  }
+
+  &__description-content {
+    width: 100%;
+    border-top: thin solid @angular-border-gray;
+    border-bottom: thin solid @angular-border-gray;
+    flex-grow: 1;
+    margin-bottom: @small-margin;
+  }
+
+  &__chip-list {
+    margin-bottom: @small-margin;
+  }
+
+  &__chip-list:focus {
+    outline: none;
+  }
+
+  &__content {
+    //padding-top: @small-margin;
+    margin-bottom: 1px;
+  }
+
+  &__tag-chip {
+    border-right: 12px solid;
+    margin: @extra-small-margin;
+    padding: 1px 7px;
+    border-radius: 16px;
+    background-color: #E0E0E0;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  &__tag-chip:focus {
+    outline: none;
+  }
+}
+
+.event-card-actions {
+  width: 100%;
+  padding-top: @extra-small-margin;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: center;
+
+  &__stub {
+    flex-grow: 1;
+  }
+}
+
+.event-card-action-button {
+  margin-left: @normal-margin;
+  margin-right: @normal-margin;
+}
+.event-card-action-button:focus {
+  outline: none;
+}

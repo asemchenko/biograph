@@ -3,6 +3,7 @@ import {EventService} from '../../services/event/event.service';
 import {DialogService} from '../../services/dialog/dialog.service';
 import {Event, getStubEmptyEvent} from '../../models/Event';
 import {mergeMap, take} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-events-page',
@@ -10,7 +11,7 @@ import {mergeMap, take} from 'rxjs/operators';
   styleUrls: ['./events-page.component.less']
 })
 export class EventsPageComponent implements OnInit {
-
+  filteredEvents$: Observable<Event[]>;
   constructor(
     private eventService: EventService,
     private dialogService: DialogService,
@@ -18,6 +19,7 @@ export class EventsPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.filteredEvents$ = this.eventService.getEventsOwnedByCurrentUser();
   }
 
   openCreateNewEventDialog() {

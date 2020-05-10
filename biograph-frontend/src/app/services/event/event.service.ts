@@ -18,7 +18,22 @@ export class EventService {
   }
 
   public getEventsOwnedByCurrentUser(): Observable<Event[]> {
-    return of([]);
+    return this.authService.getCurrentUser().pipe(
+      take(1),
+      map(user => user.userId),
+      mergeMap((userId: number) => {
+        const url = `${API_URL}/api/users/${userId}/events`;
+        return this.http.get<Event[]>(url).pipe(
+          tap(response => {
+            console.log('[event service] Got response: ', response);
+          }),
+          catchError(error => {
+            console.log('[event service] Got error: ', error);
+            return of(null);
+          })
+        );
+      })
+    );
   }
 
   public create(event: Event): Observable<Event> {

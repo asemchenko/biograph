@@ -7,5 +7,10 @@
     color="primary"
     mat-raised-button>New
   </button>
-  <h3>Here will be all events ( probably with pagination )</h3>
+  <mat-divider class="container__divider"></mat-divider>
+  <section class="events-section">
+    <app-event-card
+      *ngFor="let event of filteredEvents$ | async"
+      [event]="event" class="container__event-card"></app-event-card>
+  </section>
 </div>
