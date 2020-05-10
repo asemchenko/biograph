@@ -1,0 +1,32 @@
+<mat-card class="event-card">
+  <mat-card-header>
+    <div [style]="'background-size: cover; background-color: ' + '#13ff00' + ';'" class="event-card__category-color"
+         mat-card-avatar></div>
+    <mat-card-title>Event name</mat-card-title>
+    <mat-card-subtitle>Category name</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+      standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+      type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+      remaining essentially unchanged.
+    </p>
+  </mat-card-content>
+  <mat-card-actions class="event-card-actions">
+    <button
+      class="event-card-action-button"
+      color="primary"
+      mat-icon-button
+      matTooltip="View event">
+      <mat-icon>open_in_new</mat-icon>
+    </button>
+    <button
+      class="event-card-action-button"
+      color="warn"
+      mat-icon-button
+      matTooltip="Delete event">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

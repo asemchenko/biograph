@@ -53,6 +53,8 @@ import {TagsComponent} from './components/events-page/event-dialog/tags/tags.com
 import {TagsPageComponent} from './components/tags-page/tags-page.component';
 import {TagDialogComponent} from './components/tags-page/tag-dialog/tag-dialog.component';
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
+import {EventCardComponent} from './components/event-card/event-card.component';
+import {MatCardModule} from '@angular/material/card';
 
 
 const appRoutes: Routes = [
@@ -113,6 +115,7 @@ const appRoutes: Routes = [
     TagsComponent,
     TagsPageComponent,
     TagDialogComponent,
+    EventCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -149,6 +152,7 @@ const appRoutes: Routes = [
     NgxFileDropModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    MatCardModule,
   ],
   providers: [
     {
