@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {Event} from '../../../models/Event';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {Observable} from 'rxjs';
@@ -34,6 +34,7 @@ export class EventDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private dialogData: { event: Event },
     private categoryService: CategoryService,
     private formBuilder: FormBuilder,
+    private changeDetector: ChangeDetectorRef,
   ) {
   }
 
@@ -77,12 +78,14 @@ export class EventDialogComponent implements OnInit {
     this.eventCategoryFormControl.valueChanges.subscribe(() => {
       console.log('Event category changed. Clearing formArray...');
       this.parametersFormArray.clear();
+      this.changeDetector.detectChanges();
     });
   }
 
   addParameterFormControl(parameterFormControl: FormControl) {
     console.log('Adding parameter form control to formArray: ', parameterFormControl);
     this.parametersFormArray.push(parameterFormControl);
+    this.changeDetector.detectChanges();
   }
 
   private createFormGroup(): FormGroup {
