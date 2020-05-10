@@ -98,12 +98,11 @@ export class EventDialogComponent implements OnInit {
     });
     this.eventDateFormControl.valueChanges.subscribe(([startDate, endDate]) => {
       this.event.startDatetime = new Date(startDate).toISOString();
-      this.event.endDatetime = new Date(endDate).toISOString();
+      this.event.endDatetime = endDate ? new Date(endDate).toISOString() : null;
     });
   }
 
   addParameter(parameterInfo: ParameterInfo) {
-    console.log('Adding parameter form control to formArray: ', parameterInfo.formControl);
     this.parametersFormArray.push(parameterInfo.formControl);
     this.eventParametersInfo.push(parameterInfo);
     this.changeDetector.detectChanges();
@@ -117,7 +116,6 @@ export class EventDialogComponent implements OnInit {
         value: eventParameterInfo.formControl.value,
       };
     });
-    console.log('Collected event: ', this.event);
     return this.event;
   }
 

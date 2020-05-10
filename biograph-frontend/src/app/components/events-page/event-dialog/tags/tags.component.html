@@ -16,7 +16,7 @@
         [matAutocomplete]="auto"
         [matChipInputFor]="tagsChipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        placeholder="Enter one or few tags">
+        placeholder="Enter one or more tags">
     </mat-chip-list>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
       <mat-option *ngFor="let tag of filteredTags$ | async" [value]="tag">

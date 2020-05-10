@@ -49,6 +49,7 @@
           matInput
           required>
         <owl-date-time #dt10></owl-date-time>
+        <mat-hint>Either time range or just start time</mat-hint>
         <mat-icon [owlDateTimeTrigger]="dt10" matSuffix>calendar_today</mat-icon>
         <mat-error *ngIf="eventDateFormControl.invalid && eventDateFormControl.touched">
           {{eventDateValidationErrorMessage}}
