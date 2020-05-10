@@ -1,18 +1,24 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {Attribute} from '../../../../models/Attribute';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {Observable, Subject} from 'rxjs';
+import {Parameter} from '../../../../models/Parameter';
+import {map, takeUntil, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-parameter',
   templateUrl: './parameter.component.html',
   styleUrls: ['./parameter.component.less']
 })
-export class ParameterComponent implements OnInit {
+export class ParameterComponent implements OnInit, OnDestroy {
   @Input()
   attribute: Attribute;
   formControl: FormControl;
+  /*@Output()
+  parameterFormControl = new EventEmitter<FormControl>();*/
   @Output()
-  parameterFormControl = new EventEmitter<FormControl>();
+  parameterInfo$ = new EventEmitter<ParameterInfo>();
+  parameterInfo: ParameterInfo;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,7 +81,29 @@ export class ParameterComponent implements OnInit {
   ngOnInit(): void {
     console.log('[parameter-component] Got attribute: ', JSON.stringify(this.attribute));
     this.formControl = this.createFormControl();
-    this.parameterFormControl.emit(this.formControl);
+    this.parameterInfo = {
+      formControl: this.formControl,
+      destroy$: new Subject<void>(),
+      parameter$: this.formControl.valueChanges.pipe(
+        takeUntil(this.parameterInfo.destroy$),
+        tap((value: string) => {
+          console.log('Parameter value changed: ', value);
+        }),
+        map((value: string): Parameter => {
+          return {
+            attribute: this.attribute,
+            event: null,
+            parameterId: null,
+            value,
+          };
+        }))
+    };
+    this.parameterInfo$.emit(this.parameterInfo);
+  }
+
+  ngOnDestroy(): void {
+    console.log('Emitting parameter destroy...');
+    this.parameterInfo.destroy$.next();
   }
 
   private createFormControl(): FormControl {
@@ -92,4 +120,10 @@ export class ParameterComponent implements OnInit {
   }
 
 
+}
+
+export interface ParameterInfo {
+  formControl: FormControl;
+  parameter$: Observable<Parameter>;
+  destroy$: Subject<void>;
 }

@@ -5,6 +5,8 @@ import {Observable} from 'rxjs';
 import {Category} from '../../../models/Category';
 import {CategoryService} from '../../../services/category/category.service';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ParameterInfo} from './parameter/parameter.component';
+import {Parameter} from '../../../models/Parameter';
 
 @Component({
   selector: 'app-event-dialog',
@@ -29,6 +31,7 @@ export class EventDialogComponent implements OnInit {
   categories$: Observable<Category[]>;
   formGroup: FormGroup;
   private event: Event;
+  private eventParameters: Observable<Parameter>[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private dialogData: { event: Event },
@@ -40,6 +43,10 @@ export class EventDialogComponent implements OnInit {
 
   get eventNameFormControl(): AbstractControl {
     return this.formGroup.get('eventName');
+  }
+
+  get eventDescriptionFormControl(): AbstractControl {
+    return this.formGroup.get('eventDescription');
   }
 
   get eventDateFormControl(): AbstractControl {
@@ -74,23 +81,33 @@ export class EventDialogComponent implements OnInit {
     // cloning event object
     this.event = JSON.parse(JSON.stringify(this.dialogData.event));
     this.formGroup = this.createFormGroup();
+    // ========== SUBSCRIBE TO FORM CONTROL VALUES CHANGES & SET 'event' property every time form control changes
     // TODO asem add unsubscribe here
-    this.eventCategoryFormControl.valueChanges.subscribe(() => {
-      console.log('Event category changed. Clearing formArray...');
+    this.eventCategoryFormControl.valueChanges.subscribe((category: Category) => {
+      this.event.category = category;
       this.parametersFormArray.clear();
+      this.eventParameters = [];
       this.changeDetector.detectChanges();
+    });
+    this.eventNameFormControl.valueChanges.subscribe((name: string) => {
+      this.event.name = name;
+    });
+    this.eventDescriptionFormControl.valueChanges.subscribe((description: string) => {
+      this.event.description = description;
     });
   }
 
-  addParameterFormControl(parameterFormControl: FormControl) {
-    console.log('Adding parameter form control to formArray: ', parameterFormControl);
-    this.parametersFormArray.push(parameterFormControl);
+  addParameter(parameterInfo: ParameterInfo) {
+    console.log('Adding parameter form control to formArray: ', parameterInfo.formControl);
+    this.parametersFormArray.push(parameterInfo.formControl);
+    this.eventParameters.push(parameterInfo.parameter$);
     this.changeDetector.detectChanges();
   }
 
   private createFormGroup(): FormGroup {
     return this.formBuilder.group({
       eventName: new FormControl(this.event.name, [Validators.required, Validators.maxLength(this.eventNameMaxLength)]),
+      eventDescription: new FormControl('', []),
       eventDate: new FormControl('', [Validators.required]),
       eventCategory: new FormControl('', [Validators.required]),
       parameters: this.formBuilder.array([]),
