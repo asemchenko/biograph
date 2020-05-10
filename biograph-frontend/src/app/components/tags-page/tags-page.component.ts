@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {getStubEmptyTag, Tag} from '../../models/Tag';
 import {TagService} from '../../services/tag/tag.service';
-import {combineLatest, delay, map, take} from 'rxjs/operators';
+import {combineLatest, delay, exhaustMap, map, take, tap} from 'rxjs/operators';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {Observable, Subject} from 'rxjs';
@@ -58,7 +58,20 @@ export class TagsPageComponent implements OnInit {
 
   openNewTagDialog(): void {
     // TODO asem - IMPORTANT needs to add created tag to table
-    this.dialogService.openTagDialog(getStubEmptyTag());
+    const dialogRef = this.dialogService.openTagDialog(getStubEmptyTag());
+    dialogRef.afterClosed().pipe(
+      take(1),
+      tap((newTag: Tag) => {
+        console.log('[tags-page] Got tag from dialog: ', newTag);
+      }),
+      exhaustMap((newTag: Tag) => {
+        return this.tagService.createTag(newTag);
+      })
+    ).subscribe((createdTag: Tag) => {
+      console.log('Got created tag from service: ', createdTag);
+
+      // TODO asem IMPORTANT - probably it is better to dispatch store event here ( or even better in service ) and connect service to store
+    });
   }
 
   private filter(tags: Tag[], searchQuery: string): Tag[] {

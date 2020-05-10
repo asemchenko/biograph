@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Tag} from '../../models/Tag';
+import {AuthService} from '../auth/auth.service';
+import {catchError, map, mergeMap, take, tap} from 'rxjs/operators';
+import {API_URL} from '../../../api-urls';
 
 @Injectable({
   providedIn: 'root'
@@ -10,36 +13,45 @@ export class TagService {
 
   constructor(
     private http: HttpClient,
+    private authService: AuthService,
   ) {
   }
 
   getTagsOwnedByCurrentUser(): Observable<Tag[]> {
-    return of([
-      {tagId: 1, name: 'Personal', color: null, description: 'My private life', creationTime: '2020-05-09T13:43:01.269Z', totalEvents: 0},
-      {
-        tagId: 2,
-        name: 'Friends',
-        color: null,
-        description: 'Activity with my friends',
-        creationTime: '2020-05-09T13:43:01.269Z',
-        totalEvents: 0
-      },
-      {
-        tagId: 3,
-        name: 'Important',
-        color: null,
-        description: 'Something, that looks important',
-        creationTime: '2020-05-03T12:12:01.269Z',
-        totalEvents: 0
-      },
-      {
-        tagId: 4,
-        name: 'Watch later',
-        color: null,
-        description: 'Need to think about it later',
-        creationTime: '2020-05-08T18:59:01.269Z',
-        totalEvents: 0
-      },
-    ]);
+    return this.authService.getCurrentUser().pipe(
+      take(1),
+      map(user => user.userId),
+      mergeMap((userId: number) => {
+        const url = `${API_URL}/api/users/${userId}/tags`;
+        return this.http.get<Tag[]>(url).pipe(
+          tap(response => {
+            console.log('[tag service] Got response: ', response);
+          }),
+          catchError(error => {
+            console.log('[tag service] Got error: ', error);
+            return of(null);
+          })
+        );
+      })
+    );
+  }
+
+  createTag(tag: Tag): Observable<Tag> {
+    return this.authService.getCurrentUser().pipe(
+      take(1),
+      map(user => user.userId),
+      mergeMap((userId: number) => {
+        const url = `${API_URL}/api/users/${userId}/tags`;
+        return this.http.post<Tag>(url, tag).pipe(
+          tap(response => {
+            console.log('[tag service] Got response: ', response);
+          }),
+          catchError(error => {
+            console.log('[tag service] Got error: ', error);
+            return of(null);
+          })
+        );
+      })
+    );
   }
 }

@@ -32,7 +32,8 @@ public class Grant {
     @JoinColumn(name = "user_id")
     private User user;
     private Long eventId;
-    private Long tagId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Tag tag;
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
     @ManyToOne(fetch = FetchType.EAGER)

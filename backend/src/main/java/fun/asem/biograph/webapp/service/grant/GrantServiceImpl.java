@@ -4,11 +4,12 @@ import fun.asem.biograph.webapp.domain.Grant;
 import fun.asem.biograph.webapp.domain.User;
 import fun.asem.biograph.webapp.repository.GrantRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class GrantServiceImpl implements GrantService {
     private final GrantRepository grantRepository;
@@ -26,5 +27,10 @@ public class GrantServiceImpl implements GrantService {
     @Override
     public Grant createGrant(Grant grant) {
         return grantRepository.save(grant);
+    }
+
+    @Override
+    public List<Grant> getTagOwnerGrants(User user) {
+        return grantRepository.findAllByUserAndAccessTypeAndTagIsNotNull(user, Grant.AccessType.OWNER);
     }
 }

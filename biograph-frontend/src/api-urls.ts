@@ -9,6 +9,8 @@ export const API_URLS = {
   CATEGORY_URL: environment.BASE_URL + '/api/users/{userId}/categories',
 };
 
+export const API_URL = environment.BASE_URL;
+
 export function insertUserInUrl(url: string, userId: number): string {
   return url.replace('{userId}', userId.toString());
 }
