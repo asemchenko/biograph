@@ -25,7 +25,7 @@ export class TagDialogComponent implements OnInit {
   ngOnInit(): void {
     this.tag = this.dialogData.tag;
     this.formGroup = new FormGroup({
-      tagName: new FormControl(this.tag.name, [Validators.required, Validators.maxLength(this.tagNameMaxLength)])
+      tagName: new FormControl(this.tag.name, [Validators.required, Validators.maxLength(this.tagNameMaxLength)]),
     });
   }
 

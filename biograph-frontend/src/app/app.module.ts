@@ -52,6 +52,7 @@ import {ParameterComponent} from './components/events-page/event-dialog/paramete
 import {TagsComponent} from './components/events-page/event-dialog/tags/tags.component';
 import {TagsPageComponent} from './components/tags-page/tags-page.component';
 import {TagDialogComponent} from './components/tags-page/tag-dialog/tag-dialog.component';
+import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 
 
 const appRoutes: Routes = [
@@ -146,6 +147,8 @@ const appRoutes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     NgxFileDropModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
   ],
   providers: [
     {

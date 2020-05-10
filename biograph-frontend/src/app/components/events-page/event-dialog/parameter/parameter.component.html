@@ -1,16 +1,29 @@
 <section class="container">
   <mat-form-field *ngIf="isNumber" class="small-form-field">
     <mat-label>{{attribute.name}}</mat-label>
-    <input [max]="numberMaxValue" [min]="numberMinValue" matInput type="number">
+    <input
+      [formControl]="formControl"
+      [max]="numberMaxValue"
+      [min]="numberMinValue"
+      matInput
+      required type="number">
     <mat-hint>{{numberFormFieldHint}}</mat-hint>
+    <mat-error *ngIf="formControl.invalid && formControl.touched">
+      {{numberValidationErrorMessage}}
+    </mat-error>
   </mat-form-field>
   <mat-form-field *ngIf="isEnumeration" class="small-form-field">
     <mat-label>{{attribute.name}}</mat-label>
-    <mat-select>
+    <mat-select
+      [formControl]="formControl"
+      required>
       <mat-option *ngFor="let possibleValue of attributePossibleValues" [value]="possibleValue">
         {{possibleValue}}
       </mat-option>
     </mat-select>
     <mat-hint>{{attribute.description}}</mat-hint>
+    <mat-error *ngIf="formControl.invalid && formControl.touched">
+      Required
+    </mat-error>
   </mat-form-field>
 </section>

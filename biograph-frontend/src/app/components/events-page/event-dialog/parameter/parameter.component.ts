@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Attribute} from '../../../../models/Attribute';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-parameter',
@@ -9,8 +10,13 @@ import {Attribute} from '../../../../models/Attribute';
 export class ParameterComponent implements OnInit {
   @Input()
   attribute: Attribute;
+  formControl: FormControl;
+  @Output()
+  parameterFormControl = new EventEmitter<FormControl>();
 
-  constructor() {
+  constructor(
+    private formBuilder: FormBuilder,
+  ) {
   }
 
   get isNumber(): boolean {
@@ -50,8 +56,40 @@ export class ParameterComponent implements OnInit {
     return this.attribute.constraint.max;
   }
 
+  get numberValidationErrorMessage(): string {
+    const minConstraintFails = this.formControl.hasError('min');
+    const maxConstraintFails = this.formControl.hasError('max');
+
+    if (minConstraintFails && maxConstraintFails) {
+      return 'Valus must be in range [ ' + this.numberMinValue + '; ' + this.numberMaxValue + ' ]';
+    }
+    if (minConstraintFails) {
+      return 'Value must not be less than ' + this.numberMinValue;
+    }
+    if (maxConstraintFails) {
+      return 'Value must not be more than ' + this.numberMaxValue;
+    }
+    return 'Value is required';
+  }
+
   ngOnInit(): void {
     console.log('[parameter-component] Got attribute: ', JSON.stringify(this.attribute));
+    this.formControl = this.createFormControl();
+    this.parameterFormControl.emit(this.formControl);
   }
+
+  private createFormControl(): FormControl {
+    const validators = [Validators.required];
+    if (this.isNumber) {
+      if (this.attribute.constraint.min) {
+        validators.push(Validators.min(this.attribute.constraint.min));
+      }
+      if (this.attribute.constraint.max) {
+        validators.push(Validators.max(this.attribute.constraint.max));
+      }
+    }
+    return this.formBuilder.control('', validators);
+  }
+
 
 }
