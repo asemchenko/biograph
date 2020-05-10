@@ -66,6 +66,31 @@
   display: block;
 }
 
+.dialog-actions {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.small-form-field {
+  width: ~'min(210px, 70vw)';
+  margin: auto;
+}
+
+.normal-form-field {
+  width: 85%;
+  margin: auto;
+}
+
+.rounded-color-picker {
+  @picker-diameter: 25px;
+  @picker-radius: @picker-diameter / 2;
+  width: @picker-diameter;
+  height: @picker-diameter;
+  border-radius: @picker-radius;
+  border: solid transparent;
+}
+
 @normal-margin: 20px;
 @small-margin: 10px;
 @extra-small-margin: 5px;

@@ -2,10 +2,9 @@ package fun.asem.biograph.webapp.controller;
 
 import fun.asem.biograph.webapp.domain.Attribute;
 import fun.asem.biograph.webapp.domain.User;
-import fun.asem.biograph.webapp.dto.mapper.attribute.AttributeMapper;
+import fun.asem.biograph.webapp.dto.mapper.AttributeMapper;
 import fun.asem.biograph.webapp.dto.model.attribute.CreateAttributeDto;
 import fun.asem.biograph.webapp.dto.model.attribute.ResponseAttributeDto;
-import fun.asem.biograph.webapp.exception.UnauthorizedException;
 import fun.asem.biograph.webapp.service.attribute.AttributeService;
 import fun.asem.biograph.webapp.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +19,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/")
 @RestController
 @RequiredArgsConstructor
-public class AttributeController {
+public class AttributeController extends BaseController {
     private final UserService userService;
     private final AttributeService attributeService;
-    private final AttributeMapper dtoMapper = AttributeMapper.INSTANCE;
+    private final AttributeMapper dtoMapper;
 
     /**
      * @return Returns list of all attributes that are owned by current user
@@ -48,12 +47,6 @@ public class AttributeController {
         User user = getUser(principal);
         checkAccess(userId, user);
         return convertToDto(attributeService.create(attribute, user));
-    }
-
-    private void checkAccess(Long userId, User user) {
-        if (!user.getUserId().equals(userId)) {
-            throw new UnauthorizedException();
-        }
     }
 
     private User getUser(Principal principal) {

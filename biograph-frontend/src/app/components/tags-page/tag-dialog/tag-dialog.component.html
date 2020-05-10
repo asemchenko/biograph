@@ -1,0 +1,47 @@
+<h2 class="text-center">Tag</h2>
+<mat-dialog-content>
+  <form [formGroup]="formGroup" class="tag-form">
+    <mat-form-field class="tag-dialog-form-field">
+      <mat-label>Name</mat-label>
+      <input
+        #tagNameInput
+        formControlName="tagName"
+        matInput
+        placeholder="Ex. 'Watch later'"
+        required type="text">
+      <mat-hint align="start"><strong>Less is more</strong></mat-hint>
+      <mat-hint align="end">{{tagNameInput.value.length}}/{{tagNameMaxLength}}</mat-hint>
+      <mat-error *ngIf="tagNameFormControl.invalid && tagNameFormControl.touched">
+        {{getTagNameValidationError()}}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="tag-dialog-form-field">
+      <mat-label>Description</mat-label>
+      <textarea [(ngModel)]="tag.description"
+                [ngModelOptions]="{standalone:true}"
+                class="tag-description-input"
+                matInput
+                placeholder="Ex. 'Is used to mark something that I need to see again later'"
+                type="text"></textarea>
+      <mat-hint align="start"><strong>Add short description to your tag</strong></mat-hint>
+    </mat-form-field>
+    <br>
+    <div class="color-form-field">
+      <mat-hint>Customize color</mat-hint>
+      <br>
+      <input [(colorPicker)]="tag.color"
+             [style.background]="tag.color"
+             class="rounded-color-picker"
+             cpDialogDisplay="popup"
+             cpDisableInput="true"
+             cpPosition="top"
+             cpPositionOffset="-430%"
+             type="button"/>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions">
+  <button color="warn" mat-button mat-dialog-close>Cancel</button>
+  <button [disabled]="formGroup.invalid" [mat-dialog-close]="collectTag()" color="primary" mat-button>Create
+  </button>
+</mat-dialog-actions>

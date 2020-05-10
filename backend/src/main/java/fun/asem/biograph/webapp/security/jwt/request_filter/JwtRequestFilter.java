@@ -28,6 +28,11 @@ public class JwtRequestFilter extends AuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         Optional<String> jwt = parseJwtTokenFromRequest(httpServletRequest);
+        // ignoring authentication on endpoint /api/auth ( authentication endpoint does not required authentication )
+        if (httpServletRequest.getRequestURI().startsWith("/api/auth/")) {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+            return;
+        }
         if (jwt.isPresent()) {
             String token = jwt.get();
             // getting user details and validating jwt token

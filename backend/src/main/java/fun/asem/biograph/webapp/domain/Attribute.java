@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -29,10 +30,15 @@ public class Attribute {
     @JoinColumn(name = "constraint_id")
     private Constraint constraint;
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "attributeId")
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "attribute",
+            fetch = FetchType.LAZY)
     private List<Grant> grants;
-    // TODO asem add spring @Formula or @Query here
+    @Formula("( SELECT COUNT(*) FROM parameters WHERE parameters.attribute_id = attribute_id )")
     private Long totalMeasurements;
+    @Formula("( SELECT COUNT(*) FROM category_attributes ca WHERE ca.attribute_id = attribute_id )")
     private Long totalCategories;
 
     public enum AttributeType {
@@ -50,6 +56,7 @@ public class Attribute {
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         private Long id;
+        // TODO asem IMPORTANT make enum
         private String name;
         private String possibleValues;
         private Double min;

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -25,9 +27,11 @@ public class Event {
     private Instant endDatetime;
     private Instant creationTime;
     private Instant lastModifiedTime;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventId")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
     private List<Parameter> parameters;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventId")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
     private List<Attachment> attachments;
     @ManyToMany
     @JoinTable(
@@ -39,6 +43,6 @@ public class Event {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", fetch = FetchType.LAZY)
     private List<Grant> grants;
 }

@@ -1,0 +1,21 @@
+@import "../../common";
+
+.container {
+  text-align: center;
+}
+
+.tags-header {
+  .header;
+  margin-top: @normal-margin;
+}
+
+.tags-table {
+  width: 100%;
+  margin-top: @normal-margin;
+}
+
+::ng-deep .mat-sort-header-container {
+  justify-content: center;
+  /* The missing piece */
+  margin-right: -18px;
+}

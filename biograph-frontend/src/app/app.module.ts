@@ -43,6 +43,17 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {NewAttributeDialogComponent} from './components/attributes-page/new-attribute-dialog/new-attribute-dialog.component';
 import {MatSelectModule} from '@angular/material/select';
 import {StringToDatePipe} from './pipes/string-to-date.pipe';
+import {EventsPageComponent} from './components/events-page/events-page.component';
+import {EventDialogComponent} from './components/events-page/event-dialog/event-dialog.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {NgxFileDropModule} from 'ngx-file-drop';
+import {ParameterComponent} from './components/events-page/event-dialog/parameter/parameter.component';
+import {TagsComponent} from './components/events-page/event-dialog/tags/tags.component';
+import {TagsPageComponent} from './components/tags-page/tags-page.component';
+import {TagDialogComponent} from './components/tags-page/tag-dialog/tag-dialog.component';
+import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
+
 
 const appRoutes: Routes = [
   {
@@ -64,6 +75,14 @@ const appRoutes: Routes = [
   {
     path: 'metrics',
     component: AttributesPageComponent
+  },
+  {
+    path: 'tags',
+    component: TagsPageComponent
+  },
+  {
+    path: 'events',
+    component: EventsPageComponent
   },
   // TODO asem add routes here as soon as other components will be created
   {
@@ -87,7 +106,13 @@ const appRoutes: Routes = [
     NewCategoryDialogComponent,
     AttributesPageComponent,
     NewAttributeDialogComponent,
-    StringToDatePipe
+    StringToDatePipe,
+    EventsPageComponent,
+    EventDialogComponent,
+    ParameterComponent,
+    TagsComponent,
+    TagsPageComponent,
+    TagDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -119,6 +144,11 @@ const appRoutes: Routes = [
     ColorPickerModule,
     MatTooltipModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxFileDropModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
   ],
   providers: [
     {

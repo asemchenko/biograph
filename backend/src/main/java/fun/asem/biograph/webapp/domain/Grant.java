@@ -31,10 +31,18 @@ public class Grant {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private Long eventId;
-    private Long categoryId;
-    private Long tagId;
-    private Long attributeId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "event_id")
+    private Event event;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "attribute_id")
+    private Attribute attribute;
     @Enumerated(EnumType.STRING)
     private AccessType accessType;
 

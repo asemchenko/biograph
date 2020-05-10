@@ -1,11 +1,11 @@
 package fun.asem.biograph.webapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -25,7 +25,7 @@ public class Category {
     private String description;
     private String color;
     private Instant creationTime;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "category_attributes",
             joinColumns = {@JoinColumn(name = "category_id")},
@@ -33,11 +33,12 @@ public class Category {
     )
     private List<Attribute> attributes;
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "category",
+            fetch = FetchType.LAZY)
     private List<Grant> grants;
-
-    @JsonGetter("totalEvents")
-    private Long getTotalEvents() {
-        return 0L;
-    }
+    @Formula("( SELECT COUNT(*) FROM events WHERE events.category_id = category_id )")
+    private Long totalEvents;
 }

@@ -2,8 +2,9 @@ package fun.asem.biograph.webapp.dto.model.attribute;
 
 
 import fun.asem.biograph.webapp.domain.Attribute;
-import fun.asem.biograph.webapp.dto.mapper.attribute.AttributeMapper;
+import fun.asem.biograph.webapp.dto.mapper.AttributeMapper;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class ResponseAttributeDtoTest {
-    private final AttributeMapper dtoMapper = AttributeMapper.INSTANCE;
+    private final AttributeMapper dtoMapper = Mappers.getMapper(AttributeMapper.class);
 
     @Test
     public void whenConvertDtoToEntity_thenCorrect() {

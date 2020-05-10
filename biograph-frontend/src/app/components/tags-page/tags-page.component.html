@@ -1,0 +1,36 @@
+<div class="container">
+  <h1 class="tags-header">Tags</h1>
+  <app-search-bar (valueChanged)="search($event)"></app-search-bar>
+  <button
+    (click)="openNewTagDialog()"
+    class="block-centered-button"
+    color="primary"
+    mat-raised-button>New
+  </button>
+  <table [dataSource]="dataSource" class="mat-elevation-z8 tags-table" mat-table matSort>
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Name</th>
+      <td *matCellDef="let tag" mat-cell>
+        <span
+          [matTooltip]="tag.description"
+          matTooltipPosition="right">
+          {{tag.name}}
+        </span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="totalEvents">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Total events</th>
+      <td *matCellDef="let tag" mat-cell>
+        {{tag.totalEvents}}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="creationTime">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Creation time</th>
+      <td *matCellDef="let tag" mat-cell>
+        {{ tag.creationTime | stringToDate | date: 'MM/dd/yyyy hh:mm'}}
+      </td>
+    </ng-container>
+    <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: columnsToDisplay" mat-row></tr>
+  </table>
+</div>

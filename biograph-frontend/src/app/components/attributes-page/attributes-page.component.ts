@@ -6,6 +6,7 @@ import {Category} from '../../models/Category';
 import {MatDialog} from '@angular/material/dialog';
 import {NewAttributeDialogComponent} from './new-attribute-dialog/new-attribute-dialog.component';
 import {AttributeService} from '../../services/attribute/attribute.service';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-attributes-page',
@@ -14,58 +15,7 @@ import {AttributeService} from '../../services/attribute/attribute.service';
 })
 export class AttributesPageComponent implements OnInit {
   dataSource: MatTableDataSource<Attribute>;
-  allAttributes: Attribute[] = [
-    {
-      attributeId: 1,
-      name: 'Weight',
-      description: 'My weight in kg',
-      totalCategories: 1,
-      totalMeasurements: 10,
-      creationTime: new Date().toISOString(),
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 2,
-      name: 'Height',
-      description: 'My height in meters',
-      totalCategories: 1,
-      totalMeasurements: 10,
-      creationTime: new Date().toISOString(),
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 3,
-      name: 'Cardio',
-      description: 'Cardio exercising time ( in minutes )',
-      totalCategories: 2,
-      totalMeasurements: 15,
-      creationTime: new Date().toISOString(),
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 4,
-      name: 'Heart rate ( before )',
-      description: 'My heart rate before start exercising',
-      totalCategories: 2,
-      totalMeasurements: 18,
-      creationTime: new Date().toISOString(),
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-    {
-      attributeId: 5,
-      name: 'Feeling',
-      description: 'How I feel myself after event ( from 1 to 10 )',
-      totalCategories: 10,
-      totalMeasurements: 8,
-      creationTime: new Date().toISOString(),
-      attributeType: 'NUMBER',
-      constraint: null
-    },
-  ];
+  allAttributes: Attribute[] = [];
   /**
    * List of attributes that is displayed ( attributes are filtered according to search bar content )
    */
@@ -85,10 +35,16 @@ export class AttributesPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // TODO asem init allAttributes from using backend query
-    this.filteredAttributes = this.allAttributes;
-    this.dataSource = new MatTableDataSource<Attribute>(this.filteredAttributes);
-    this.dataSource.sort = this.sort;
+    console.log('Loading user attributes...');
+    this.attributeService.getAttributesOwnedByCurrentUser().pipe(
+      take(1),
+    ).subscribe((attributes) => {
+      console.log('Got response: ', attributes);
+      this.allAttributes = attributes;
+      this.filteredAttributes = this.allAttributes;
+      this.dataSource = new MatTableDataSource<Attribute>(this.filteredAttributes);
+      this.dataSource.sort = this.sort;
+    });
   }
 
   search(searchQuery: string) {
@@ -99,14 +55,15 @@ export class AttributesPageComponent implements OnInit {
     });
     this.updateTableView();
   }
-
   openNewAttributeDialog() {
+    // TODO asem REFACTOR move opening dialog logic to dialog.service
     const dialogRef = this.dialog.open(
       NewAttributeDialogComponent,
       {
         width: 'min(700px, 95vw)'
       }
     );
+    // FIXME asem REFACTOR - subscribe in subscribe ( если забыл как - чекни как реализовано в categories-page.component.ts )
     dialogRef.afterClosed().subscribe((newAttribute: Attribute) => {
       console.log('Got new attribute: ', newAttribute);
       if (newAttribute) {
