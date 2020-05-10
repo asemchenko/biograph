@@ -2,9 +2,27 @@
 
 .container {
   text-align: center;
+
+  &__event-card {
+    margin-bottom: @normal-margin;
+    margin-right: @normal-margin;
+  }
+
+  &__divider {
+    margin-top: @normal-margin;
+    margin-bottom: @normal-margin;
+  }
 }
 
 .attributes-header {
   .header;
   margin-top: @normal-margin;
+}
+
+.events-section {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
 }
