@@ -40,6 +40,8 @@ public class AttributeServiceImpl implements AttributeService {
                 .build();
         attribute.setGrants(Collections.singletonList(grant));
         attribute = attributeRepository.save(attribute);
+        attribute.setTotalCategories(0L);
+        attribute.setTotalMeasurements(0L);
         return attribute;
     }
 

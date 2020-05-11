@@ -5,7 +5,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {NewCategoryDialogComponent} from './new-category-dialog/new-category-dialog.component';
 import {Category} from '../../models/Category';
 import {CategoryService} from '../../services/category/category.service';
-import {mergeMap, take, tap} from 'rxjs/operators';
+import {mergeMap, take} from 'rxjs/operators';
+import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-categories-page',
@@ -24,6 +25,7 @@ export class CategoriesPageComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private categoryService: CategoryService,
+    private snackBarService: SnackBarService,
   ) {
   }
 
@@ -46,16 +48,15 @@ export class CategoriesPageComponent implements OnInit {
     );
     dialogRef.afterClosed().pipe(
       take(1),
-      tap((newCategory: Category) => {
-        console.log('[categories-page] Got from dialog: ', newCategory);
-      }),
       mergeMap((newCategory: Category) => {
         return this.categoryService.createCategory(newCategory);
       })
     ).subscribe((createdCategory: Category) => {
-      console.log('[categories-page] Got created category from service: ', createdCategory);
-      this.allCategories.push(createdCategory);
-      this.search(this.currentSearchQuery);
+      if (createdCategory) {
+        this.snackBarService.openSuccessSnackBar('Category successfully created');
+        this.allCategories.push(createdCategory);
+        this.search(this.currentSearchQuery);
+      }
     });
   }
 

@@ -60,6 +60,7 @@ export class AuthEffects {
     tap((action: LogOut) => {
       console.log('[LogOut Effect] Removing token from localStorage');
       this.storageService.removeAuthToken();
+      this.snackBarService.openSuccessSnackBar('Successfully logged out');
     })
   );
 

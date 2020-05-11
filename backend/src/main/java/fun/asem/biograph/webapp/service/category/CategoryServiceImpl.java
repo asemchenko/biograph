@@ -48,6 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
         // persist
         category.setCreationTime(Instant.now());
         category = categoryRepository.save(category);
+        category.setTotalEvents(0L);
         return categoryMapper.entityToDto(category);
     }
 

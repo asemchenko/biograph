@@ -7,6 +7,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {NewAttributeDialogComponent} from './new-attribute-dialog/new-attribute-dialog.component';
 import {AttributeService} from '../../services/attribute/attribute.service';
 import {take} from 'rxjs/operators';
+import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-attributes-page',
@@ -30,16 +31,15 @@ export class AttributesPageComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private attributeService: AttributeService
+    private attributeService: AttributeService,
+    private snackBarService: SnackBarService,
   ) {
   }
 
   ngOnInit(): void {
-    console.log('Loading user attributes...');
     this.attributeService.getAttributesOwnedByCurrentUser().pipe(
       take(1),
     ).subscribe((attributes) => {
-      console.log('Got response: ', attributes);
       this.allAttributes = attributes;
       this.filteredAttributes = this.allAttributes;
       this.dataSource = new MatTableDataSource<Attribute>(this.filteredAttributes);
@@ -65,10 +65,9 @@ export class AttributesPageComponent implements OnInit {
     );
     // FIXME asem REFACTOR - subscribe in subscribe ( если забыл как - чекни как реализовано в categories-page.component.ts )
     dialogRef.afterClosed().subscribe((newAttribute: Attribute) => {
-      console.log('Got new attribute: ', newAttribute);
       if (newAttribute) {
         this.attributeService.createNewAttribute(newAttribute).subscribe(response => {
-          console.log('Got response: ', response);
+          this.snackBarService.openSuccessSnackBar('Metric successfully created');
           this.allAttributes.push(response);
           this.search(this.currentSearchQuery);
         });
