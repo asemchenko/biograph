@@ -40,4 +40,8 @@ export class AuthService {
   getCurrentUser(): Observable<User> {
     return this.store.select(getCurrentUser);
   }
+
+  isAuthenticated(jwtToken: string): boolean {
+    return !!jwtToken;
+  }
 }

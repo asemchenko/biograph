@@ -55,6 +55,7 @@ import {TagDialogComponent} from './components/tags-page/tag-dialog/tag-dialog.c
 import {OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
 import {EventCardComponent} from './components/event-card/event-card.component';
 import {MatCardModule} from '@angular/material/card';
+import {AuthGuardService} from './services/auth-guard/auth-guard.service';
 
 
 const appRoutes: Routes = [
@@ -72,19 +73,23 @@ const appRoutes: Routes = [
   },
   {
     path: 'categories',
-    component: CategoriesPageComponent
+    component: CategoriesPageComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'metrics',
-    component: AttributesPageComponent
+    component: AttributesPageComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'tags',
-    component: TagsPageComponent
+    component: TagsPageComponent,
+    canActivate: [AuthGuardService],
   },
   {
     path: 'events',
-    component: EventsPageComponent
+    component: EventsPageComponent,
+    canActivate: [AuthGuardService],
   },
   // TODO asem add routes here as soon as other components will be created
   {
