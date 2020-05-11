@@ -1,5 +1,5 @@
-<section class="container">
-  <mat-form-field *ngIf="isNumber" class="small-form-field">
+<div class="parameter-container">
+  <mat-form-field *ngIf="isNumber" class="parameter-form-field">
     <mat-label>{{attribute.name}}</mat-label>
     <input
       [formControl]="formControl"
@@ -26,4 +26,4 @@
       Required
     </mat-error>
   </mat-form-field>
-</section>
+</div>

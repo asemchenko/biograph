@@ -15,7 +15,7 @@ import {DialogService} from '../../services/dialog/dialog.service';
 export class TagsPageComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatTable, {static: true}) table: MatTable<Tag>;
-  readonly columnsToDisplay = ['name', 'totalEvents', 'creationTime'];
+  readonly columnsToDisplay = ['name', 'totalEvents', 'creationTime', 'color'];
   dataSource: MatTableDataSource<Tag> = new MatTableDataSource<Tag>([]);
   private tags$: Observable<Tag[]>;
   private currentSearchQuery = '';
@@ -69,8 +69,7 @@ export class TagsPageComponent implements OnInit {
       })
     ).subscribe((createdTag: Tag) => {
       console.log('Got created tag from service: ', createdTag);
-
-      // TODO asem IMPORTANT - probably it is better to dispatch store event here ( or even better in service ) and connect service to store
+      // this.
     });
   }
 
