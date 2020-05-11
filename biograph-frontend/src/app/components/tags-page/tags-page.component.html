@@ -30,6 +30,15 @@
         {{ tag.creationTime | stringToDate | date: 'MM/dd/yyyy hh:mm'}}
       </td>
     </ng-container>
+    <ng-container matColumnDef="color">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header> Color</th>
+      <td *matCellDef="let tag" mat-cell>
+        <input [(colorPicker)]="tag.color"
+               [style.background]="tag.color"
+               class="rounded-color-picker"
+               disabled="true">
+      </td>
+    </ng-container>
     <tr *matHeaderRowDef="columnsToDisplay" mat-header-row></tr>
     <tr *matRowDef="let row; columns: columnsToDisplay" mat-row></tr>
   </table>

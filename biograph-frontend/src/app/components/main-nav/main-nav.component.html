@@ -11,7 +11,7 @@
         <a (click)="drawer.toggle()" [routerLink]="['/metrics']" mat-list-item>Metrics</a>
         <a (click)="drawer.toggle()" [routerLink]="['/tags']" mat-list-item>Tags</a>
         <a (click)="drawer.toggle()" [routerLink]="['/events']" mat-list-item>Events</a>
-        <a (click)="logout()" mat-list-item>Sign out</a>
+        <a (click)="logout()" [routerLink]="['/home']" mat-list-item>Sign out</a>
       </ng-container>
       <ng-template #notLoggedIn>
         <a (click)="drawer.toggle()" [routerLink]="['/login']" mat-list-item>Sign in</a>

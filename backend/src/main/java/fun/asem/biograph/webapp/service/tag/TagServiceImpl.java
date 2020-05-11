@@ -39,6 +39,7 @@ public class TagServiceImpl implements TagService {
                 .build();
         tag.setGrants(Collections.singletonList(grant));
         tag = tagRepository.save(tag);
+        tag.setTotalEvents(0L);
         return tagMapper.tagToDto(tag);
     }
 

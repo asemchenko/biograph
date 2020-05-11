@@ -3,7 +3,8 @@ import {EventService} from '../../services/event/event.service';
 import {DialogService} from '../../services/dialog/dialog.service';
 import {Event, getStubEmptyEvent} from '../../models/Event';
 import {mergeMap, take} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
+import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
 
 @Component({
   selector: 'app-events-page',
@@ -11,19 +12,24 @@ import {Observable} from 'rxjs';
   styleUrls: ['./events-page.component.less']
 })
 export class EventsPageComponent implements OnInit {
-  filteredEvents$: Observable<Event[]>;
+  filteredEvents$ = new BehaviorSubject<Event[]>([]);
+
   constructor(
     private eventService: EventService,
     private dialogService: DialogService,
+    private snackBarService: SnackBarService,
   ) {
   }
 
   ngOnInit(): void {
-    this.filteredEvents$ = this.eventService.getEventsOwnedByCurrentUser();
+    this.eventService.getEventsOwnedByCurrentUser().pipe(
+      take(1),
+    ).subscribe((events: Event[]) => {
+      this.filteredEvents$.next(events);
+    });
   }
 
   openCreateNewEventDialog() {
-    console.log('Opening new event dialog...');
     const dialogRef = this.dialogService.openEventDialog(getStubEmptyEvent());
     dialogRef.afterClosed().pipe(
       take(1),
@@ -31,10 +37,12 @@ export class EventsPageComponent implements OnInit {
         return this.eventService.create(newEvent);
       }),
     ).subscribe((event: Event) => {
-      console.log('[events-page] Got created event from service: ', event);
+      if (event) {
+        this.snackBarService.openSuccessSnackBar('Event successfully created');
+        const currentAllEvents = this.filteredEvents$.getValue();
+        currentAllEvents.push(event);
+        this.filteredEvents$.next(currentAllEvents);
+      }
     });
-    /*dialogRef.afterClosed().subscribe((newEvent: Event) => {
-      this.eventService.create(newEvent)
-    })*/
   }
 }

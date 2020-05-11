@@ -65,16 +65,6 @@ export class NewCategoryDialogComponent implements OnInit {
     });
   }
 
-  private configureSearch() {
-    this.searchFilteredAttributes = this.searchAttributeFormControl.valueChanges.pipe(
-      map(value => typeof value === 'string' ? value : value.name),
-      startWith(''),
-      map(value => {
-        return this.findMatchingAttributes(value);
-      })
-    );
-  }
-
   findMatchingAttributes(searchQuery: string): any[] {
     const lowerCaseSearchQuery = searchQuery.toLowerCase();
     return this.allAttributes.filter(attribute => attribute.name.toLowerCase().includes(lowerCaseSearchQuery));
@@ -112,5 +102,15 @@ export class NewCategoryDialogComponent implements OnInit {
       return 'Category name is required';
     }
     return 'Category name is limited by ' + this.categoryNameMaxLength;
+  }
+
+  private configureSearch() {
+    this.searchFilteredAttributes = this.searchAttributeFormControl.valueChanges.pipe(
+      map(value => typeof value === 'string' ? value : value.name),
+      startWith(''),
+      map(value => {
+        return this.findMatchingAttributes(value);
+      })
+    );
   }
 }
