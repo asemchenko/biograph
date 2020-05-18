@@ -58,6 +58,10 @@ import {MatCardModule} from '@angular/material/card';
 import {AuthGuardService} from './services/auth-guard/auth-guard.service';
 import {StatisticPageComponent} from './components/statistic-page/statistic-page.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import {CategoriesPieChartComponent} from './components/statistic-page/categories-pie-chart/categories-pie-chart.component';
+import {TagsPieChartComponent} from './components/statistic-page/tags-pie-chart/tags-pie-chart.component';
+import {MetricsMonitoringComponent} from './components/statistic-page/metrics-monitoring/metrics-monitoring.component';
+import {ChartsModule} from 'ng2-charts';
 
 
 const appRoutes: Routes = [
@@ -129,6 +133,9 @@ const appRoutes: Routes = [
     TagDialogComponent,
     EventCardComponent,
     StatisticPageComponent,
+    CategoriesPieChartComponent,
+    TagsPieChartComponent,
+    MetricsMonitoringComponent,
   ],
   imports: [
     BrowserModule,
@@ -167,6 +174,7 @@ const appRoutes: Routes = [
     OwlNativeDateTimeModule,
     MatCardModule,
     MatTabsModule,
+    ChartsModule,
   ],
   providers: [
     {
