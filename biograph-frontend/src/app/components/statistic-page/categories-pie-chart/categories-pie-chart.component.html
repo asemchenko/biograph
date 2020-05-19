@@ -1,10 +1,21 @@
-<div style="display: block;">
-  <canvas [chartType]="pieChartType"
-          [data]="pieChartData"
-          [labels]="pieChartLabels"
-          [legend]="pieChartLegend"
-          [options]="pieChartOptions"
-          [plugins]="pieChartPlugins"
-          baseChart>
-  </canvas>
+<div class="pie-chart-root">
+  <!--  <canvas [chartType]="pieChartType"
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [legend]="pieChartLegend"
+            [options]="pieChartOptions"
+            [plugins]="pieChartPlugins"
+            baseChart>
+    </canvas>-->
+  <section class="pie-chart-root__filters-bar">
+    <h3>Time filtering</h3>
+    <div>
+      <h5>Start date</h5>
+
+    </div>
+    <div>
+      <h5>End date</h5>
+
+    </div>
+  </section>
 </div>

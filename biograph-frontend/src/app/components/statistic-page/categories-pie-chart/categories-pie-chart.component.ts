@@ -38,5 +38,4 @@ export class CategoriesPieChartComponent implements OnInit {
       // this.pieChartData = categories.map(category => category.totalEvents);
     });
   }
-
 }

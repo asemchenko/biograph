@@ -62,6 +62,7 @@ import {CategoriesPieChartComponent} from './components/statistic-page/categorie
 import {TagsPieChartComponent} from './components/statistic-page/tags-pie-chart/tags-pie-chart.component';
 import {MetricsMonitoringComponent} from './components/statistic-page/metrics-monitoring/metrics-monitoring.component';
 import {ChartsModule} from 'ng2-charts';
+import {MatSliderModule} from '@angular/material/slider';
 
 
 const appRoutes: Routes = [
@@ -175,6 +176,7 @@ const appRoutes: Routes = [
     MatCardModule,
     MatTabsModule,
     ChartsModule,
+    MatSliderModule,
   ],
   providers: [
     {
