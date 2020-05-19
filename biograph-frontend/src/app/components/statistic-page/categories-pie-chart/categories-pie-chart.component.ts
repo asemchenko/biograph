@@ -20,7 +20,8 @@ export class CategoriesPieChartComponent implements OnInit {
     responsive: true,
   };
   public pieChartLabels: Label[] = [];
-  public pieChartData: SingleDataSet = [];
+  // FIXME asem IMPORTANT aaaaaaaaaaaaaaaaa
+  public pieChartData: SingleDataSet = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartPlugins = [];
@@ -96,9 +97,10 @@ export class CategoriesPieChartComponent implements OnInit {
     const labels = [];
     const data = [];
     for (const categoryId of stat.keys()) {
-      labels.push(categoryMap.get(categoryId).name);
-      // data.push(stat.get(categoryId));
-      data.push(Math.ceil(Math.random() * 1000));
+      labels.push([categoryMap.get(categoryId).name]);
+      data.push(stat.get(categoryId));
+      // enable if need to look OK
+      // data.push(Math.ceil(Math.random() * 1000));
     }
     this.pieChartLabels = labels;
     this.pieChartData = data;
