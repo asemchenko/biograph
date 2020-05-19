@@ -50,7 +50,8 @@ export class CategoriesPieChartComponent implements OnInit {
     ).subscribe((events: Event[]) => {
       this.allEvents = events;
       const eventsTimeRange = this.getEventsTimeRange(events);
-      console.log('Got events time range: ', eventsTimeRange);
+      eventsTimeRange.olderEventDate = new Date(eventsTimeRange.olderEventDate.getTime() - 1000 * 60 * 60 * 24);
+      eventsTimeRange.newerEventDate = new Date(eventsTimeRange.newerEventDate.getTime() + 1000 * 60 * 60 * 24);
       this.timeSliderMinDate = eventsTimeRange.olderEventDate;
       this.timeSliderMaxDate = eventsTimeRange.newerEventDate;
       this.filterEventsByDate(this.timeSliderMinDate, this.timeSliderMaxDate);
