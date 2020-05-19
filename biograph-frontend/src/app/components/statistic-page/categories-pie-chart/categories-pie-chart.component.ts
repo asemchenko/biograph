@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ChartOptions, ChartType} from 'chart.js';
-import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from 'ng2-charts';
+import {BaseChartDirective, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from 'ng2-charts';
 import {CategoryService} from '../../../services/category/category.service';
 import {take} from 'rxjs/operators';
 import {TimeSliderChangedEvent} from '../../date-slider/date-slider.component';
@@ -14,7 +14,8 @@ import {EventService} from '../../../services/event/event.service';
   styleUrls: ['./categories-pie-chart.component.less']
 })
 export class CategoriesPieChartComponent implements OnInit {
-  // Pie
+  @ViewChild(BaseChartDirective)
+  public chart: BaseChartDirective;
   public pieChartOptions: ChartOptions = {
     responsive: true,
   };
@@ -101,5 +102,6 @@ export class CategoriesPieChartComponent implements OnInit {
     }
     this.pieChartLabels = labels;
     this.pieChartData = data;
+    this.chart.update();
   }
 }

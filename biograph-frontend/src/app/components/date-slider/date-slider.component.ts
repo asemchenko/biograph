@@ -26,16 +26,15 @@ export class DateSliderComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log('[date-slider] onInit()');
     this.options = {
       floor: this.minDate.getTime(),
       ceil: this.maxDate.getTime(),
       translate: (value: number, label: LabelType): string => {
         switch (label) {
           case LabelType.Low:
-            return '<b>Start:</b> ' + moment(value).format('MMMM YYYY');
+            return '<b>Start:</b> ' + moment(value).format('MM/DD/YY');
           case LabelType.High:
-            return '<b>End:</b> ' + moment(value).format('MMMM YYYY');
+            return '<b>End:</b> ' + moment(value).format('MM/DD/YY');
           default:
             return moment(value).format('MMMM YYYY');
         }
@@ -47,7 +46,6 @@ export class DateSliderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('[date-slider] Got changes: ', changes);
     const newOptions = {...this.options};
     if (changes.minDate) {
       newOptions.floor = this.minDate.getTime();

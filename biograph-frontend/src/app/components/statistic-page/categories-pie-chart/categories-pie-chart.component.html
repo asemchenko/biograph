@@ -1,12 +1,14 @@
 <div class="pie-chart-root">
-  <canvas [chartType]="pieChartType"
-          [data]="pieChartData"
-          [labels]="pieChartLabels"
-          [legend]="pieChartLegend"
-          [options]="pieChartOptions"
-          [plugins]="pieChartPlugins"
-          baseChart>
-  </canvas>
+  <div style="display: block;">
+    <canvas [chartType]="pieChartType"
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [legend]="pieChartLegend"
+            [options]="pieChartOptions"
+            [plugins]="pieChartPlugins"
+            baseChart>
+    </canvas>
+  </div>
   <mat-card class="pie-chart-root__filters-bar">
     <mat-card-title>
       <h2>Time filtering</h2>
