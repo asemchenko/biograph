@@ -64,6 +64,7 @@ import {MetricsMonitoringComponent} from './components/statistic-page/metrics-mo
 import {ChartsModule} from 'ng2-charts';
 import {MatSliderModule} from '@angular/material/slider';
 import {Ng5SliderModule} from 'ng5-slider';
+import {DateSliderComponent} from './components/date-slider/date-slider.component';
 
 
 const appRoutes: Routes = [
@@ -138,6 +139,7 @@ const appRoutes: Routes = [
     CategoriesPieChartComponent,
     TagsPieChartComponent,
     MetricsMonitoringComponent,
+    DateSliderComponent,
   ],
   imports: [
     BrowserModule,

@@ -3,11 +3,11 @@ import {ChartOptions, ChartType} from 'chart.js';
 import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from 'ng2-charts';
 import {CategoryService} from '../../../services/category/category.service';
 import {take} from 'rxjs/operators';
-import {Category} from '../../../models/Category';
-import {LabelType, Options} from 'ng5-slider';
-import * as moment from 'moment';
+import {TimeSliderChangedEvent} from '../../date-slider/date-slider.component';
+import {Event} from '../../../models/Event';
+import {EventService} from '../../../services/event/event.service';
 
-
+// TODO asem переписать в реактивном стиле, а то тут чет вообще ниочем получилось
 @Component({
   selector: 'app-categories-pie-chart',
   templateUrl: './categories-pie-chart.component.html',
@@ -19,44 +19,87 @@ export class CategoriesPieChartComponent implements OnInit {
     responsive: true,
   };
   public pieChartLabels: Label[] = [];
-  public pieChartData: SingleDataSet = [300, 400, 800, 100];
+  public pieChartData: SingleDataSet = [];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartPlugins = [];
-  minDate = new Date('2010-05-19T20:45:59.007Z').getTime();
-  maxDate = new Date('2020-05-19T20:45:59.007Z').getTime();
-  options: Options = {
-    floor: this.minDate,
-    ceil: this.maxDate,
-    translate: (value: number, label: LabelType): string => {
-      switch (label) {
-        case LabelType.Low:
-          return '<b>Start:</b> ' + moment(value).format('MMMM YYYY');
-        case LabelType.High:
-          return '<b>End:</b> ' + moment(value).format('MMMM YYYY');
-        default:
-          return moment(value).format('MMMM YYYY');
-      }
-    }
-  };
-  sliderMinValue = this.minDate;
-  sliderMaxValue = this.maxDate;
+
+  timeSliderMinDate = new Date('2010-05-19T21:11:23.970Z');
+  timeSliderMaxDate = new Date('2020-05-19T21:11:23.970Z');
+  // private allCategories: Category[] = [];
+  private allEvents: Event[] = [];
 
   constructor(
     private categoryService: CategoryService,
+    private eventService: EventService,
   ) {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
   }
 
   ngOnInit() {
-    this.categoryService.getCategoriesOwnedByCurrentUser().pipe(
+    /*this.categoryService.getCategoriesOwnedByCurrentUser().pipe(
       take(1),
     ).subscribe((categories: Category[]) => {
-      this.pieChartLabels = categories.map(category => [category.name]);
-      // TODO asem IMPORTANT disable this stub data!!!
-      this.pieChartData = categories.map(category => Math.ceil(Math.random() * 500));
-      // this.pieChartData = categories.map(category => category.totalEvents);
+      this.allCategories = categories;
+    });*/
+    this.eventService.getEventsOwnedByCurrentUser().pipe(
+      take(1),
+    ).subscribe((events: Event[]) => {
+      this.allEvents = events;
+      const eventsTimeRange = this.getEventsTimeRange(events);
+      console.log('Got events time range: ', eventsTimeRange);
+      this.timeSliderMinDate = eventsTimeRange.olderEventDate;
+      this.timeSliderMaxDate = eventsTimeRange.newerEventDate;
+      this.filterEventsByDate(this.timeSliderMinDate, this.timeSliderMaxDate);
     });
+  }
+
+  onTimeSliderValueChanged($event: TimeSliderChangedEvent) {
+    const filteredEvents = this.filterEventsByDate($event.selectedStartDate, $event.selectedEndDate);
+    this.displayChart(filteredEvents);
+  }
+
+  private getEventsTimeRange(events: Event[]): { olderEventDate: Date, newerEventDate: Date } {
+    let minDate = Number.MAX_SAFE_INTEGER;
+    let maxDate = 1;
+
+    for (const event of events) {
+      const eventTime = new Date(event.startDatetime).getTime();
+      if (eventTime < minDate) {
+        minDate = eventTime;
+      }
+      if (eventTime > maxDate) {
+        maxDate = eventTime;
+      }
+    }
+    return {olderEventDate: new Date(minDate), newerEventDate: new Date(maxDate)};
+  }
+
+  private filterEventsByDate(startDate: Date, endDate: Date): Event[] {
+    return this.allEvents.filter((event: Event) => {
+      const eventDate = new Date(event.startDatetime);
+      return eventDate.getTime() >= startDate.getTime() && eventDate.getTime() <= endDate.getTime();
+    });
+  }
+
+  private displayChart(events: Event[]): void {
+    const stat = new Map();
+    const categoryMap = new Map();
+    for (const event of events) {
+      let curTotalByCategory = stat.get(event.category.categoryId);
+      curTotalByCategory = curTotalByCategory || 0;
+      stat.set(event.category.categoryId, curTotalByCategory + 1);
+      categoryMap.set(event.category.categoryId, event.category);
+    }
+    const labels = [];
+    const data = [];
+    for (const categoryId of stat.keys()) {
+      labels.push(categoryMap.get(categoryId).name);
+      // data.push(stat.get(categoryId));
+      data.push(Math.ceil(Math.random() * 1000));
+    }
+    this.pieChartLabels = labels;
+    this.pieChartData = data;
   }
 }

@@ -13,7 +13,9 @@
     </mat-card-title>
     <mat-card-content>
       <div>
-        <ng5-slider [(highValue)]="sliderMaxValue" [(value)]="sliderMinValue" [options]="options"></ng5-slider>
+        <app-date-slider
+          (changedRange)="onTimeSliderValueChanged($event)"
+          [maxDate]="timeSliderMaxDate" [minDate]="timeSliderMinDate"></app-date-slider>
       </div>
     </mat-card-content>
   </mat-card>
