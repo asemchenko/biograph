@@ -63,6 +63,7 @@ import {TagsPieChartComponent} from './components/statistic-page/tags-pie-chart/
 import {MetricsMonitoringComponent} from './components/statistic-page/metrics-monitoring/metrics-monitoring.component';
 import {ChartsModule} from 'ng2-charts';
 import {MatSliderModule} from '@angular/material/slider';
+import {Ng5SliderModule} from 'ng5-slider';
 
 
 const appRoutes: Routes = [
@@ -177,6 +178,7 @@ const appRoutes: Routes = [
     MatTabsModule,
     ChartsModule,
     MatSliderModule,
+    Ng5SliderModule,
   ],
   providers: [
     {
