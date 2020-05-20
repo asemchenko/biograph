@@ -16,11 +16,11 @@ My bachelor diploma project in KPI
 - [x] Create empty frontend project
 - [x] Configure authentication & jwt token intercepting & jwt token autorefresh
 - [x] Create login & registration page
-- [ ] Create main area - site header, footer, tabs & switching between them
-- [ ] An ability to create an event
-- [ ] An ability to view and filter events ( including keyword search )
-- [ ] An ability to create category, tag
-- [ ] An ability to configure event category ( creating & removing attributes for it
+- [x] Create main area - site header, footer, tabs & switching between them
+- [x] An ability to create an event
+- [] An ability to view and filter events ( including keyword search )
+- [x] An ability to create category, tag
+- [x] An ability to configure event category ( creating & removing attributes for it
  )
 - [ ] Default value for event attribute
 
