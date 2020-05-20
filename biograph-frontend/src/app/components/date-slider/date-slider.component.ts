@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {LabelType, Options} from 'ng5-slider';
 import * as moment from 'moment';
 
@@ -21,7 +21,6 @@ export class DateSliderComponent implements OnInit, OnChanges {
   currentMaxValue: number;
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef,
   ) {
   }
 
@@ -32,9 +31,9 @@ export class DateSliderComponent implements OnInit, OnChanges {
       translate: (value: number, label: LabelType): string => {
         switch (label) {
           case LabelType.Low:
-            return '<b>Start:</b> ' + moment(value).format('MM/DD/YY');
+            return '<b>Start:</b><br/> ' + moment(value).format('MM/DD/YY');
           case LabelType.High:
-            return '<b>End:</b> ' + moment(value).format('MM/DD/YY');
+            return '<b>End:</b><br/>' + moment(value).format('MM/DD/YY');
           default:
             return moment(value).format('MMMM YYYY');
         }
