@@ -20,8 +20,7 @@ export class DateSliderComponent implements OnInit, OnChanges {
   currentMinValue: number;
   currentMaxValue: number;
 
-  constructor(
-  ) {
+  constructor() {
   }
 
   ngOnInit(): void {
