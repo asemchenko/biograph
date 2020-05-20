@@ -1,7 +1,9 @@
-<ng5-slider
-  (highValueChange)="onHighValueChange($event)"
-  (valueChange)="onValueChange($event)"
-  [(highValue)]="currentMaxValue"
-  [(value)]="currentMinValue"
-  [options]="options">
-</ng5-slider>
+<div class="custom-slider">
+  <ng5-slider
+    (highValueChange)="onHighValueChange($event)"
+    (valueChange)="onValueChange($event)"
+    [(highValue)]="currentMaxValue"
+    [(value)]="currentMinValue"
+    [options]="options">
+  </ng5-slider>
+</div>

@@ -7,8 +7,15 @@
 
   &__filters-bar {
     //border: 1px solid gray;
-    width: 400px;
+    width: ~"min(400px, 90vw)";
     height: 200px;
+
+    &__header {
+      font-family: Roboto, "Helvetica Neue", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, .87);
+    }
   }
 
   &__canvas {

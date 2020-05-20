@@ -1,6 +1,19 @@
 <mat-sidenav-container class="sidenav-container" hasBackdrop="true">
+  <mat-sidenav-content class="sidenav-container__content">
+    <mat-toolbar color="primary">
+      <button
+        (click)="drawer.toggle()"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        type="button">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Biograph</span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
   <mat-sidenav #drawer
-               [mode]="'push'"
+               [mode]="'over'"
                [opened]="false"
                class="sidenav"
                fixedInViewport>
@@ -12,29 +25,17 @@
         <a (click)="drawer.toggle()" [routerLink]="['/tags']" mat-list-item>Tags</a>
         <a (click)="drawer.toggle()" [routerLink]="['/events']" mat-list-item>Events</a>
         <a (click)="drawer.toggle()" [routerLink]="['/statistic']" mat-list-item>Statistics</a>
-        <a (click)="logout()" [routerLink]="['/home']" mat-list-item>Sign out</a>
+        <a (click)="logout()" [routerLink]="['/']" mat-list-item>Sign out</a>
       </ng-container>
       <ng-template #notLoggedIn>
         <a (click)="drawer.toggle()" [routerLink]="['/login']" mat-list-item>Sign in</a>
         <a (click)="drawer.toggle()" [routerLink]="['/register']" mat-list-item>Sign up</a>
       </ng-template>
       <mat-divider></mat-divider>
-      <a (click)="drawer.toggle()" [routerLink]="['/home']" mat-list-item>Home</a>
+      <a (click)="drawer.toggle()" [routerLink]="['/']" mat-list-item>Home</a>
       <a href="#" mat-list-item>About</a>
       <a href="#" mat-list-item>Support</a>
       <a href="#" mat-list-item>Donate</a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button
-        (click)="drawer.toggle()"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        type="button">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span>Biograph</span>
-    </mat-toolbar>
-  </mat-sidenav-content>
 </mat-sidenav-container>
