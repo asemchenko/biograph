@@ -18,7 +18,7 @@ My bachelor diploma project in KPI
 - [x] Create login & registration page
 - [x] Create main area - site header, footer, tabs & switching between them
 - [x] An ability to create an event
-- [] An ability to view and filter events ( including keyword search )
+- [ ] An ability to view and filter events ( including keyword search )
 - [x] An ability to create category, tag
 - [x] An ability to configure event category ( creating & removing attributes for it
  )
