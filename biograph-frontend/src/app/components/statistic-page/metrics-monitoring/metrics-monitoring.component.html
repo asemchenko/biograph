@@ -1,28 +1,32 @@
 <div class="metrics-monitoring-root">
-  <ngx-charts-line-chart
-    [curve]=""
-    [legend]="lineChartOptions.legend"
-    [results]="data"
-    [showXAxisLabel]="lineChartOptions.showXAxisLabel"
-    [showYAxisLabel]="lineChartOptions.showYAxisLabel"
-    [timeline]="lineChartOptions.timeline"
-    [xAxisLabel]="lineChartOptions.xAxisLabel"
-    [xAxis]="lineChartOptions.xAxis"
-    [yAxisLabel]="lineChartOptions.yAxisLabel"
-    [yAxis]="lineChartOptions.yAxis"
-  >
-    <!--(select)="onSelect($event)"
-    (activate)="onActivate($event)"
-    (deactivate)="onDeactivate($event)"-->
-  </ngx-charts-line-chart>
-  <mat-card class="metrics-monitoring-root__configuration-bar">
-    <mat-card-title>
-      <h2 class="metrics-monitoring-root__configuration-bar__header"></h2>
-    </mat-card-title>
-    <mat-card-content>
-      <div>
+  <div class="metrics-monitoring-root__line-chart">
+    <ngx-charts-line-chart
+      [curve]=""
+      [legend]="lineChartOptions.legend"
+      [results]="data"
+      [showXAxisLabel]="lineChartOptions.showXAxisLabel"
+      [showYAxisLabel]="lineChartOptions.showYAxisLabel"
+      [timeline]="lineChartOptions.timeline"
+      [xAxisLabel]="lineChartOptions.xAxisLabel"
+      [xAxis]="lineChartOptions.xAxis"
+      [yAxisLabel]="lineChartOptions.yAxisLabel"
+      [yAxis]="lineChartOptions.yAxis"
+    >
+      <!--(select)="onSelect($event)"
+      (activate)="onActivate($event)"
+      (deactivate)="onDeactivate($event)"-->
+    </ngx-charts-line-chart>
+    <div class="metrics-monitoring-root__content">
+      <mat-card class="metrics-monitoring-root__content__config-bar">
+        <mat-card-title>
+          <h2 class="metrics-monitoring-root__content__config-bar__header">Configuration</h2>
+        </mat-card-title>
+        <mat-card-content>
+          <div>
 
-      </div>
-    </mat-card-content>
-  </mat-card>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>

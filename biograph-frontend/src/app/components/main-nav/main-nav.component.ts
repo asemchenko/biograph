@@ -1,11 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
-import {getIsLoggedIn} from '../../store/app.state';
+import {getIsLoggedIn, getProgressBarStatus, getProgressSpinnerStatus} from '../../store/app.state';
 import {LogOut} from '../../store/auth/actions/auth.actions';
 import {RxUnsubscribe} from '../../common/RxUnsubscribe';
-import {getIsProgressBarStatus, getProgressSpinnerStatus} from '../../store/progress-indicators/reducers/progress-indicators.reducers';
-import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-nav',
@@ -27,13 +25,15 @@ export class MainNavComponent extends RxUnsubscribe implements OnInit {
 
   ngOnInit(): void {
     this.store.select(getProgressSpinnerStatus).pipe(
-      takeUntil(this.destroy$),
+      // takeUntil(this.destroy$),
     ).subscribe((spinnerStatus: boolean) => {
+      console.log('Got progress spinner status: ', spinnerStatus);
       this.isProgressSpinnerVisible = spinnerStatus;
     });
-    this.store.select(getIsProgressBarStatus).pipe(
-      takeUntil(this.destroy$),
+    this.store.select(getProgressBarStatus).pipe(
+      // takeUntil(this.destroy$),
     ).subscribe((progressBarStatus: boolean) => {
+      console.log('Got progress bar status: ', progressBarStatus);
       this.isProgressBarVisible = progressBarStatus;
     });
     // just for checking progress spinner

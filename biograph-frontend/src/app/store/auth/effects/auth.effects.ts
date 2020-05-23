@@ -19,6 +19,7 @@ export class AuthEffects {
     .pipe(
       ofType<LogIn>(AuthActionTypes.LOGIN),
       tap(() => {
+        console.log('Dispatching show spinner action...');
         this.store$.dispatch(new ShowSpinner());
       }),
       map((action: LogIn) => action.payload),

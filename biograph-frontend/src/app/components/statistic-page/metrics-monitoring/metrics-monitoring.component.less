@@ -1,11 +1,40 @@
+@import "../../../common";
+
 .metrics-monitoring-root {
   text-align: center;
   width: 90vw;
-  height: 90vh;
+  height: 80vh;
 
-  &__configuration-bar {
-    &__header {
+  &__line-chart {
+    width: 100%;
+    height: 100%;
+  }
 
+  &__content {
+    position: relative;
+    bottom: 320px;
+
+    &__config-bar {
+      width: 12vw;
+      height: 200px;
+      float: right;
+      /*position: relative;
+      right: 16px;*/
+
+      &__header {
+        .text;
+      }
     }
   }
+
+  /* &__configuration-bar {
+     width: 14vw;
+     height: 400px;
+     float: right;
+     position: relative;
+     bottom: 400px;
+     &__header {
+         .text;
+     }
+   }*/
 }

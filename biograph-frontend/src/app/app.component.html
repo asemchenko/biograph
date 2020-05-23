@@ -1,4 +1,4 @@
-<div>
+<div [class]="(isBlurred | async) ? 'blurred' : 'root'">
   <app-main-nav></app-main-nav>
   <!--  FIXME asem - fix footer and enable it-->
   <!--  <app-footer></app-footer>-->
