@@ -1,5 +1,5 @@
-import {User} from '../../models/User';
-import {All, AuthActionTypes} from '../actions/auth.actions';
+import {User} from '../../../models/User';
+import {AnyAuthAction, AuthActionTypes} from '../actions/auth.actions';
 
 export interface State {
   isAuthenticated: boolean;
@@ -14,7 +14,7 @@ export const initialState: State = {
 };
 
 
-export function reducer(state = initialState, action: All): State {
+export function reducer(state = initialState, action: AnyAuthAction): State {
   switch (action.type) {
     case AuthActionTypes.LOGIN_SUCCESS: {
       console.log('[auth.reducer] Got action: LOGIN_SUCCESS');

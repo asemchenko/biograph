@@ -26,6 +26,7 @@
     "@ngrx/effects": "^9.1.2",
     "@ngrx/store": "^9.1.2",
     "@ngrx/store-devtools": "^9.1.2",
+    "@swimlane/ngx-charts": "^14.0.0",
     "chart.js": "^2.9.3",
     "moment": "^2.25.3",
     "ng-pick-datetime": "^7.0.0",

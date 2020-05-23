@@ -24,7 +24,7 @@ import {MatListModule} from '@angular/material/list';
 import {HomeComponent} from './components/home/home.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {EffectsModule} from '@ngrx/effects';
-import {AuthEffects} from './store/effects/auth.effects';
+import {AuthEffects} from './store/auth/effects/auth.effects';
 import {StoreModule} from '@ngrx/store';
 import {reducers} from './store/app.state';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
@@ -58,12 +58,15 @@ import {MatCardModule} from '@angular/material/card';
 import {AuthGuardService} from './services/auth-guard/auth-guard.service';
 import {StatisticPageComponent} from './components/statistic-page/statistic-page.component';
 import {MatTabsModule} from '@angular/material/tabs';
-import {EventGroupPieChartComponent} from './components/statistic-page/categories-pie-chart/event-group-pie-chart.component';
+import {EventGroupPieChartComponent} from './components/statistic-page/event-group-pie-chart/event-group-pie-chart.component';
 import {MetricsMonitoringComponent} from './components/statistic-page/metrics-monitoring/metrics-monitoring.component';
 import {ChartsModule} from 'ng2-charts';
 import {MatSliderModule} from '@angular/material/slider';
 import {Ng5SliderModule} from 'ng5-slider';
 import {DateSliderComponent} from './components/date-slider/date-slider.component';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 const appRoutes: Routes = [
@@ -179,6 +182,9 @@ const appRoutes: Routes = [
     ChartsModule,
     MatSliderModule,
     Ng5SliderModule,
+    NgxChartsModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
   ],
   providers: [
     {

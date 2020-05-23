@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ChartOptions, ChartType} from 'chart.js';
 import {BaseChartDirective, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from 'ng2-charts';
 import {take} from 'rxjs/operators';
@@ -35,6 +35,7 @@ export class EventGroupPieChartComponent implements OnInit {
 
   constructor(
     private eventService: EventService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
@@ -55,8 +56,11 @@ export class EventGroupPieChartComponent implements OnInit {
   }
 
   onTimeSliderValueChanged($event: TimeSliderChangedEvent) {
-    const filteredEvents = this.filterEventsByDate($event.selectedStartDate, $event.selectedEndDate);
-    this.displayChart(filteredEvents);
+    // check that chart component has already initialized
+    if (this.chart) {
+      const filteredEvents = this.filterEventsByDate($event.selectedStartDate, $event.selectedEndDate);
+      this.displayChart(filteredEvents);
+    }
   }
 
   private getEventsTimeRange(events: Event[]): { olderEventDate: Date, newerEventDate: Date } {
@@ -108,11 +112,11 @@ export class EventGroupPieChartComponent implements OnInit {
       }
       this.pieChartLabels = labels;
       this.pieChartData = data;
-      this.chart.update();
     } else {
       this.pieChartLabels = ['No events'];
       this.pieChartData = [100];
-      this.chart.update();
     }
+    this.chart.update();
+    this.changeDetectorRef.detectChanges();
   }
 }

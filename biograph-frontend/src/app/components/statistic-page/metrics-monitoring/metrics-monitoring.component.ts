@@ -6,11 +6,93 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./metrics-monitoring.component.less']
 })
 export class MetricsMonitoringComponent implements OnInit {
+  readonly lineChartOptions = {
+    // options
+    legend: true,
+    showLabels: true,
+    animations: true,
+    xAxis: true,
+    yAxis: true,
+    showYAxisLabel: true,
+    showXAxisLabel: true,
+    xAxisLabel: 'Year',
+    yAxisLabel: 'Population',
+    timeline: true,
+  };
+  data: ChartDataEntry[];
 
   constructor() {
   }
 
   ngOnInit(): void {
+    this.data = [
+      {
+        name: 'Cardio',
+        series: [
+          {name: 'Jan', value: 94},
+          {name: 'Feb', value: 24},
+          {name: 'Mar', value: 30},
+          {name: 'Apr', value: 75},
+          {name: 'May', value: 11},
+          {name: 'June', value: 71},
+          {name: 'July', value: 15},
+          {name: 'Aug', value: 42},
+          {name: 'Sept', value: 92},
+          {name: 'Oct', value: 83},
+          {name: 'Nov', value: 7},
+          {name: 'Dec', value: 17}],
+      },
+      {
+        name: 'Squat',
+        series: [{name: 'Jan', value: 25}, {name: 'Feb', value: 21}, {name: 'Mar', value: 8}, {name: 'Apr', value: 56}, {
+          name: 'May',
+          value: 96
+        }, {name: 'June', value: 97}, {name: 'July', value: 55}, {name: 'Aug', value: 80}, {name: 'Sept', value: 23}, {
+          name: 'Oct',
+          value: 33
+        }, {name: 'Nov', value: 86}, {name: 'Dec', value: 97}]
+      },
+      {
+        name: 'Stress',
+        series: [{name: 'Jan', value: 79}, {name: 'Feb', value: 13}, {name: 'Mar', value: 94}, {name: 'Apr', value: 34}, {
+          name: 'May',
+          value: 4
+        }, {name: 'June', value: 54}, {name: 'July', value: 38}, {name: 'Aug', value: 7}, {name: 'Sept', value: 48}, {
+          name: 'Oct',
+          value: 39
+        }, {name: 'Nov', value: 56}, {name: 'Dec', value: 96}]
+      },
+      {
+        name: 'Productivity',
+        series: [{name: 'Jan', value: 76}, {name: 'Feb', value: 29}, {name: 'Mar', value: 76}, {name: 'Apr', value: 19}, {
+          name: 'May',
+          value: 94
+        }, {name: 'June', value: 59}, {name: 'July', value: 41}, {name: 'Aug', value: 42}, {name: 'Sept', value: 8}, {
+          name: 'Oct',
+          value: 63
+        }, {name: 'Nov', value: 100}, {name: 'Dec', value: 78}]
+      },
+      {
+        name: 'Happyness',
+        series: [{name: 'Jan', value: 11}, {name: 'Feb', value: 46}, {name: 'Mar', value: 55}, {name: 'Apr', value: 57}, {
+          name: 'May',
+          value: 100
+        }, {name: 'June', value: 41}, {name: 'July', value: 44}, {name: 'Aug', value: 73}, {name: 'Sept', value: 83}, {
+          name: 'Oct',
+          value: 59
+        }, {name: 'Nov', value: 88}, {name: 'Dec', value: 17}]
+      }
+    ];
   }
 
+}
+
+export interface ChartDataEntry {
+  name: string;
+  series: DataSeriesEntry[];
+}
+
+export interface DataSeriesEntry {
+  name: string;
+  value: number;
 }

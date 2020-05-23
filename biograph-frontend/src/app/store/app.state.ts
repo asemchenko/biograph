@@ -1,4 +1,4 @@
-import * as auth from './reducers/auth.reducers';
+import * as auth from './auth/reducers/auth.reducers';
 import {ActionReducerMap, createSelector} from '@ngrx/store';
 
 export interface AppState {

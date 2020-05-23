@@ -4,7 +4,7 @@ import {AuthService} from '../../services/auth/auth.service';
 import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
 import {AppState} from '../../store/app.state';
 import {Store} from '@ngrx/store';
-import {LogIn} from 'src/app/store/actions/auth.actions';
+import {LogIn} from 'src/app/store/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-login',
