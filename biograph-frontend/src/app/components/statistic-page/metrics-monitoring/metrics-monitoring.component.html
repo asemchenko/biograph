@@ -1,4 +1,43 @@
 <div class="metrics-monitoring-root">
+  <div class="metrics-monitoring-root__content">
+    <mat-card class="metrics-monitoring-root__content__config-bar">
+      <mat-card-title>
+        <h2 class="metrics-monitoring-root__content__config-bar__header">Configuration</h2>
+      </mat-card-title>
+      <mat-card-content>
+        <div class="metrics-monitoring-root__content__config-bar__main-section">
+          <div class="metrics-monitoring-root__content__config-bar__main-section__metric-selector">
+            <mat-form-field>
+              <mat-label>Choose metric</mat-label>
+              <mat-select #metricConfigurationSelector>
+                <mat-option *ngFor="let metric of (allMetrics | async)" [value]="metric">{{metric.name}}</mat-option>
+              </mat-select>
+              <mat-hint>Select & configure</mat-hint>
+            </mat-form-field>
+          </div>
+          <div *ngIf="metricConfigurationSelector.value"
+               class="metrics-monitoring-root__content__config-bar__main-section__metric-configuration">
+            <mat-slide-toggle class="extra-small-y-margin" matTooltip="Should metric be shown on the chart">Display
+              metric
+            </mat-slide-toggle>
+            <mat-slide-toggle class="extra-small-y-margin" matTooltip="Convert metrics values to %">Normalize metric
+            </mat-slide-toggle>
+            <mat-form-field class="extra-small-y-margin">
+              <mat-label>Aggregation function</mat-label>
+              <mat-select required>
+                <mat-option *ngFor="let aggregationFunction of aggregationFunctions"
+                            [value]="aggregationFunction">{{aggregationFunction.name}}</mat-option>
+              </mat-select>
+              <mat-hint>The way data are aggregated</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button>Apply</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
   <div class="metrics-monitoring-root__line-chart">
     <ngx-charts-line-chart
       [curve]=""
@@ -16,17 +55,5 @@
       (activate)="onActivate($event)"
       (deactivate)="onDeactivate($event)"-->
     </ngx-charts-line-chart>
-    <div class="metrics-monitoring-root__content">
-      <mat-card class="metrics-monitoring-root__content__config-bar">
-        <mat-card-title>
-          <h2 class="metrics-monitoring-root__content__config-bar__header">Configuration</h2>
-        </mat-card-title>
-        <mat-card-content>
-          <div>
-
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
   </div>
 </div>

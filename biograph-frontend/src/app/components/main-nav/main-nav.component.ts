@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {getIsLoggedIn, getProgressBarStatus, getProgressSpinnerStatus} from '../../store/app.state';
 import {LogOut} from '../../store/auth/actions/auth.actions';
 import {RxUnsubscribe} from '../../common/RxUnsubscribe';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-main-nav',
@@ -17,7 +18,8 @@ export class MainNavComponent extends RxUnsubscribe implements OnInit {
   isProgressSpinnerVisible = false;
 
   constructor(
-    private store: Store
+    private store: Store,
+    private router: Router,
   ) {
     super();
     this.isLoggedIn = store.select(getIsLoggedIn);
@@ -51,5 +53,9 @@ export class MainNavComponent extends RxUnsubscribe implements OnInit {
 
   logout() {
     this.store.dispatch(new LogOut());
+  }
+
+  navigateToMain() {
+    this.router.navigateByUrl('/');
   }
 }

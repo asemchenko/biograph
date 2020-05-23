@@ -67,6 +67,7 @@ import {DateSliderComponent} from './components/date-slider/date-slider.componen
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 const appRoutes: Routes = [
@@ -185,6 +186,7 @@ const appRoutes: Routes = [
     NgxChartsModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatSlideToggleModule,
   ],
   providers: [
     {
