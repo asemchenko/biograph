@@ -12,10 +12,6 @@
     </mat-toolbar>
     <div class="app-router-outlet">
       <router-outlet></router-outlet>
-      <mat-spinner [style]="'display: ' + (isProgressSpinnerVisible ? 'block' : 'none')"
-                   class="progress-spinner"></mat-spinner>
-      <mat-progress-bar [style]="'display: ' + (isProgressBarVisible ? 'block' : 'none')" class="progress-bar"
-                        mode="indeterminate"></mat-progress-bar>
     </div>
   </mat-sidenav-content>
   <mat-sidenav #drawer

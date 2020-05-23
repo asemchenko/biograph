@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AppState, getProgressSpinnerStatus} from './store/app.state';
+import {AppState, getProgressBarStatus, getProgressSpinnerStatus} from './store/app.state';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
@@ -10,7 +10,8 @@ import {Observable} from 'rxjs';
 })
 export class AppComponent implements OnInit {
   title = 'biograph-frontend';
-  isBlurred: Observable<boolean>;
+  isProgressBarVisible: Observable<boolean>;
+  isProgressSpinnerVisible: Observable<boolean>;
 
   constructor(
     private store$: Store<AppState>,
@@ -18,7 +19,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isBlurred = this.store$.select(getProgressSpinnerStatus);
+    this.isProgressSpinnerVisible = this.store$.select(getProgressSpinnerStatus);
+    this.isProgressBarVisible = this.store$.select(getProgressBarStatus);
   }
 
 
