@@ -13,4 +13,6 @@ public interface TagMapper {
     ResponseTagDto tagToDto(Tag tag);
 
     Tag updateDtoToTag(UpdateTagDto dto);
+
+    UpdateTagDto entityToUpdateDto(Tag tag);
 }

@@ -59,8 +59,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/api/storage/connect",
                         "/api/storage/uploadFile",
                         "/api/storage/listFiles",
-                        "/api/storage/downloadFile",
-                        "/home/"
+                        "/api/storage/downloadFile"
+//                        "/home/**"
                 ).permitAll()
                 .anyRequest().authenticated()
                 .and()

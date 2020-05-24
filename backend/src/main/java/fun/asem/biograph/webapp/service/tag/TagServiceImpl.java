@@ -17,6 +17,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -50,6 +51,11 @@ public class TagServiceImpl implements TagService {
                 .map(Grant::getTag)
                 .map(tagMapper::tagToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Tag> findTagById(Long id) {
+        return tagRepository.findById(id);
     }
 
     @Override

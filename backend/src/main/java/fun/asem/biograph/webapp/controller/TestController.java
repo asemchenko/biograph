@@ -1,27 +1,13 @@
 package fun.asem.biograph.webapp.controller;
 
-import fun.asem.biograph.webapp.dto.model.ServerResponse;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
+/*@RequiredArgsConstructor
 @RequestMapping("/home")
-@Controller
+@RestController*/
 public class TestController {
-    @GetMapping("")
-    public String test(Authentication authentication) {
-        return "home";
-    }
+   /* private final TestDataService testDataService;
 
-    @ResponseBody
-    @GetMapping("/secured")
-    public ServerResponse securedTest() {
-        return ServerResponse
-                .builder()
-                .status(ServerResponse.ResponseStatus.OK)
-                .data("You are now authenticated")
-                .build();
-    }
+    @GetMapping("/")
+    public String test() {
+        return testDataService.generateTestFinances();
+    }*/
 }

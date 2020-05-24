@@ -14,4 +14,6 @@ public interface AttributeMapper {
     Attribute createDtoToAttribute(CreateAttributeDto dto);
 
     Attribute updateDtoToAttribute(UpdateAttributeDto dto);
+
+    UpdateAttributeDto entityToUpdateDto(Attribute attribute);
 }
