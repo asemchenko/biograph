@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Attribute} from '../../../../models/Attribute';
+import {Attribute, AttributeType} from '../../../../models/Attribute';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 
 @Component({
@@ -23,7 +23,7 @@ export class ParameterComponent implements OnInit {
   }
 
   get isNumber(): boolean {
-    return this.attribute.attributeType === 'NUMBER';
+    return this.attribute.attributeType === AttributeType.NUMBER.toString();
   }
 
   get isEnumeration(): boolean {

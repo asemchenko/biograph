@@ -24,11 +24,11 @@
             </mat-slide-toggle>
             <mat-form-field class="extra-small-y-margin">
               <mat-label>Aggregation function</mat-label>
-              <mat-select required>
+              <mat-select #aggregationFunctionSelect required>
                 <mat-option *ngFor="let aggregationFunction of aggregationFunctions"
                             [value]="aggregationFunction">{{aggregationFunction.name}}</mat-option>
               </mat-select>
-              <mat-hint>The way data are aggregated</mat-hint>
+              <mat-hint>{{aggregationFunctionSelect.value ? aggregationFunctionSelect.value.description : 'The way data are aggregated'}}</mat-hint>
             </mat-form-field>
           </div>
         </div>

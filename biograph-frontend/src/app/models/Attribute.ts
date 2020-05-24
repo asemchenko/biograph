@@ -31,3 +31,8 @@ export interface Attribute {
     max: number
   };
 }
+
+export enum AttributeType {
+  NUMBER = 'NUMBER,',
+  ENUMERATION = 'ENUMERATION',
+}
