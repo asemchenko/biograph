@@ -15,7 +15,6 @@
   </section>
   <mat-paginator (page)="onPageFired($event)"
                  [length]="(filteredEvents$ | async ).length"
-                 [pageIndex]="inputPageIndex"
                  [pageSizeOptions]="[5, 10, 25, 100]"
                  [pageSize]="defaultPageSize">
   </mat-paginator>

@@ -62,7 +62,7 @@ export class AuthEffects {
         this.storageService.putAuthToken(action.payload.authToken);
       }),
       tap((action: LogInSuccess) => {
-        this.router.navigateByUrl('/events');
+        this.router.navigateByUrl('/');
       }),
       tap((action: LogInSuccess) => {
         this.snackBarService.openSuccessSnackBar('Authentication successful');
