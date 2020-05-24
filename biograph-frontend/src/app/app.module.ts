@@ -68,6 +68,7 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 const appRoutes: Routes = [
@@ -187,6 +188,7 @@ const appRoutes: Routes = [
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatSlideToggleModule,
+    MatPaginatorModule,
   ],
   providers: [
     {
