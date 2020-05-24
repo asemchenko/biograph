@@ -2,13 +2,13 @@ import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {EventService} from '../../services/event/event.service';
 import {DialogService} from '../../services/dialog/dialog.service';
 import {Event, getStubEmptyEvent} from '../../models/Event';
-import {BehaviorSubject, combineLatest, Observable, of} from 'rxjs';
-import {catchError, map, mergeMap, take} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {map, mergeMap, take} from 'rxjs/operators';
 import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {AppState} from '../../store/app.state';
+import {AppState, getAllEvents} from '../../store/app.state';
 import {Store} from '@ngrx/store';
-import {HideSpinner, ShowSpinner} from '../../store/progress-indicators/actions/progress-indicators.actions';
+import {CreateEvent, LoadAllEvents} from '../../store/events/actions/event.actions';
 
 @Component({
   selector: 'app-events-page',
@@ -22,7 +22,7 @@ export class EventsPageComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   searchQuery$ = new BehaviorSubject<string>('');
-  filteredEvents$ = new BehaviorSubject<Event[]>([]);
+  filteredEvents$: Observable<Event[]>;
   paginatedEvents$: Observable<Event[]>;
   pageEvents$ = new BehaviorSubject<PageEvent>({pageSize: this.defaultPageSize, pageIndex: this.defaultStartPageIndex, length: 0});
 
@@ -40,17 +40,8 @@ export class EventsPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store$.dispatch(new ShowSpinner());
-    this.eventService.getEventsOwnedByCurrentUser().pipe(
-      take(1),
-      catchError((err) => {
-        this.store$.dispatch(new HideSpinner());
-        return of([]);
-      }),
-    ).subscribe((events: Event[]) => {
-      this.store$.dispatch(new HideSpinner());
-      this.filteredEvents$.next(events);
-    });
+    this.store$.dispatch(new LoadAllEvents());
+    this.filteredEvents$ = this.store$.select(getAllEvents);
     this.paginatedEvents$ = combineLatest(this.filteredEvents$, this.pageEvents$, this.searchQuery$).pipe(
       map(([fEvents, pageEvent, searchQuery]) => {
         const filtered = this.search(searchQuery, fEvents);
@@ -68,10 +59,7 @@ export class EventsPageComponent implements OnInit {
       }),
     ).subscribe((event: Event) => {
       if (event) {
-        this.snackBarService.openSuccessSnackBar('Event successfully created');
-        const currentAllEvents = this.filteredEvents$.getValue();
-        currentAllEvents.push(event);
-        this.filteredEvents$.next(currentAllEvents);
+        this.store$.dispatch(new CreateEvent(event));
       }
     });
   }

@@ -6,7 +6,7 @@ import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/a
 import {FormControl} from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
-import {map, startWith, tap, withLatestFrom} from 'rxjs/operators';
+import {map, startWith, withLatestFrom} from 'rxjs/operators';
 
 @Component({
   selector: 'app-tags',
@@ -35,9 +35,6 @@ export class TagsComponent implements OnInit {
     this.tags$ = this.tagService.getTagsOwnedByCurrentUser();
     this.selectedTags$ = of(this.selectedTags);
     this.filteredTags$ = this.tagFormControl.valueChanges.pipe(
-      tap(value => {
-        console.log('[filteredTags$] 1 Got value: ', value);
-      }),
       startWith(null),
       map(value => value ? value : ''),
       map(value => typeof value === 'string' ? value : value.name),

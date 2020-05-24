@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Category} from '../../models/Category';
 import {Observable, of} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
-import {catchError, map, mergeMap, take, tap} from 'rxjs/operators';
+import {catchError, map, mergeMap, take} from 'rxjs/operators';
 import {API_URLS, insertUserInUrl} from '../../../api-urls';
 
 @Injectable({
@@ -24,11 +24,7 @@ export class CategoryService {
       mergeMap((userId: number) => {
         const url = insertUserInUrl(API_URLS.CATEGORY_URL, userId);
         return this.http.post<Category>(url, category).pipe(
-          tap(response => {
-            console.log('[category service] Got response: ', response);
-          }),
           catchError(error => {
-            console.log('[category service] Got error: ', error);
             return of(null);
           })
         );
@@ -43,11 +39,7 @@ export class CategoryService {
       mergeMap((userId: number) => {
         const url = insertUserInUrl(API_URLS.CATEGORY_URL, userId);
         return this.http.get<Category[]>(url).pipe(
-          tap(response => {
-            console.log('[category-service] Got response: ', response);
-          }),
           catchError(error => {
-            console.log('[category-service] Got error: ', error);
             return of(null);
           })
         );

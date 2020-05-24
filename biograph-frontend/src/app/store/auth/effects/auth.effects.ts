@@ -19,7 +19,6 @@ export class AuthEffects {
     .pipe(
       ofType<LogIn>(AuthActionTypes.LOGIN),
       tap(() => {
-        console.log('Dispatching show spinner action...');
         this.store$.dispatch(new ShowSpinner());
       }),
       map((action: LogIn) => action.payload),
@@ -58,7 +57,6 @@ export class AuthEffects {
         this.store$.dispatch(new HideSpinner());
       }),
       tap((action: LogInSuccess) => {
-        console.log('[LogInSuccess effect] got action: ', action);
         this.storageService.putAuthToken(action.payload.authToken);
       }),
       tap((action: LogInSuccess) => {
@@ -74,7 +72,6 @@ export class AuthEffects {
   LogOut = this.actions.pipe(
     ofType<LogOut>(AuthActionTypes.LOGOUT),
     tap((action: LogOut) => {
-      console.log('[LogOut Effect] Removing token from localStorage');
       this.storageService.removeAuthToken();
       this.snackBarService.openSuccessSnackBar('Successfully logged out');
     })

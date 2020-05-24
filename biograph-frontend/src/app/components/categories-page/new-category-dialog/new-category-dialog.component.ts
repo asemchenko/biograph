@@ -57,7 +57,6 @@ export class NewCategoryDialogComponent implements OnInit {
     this.attributeService.getAttributesOwnedByCurrentUser().pipe(
       take(1)
     ).subscribe((attributes: Attribute[]) => {
-      console.log('[new-category-dialog] Got all user attributes: ', attributes);
       this.allAttributes = attributes;
       this.updateAttributesTable();
 
@@ -94,7 +93,6 @@ export class NewCategoryDialogComponent implements OnInit {
     this.allAttributes.push(attribute);
     this.searchAttributeFormControl.setValue(this.searchAttributeFormControl.value);
     this.updateAttributesTable();
-    console.log(this.allAttributes);
   }
 
   getCategoryNameValidationErrorMessage() {

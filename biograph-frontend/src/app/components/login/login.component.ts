@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
   }
 
   onFormSubmit() {
-    console.log('Dispatching "LogIn" action to the store...');
     this.store.dispatch(new LogIn({email: this.email, password: this.password}));
   }
 

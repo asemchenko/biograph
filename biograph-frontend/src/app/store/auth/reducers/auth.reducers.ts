@@ -17,7 +17,6 @@ export const initialState: State = {
 export function reducer(state = initialState, action: AnyAuthAction): State {
   switch (action.type) {
     case AuthActionTypes.LOGIN_SUCCESS: {
-      console.log('[auth.reducer] Got action: LOGIN_SUCCESS');
       return {
         ...state,
         isAuthenticated: true,
@@ -26,11 +25,9 @@ export function reducer(state = initialState, action: AnyAuthAction): State {
       };
     }
     case AuthActionTypes.LOGOUT: {
-      console.log('[auth.reducer] Got action: LOGOUT');
       return initialState;
     }
     default: {
-      console.log('[auth.reducer] Got action: ', action.type);
       return state;
     }
   }

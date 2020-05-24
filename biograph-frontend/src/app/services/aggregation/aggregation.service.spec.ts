@@ -53,7 +53,6 @@ describe('AggregationService', () => {
         ],
         step: {type: DateStepType.MONTH, amount: 1},
       });
-    console.log('Got metric data entries: ', metricDataEntries);
     expect(true).toBeTrue();
   });
 });

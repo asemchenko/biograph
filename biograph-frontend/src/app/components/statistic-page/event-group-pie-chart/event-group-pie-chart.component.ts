@@ -1,11 +1,15 @@
 import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ChartOptions, ChartType} from 'chart.js';
 import {BaseChartDirective, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from 'ng2-charts';
-import {take} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import {TimeSliderChangedEvent} from '../../date-slider/date-slider.component';
 import {Event} from '../../../models/Event';
 import {EventService} from '../../../services/event/event.service';
 import {EventGroup, EventGroupExtractor} from '../statistic-page.component';
+import {AppState, getAllEvents} from '../../../store/app.state';
+import {Store} from '@ngrx/store';
+import {LoadAllEvents} from '../../../store/events/actions/event.actions';
+import {RxUnsubscribe} from '../../../common/RxUnsubscribe';
 
 // TODO asem переписать в реактивном стиле, а то тут чет вообще ниочем получилось
 @Component({
@@ -13,7 +17,7 @@ import {EventGroup, EventGroupExtractor} from '../statistic-page.component';
   templateUrl: './event-group-pie-chart.component.html',
   styleUrls: ['./event-group-pie-chart.component.less']
 })
-export class EventGroupPieChartComponent implements OnInit {
+export class EventGroupPieChartComponent extends RxUnsubscribe implements OnInit {
   @Input()
   eventGroupExtractor: EventGroupExtractor;
   @ViewChild(BaseChartDirective)
@@ -36,22 +40,27 @@ export class EventGroupPieChartComponent implements OnInit {
   constructor(
     private eventService: EventService,
     private changeDetectorRef: ChangeDetectorRef,
+    private store$: Store<AppState>,
   ) {
+    super();
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
   }
 
   ngOnInit() {
-    this.eventService.getEventsOwnedByCurrentUser().pipe(
-      take(1),
+    this.store$.dispatch(new LoadAllEvents());
+    this.store$.select(getAllEvents).pipe(
+      takeUntil(this.destroy$),
     ).subscribe((events: Event[]) => {
+      console.log('[event-group-pie-chart] Got all events!');
       this.allEvents = events;
       const eventsTimeRange = this.getEventsTimeRange(events);
       eventsTimeRange.olderEventDate = new Date(eventsTimeRange.olderEventDate.getTime() - 1000 * 60 * 60 * 24);
       eventsTimeRange.newerEventDate = new Date(eventsTimeRange.newerEventDate.getTime() + 1000 * 60 * 60 * 24);
       this.timeSliderMinDate = eventsTimeRange.olderEventDate;
       this.timeSliderMaxDate = eventsTimeRange.newerEventDate;
-      this.filterEventsByDate(this.timeSliderMinDate, this.timeSliderMaxDate);
+      this.onTimeSliderValueChanged({selectedStartDate: this.timeSliderMinDate, selectedEndDate: this.timeSliderMaxDate});
+      this.changeDetectorRef.detectChanges();
     });
   }
 

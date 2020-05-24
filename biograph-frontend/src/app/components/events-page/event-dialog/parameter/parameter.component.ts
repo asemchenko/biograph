@@ -76,7 +76,6 @@ export class ParameterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('[parameter-component] Got attribute: ', JSON.stringify(this.attribute));
     this.formControl = this.createFormControl();
     this.parameterInfo = {
       formControl: this.formControl,

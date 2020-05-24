@@ -45,7 +45,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   onFormSubmit() {
-    console.log('Sending registration request...');
     this.authService.register(this.email, this.nickname, this.password).subscribe(r => {
       this.snackBarService.showMessage('Registration successful', r);
       if (r.status === ResponseStatus.OK) {
