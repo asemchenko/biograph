@@ -1,6 +1,6 @@
 <div class="container">
   <h1 class="events-header">Events</h1>
-  <app-search-bar></app-search-bar>
+  <app-search-bar (valueChanged)="onSearchQueryChanged($event)"></app-search-bar>
   <button
     (click)="openCreateNewEventDialog()"
     class="block-centered-button"

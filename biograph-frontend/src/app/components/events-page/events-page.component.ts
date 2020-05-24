@@ -15,6 +15,7 @@ import {PageEvent} from '@angular/material/paginator';
 export class EventsPageComponent implements OnInit {
   readonly defaultPageSize = 10;
   readonly defaultStartPageIndex = 0;
+  searchQuery$ = new BehaviorSubject<string>('');
   filteredEvents$ = new BehaviorSubject<Event[]>([]);
   paginatedEvents$: Observable<Event[]>;
   pageEvents$ = new BehaviorSubject<PageEvent>({pageSize: this.defaultPageSize, pageIndex: this.defaultStartPageIndex, length: 0});
@@ -37,10 +38,10 @@ export class EventsPageComponent implements OnInit {
       this.filteredEvents$.next(events);
       this.resetPaginator();
     });
-    this.paginatedEvents$ = combineLatest(this.filteredEvents$, this.pageEvents$).pipe(
-      map(([fEvents, pageEvent]) => {
-        console.log('[combine latest] Paginating events...');
-        return fEvents.slice(pageEvent.pageSize * pageEvent.pageIndex, pageEvent.pageSize * (pageEvent.pageIndex + 1));
+    this.paginatedEvents$ = combineLatest(this.filteredEvents$, this.pageEvents$, this.searchQuery$).pipe(
+      map(([fEvents, pageEvent, searchQuery]) => {
+        const filtered = this.search(searchQuery, fEvents);
+        return filtered.slice(pageEvent.pageSize * pageEvent.pageIndex, pageEvent.pageSize * (pageEvent.pageIndex + 1));
       })
     );
   }
@@ -63,12 +64,22 @@ export class EventsPageComponent implements OnInit {
   }
 
   onPageFired($event: PageEvent) {
-    console.log('Firing page event', $event);
     this.pageEvents$.next($event);
   }
 
+  onSearchQueryChanged(currentQuery: string) {
+    this.searchQuery$.next(currentQuery);
+  }
+
   private resetPaginator(): void {
-    console.log('Resetting paginator');
     this.inputPageIndex = 0;
+  }
+
+  private search(searchQuery: string, events: Event[]): Event[] {
+    return events.filter((event: Event) => {
+      const q = searchQuery.toLowerCase();
+      return event.name.toLowerCase().includes(q)
+        || event.description.includes(q);
+    });
   }
 }
