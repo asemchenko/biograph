@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {LabelType, Options} from 'ng5-slider';
 import * as moment from 'moment';
 
@@ -16,11 +16,12 @@ export class DateSliderComponent implements OnInit, OnChanges {
   changedRange = new EventEmitter<TimeSliderChangedEvent>();
   options: Options;
 
-  // internal component data
   currentMinValue: number;
   currentMaxValue: number;
 
-  constructor() {
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {
   }
 
   ngOnInit(): void {
@@ -28,19 +29,23 @@ export class DateSliderComponent implements OnInit, OnChanges {
       floor: this.minDate.getTime(),
       ceil: this.maxDate.getTime(),
       translate: (value: number, label: LabelType): string => {
-        switch (label) {
-          case LabelType.Low:
-            return '<b>Start:</b><br/> ' + moment(value).format('MM/DD/YY');
-          case LabelType.High:
-            return '<b>End:</b><br/>' + moment(value).format('MM/DD/YY');
-          default:
-            return moment(value).format('MMMM YYYY');
+        if (value) {
+          switch (label) {
+            case LabelType.Low:
+              return '<b>Start:</b><br/> ' + moment(value).format('MM/DD/YY');
+            case LabelType.High:
+              return '<b>End:</b><br/>' + moment(value).format('MM/DD/YY');
+            default:
+              return moment(value).format('MMMM YYYY');
+          }
         }
+        return '';
       }
     };
     this.currentMinValue = this.minDate.getTime();
     this.currentMaxValue = this.maxDate.getTime();
     this.changedRange.emit({selectedStartDate: this.minDate, selectedEndDate: this.maxDate});
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -52,6 +57,7 @@ export class DateSliderComponent implements OnInit, OnChanges {
       newOptions.ceil = this.maxDate.getTime();
     }
     this.options = newOptions;
+    // this.changeDetectorRef.detectChanges();
   }
 
   onValueChange($event: number) {

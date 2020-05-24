@@ -20,8 +20,7 @@ import {RxUnsubscribe} from '../../../common/RxUnsubscribe';
 export class EventGroupPieChartComponent extends RxUnsubscribe implements OnInit {
   @Input()
   eventGroupExtractor: EventGroupExtractor;
-  @ViewChild(BaseChartDirective)
-  public chart: BaseChartDirective;
+  @ViewChild(BaseChartDirective, {static: true}) public chart: BaseChartDirective;
   public pieChartOptions: ChartOptions = {
     responsive: true,
   };
@@ -52,15 +51,13 @@ export class EventGroupPieChartComponent extends RxUnsubscribe implements OnInit
     this.store$.select(getAllEvents).pipe(
       takeUntil(this.destroy$),
     ).subscribe((events: Event[]) => {
-      console.log('[event-group-pie-chart] Got all events!');
+      console.log('[event-group-pie-chart] Got all events: ', events);
       this.allEvents = events;
       const eventsTimeRange = this.getEventsTimeRange(events);
       eventsTimeRange.olderEventDate = new Date(eventsTimeRange.olderEventDate.getTime() - 1000 * 60 * 60 * 24);
       eventsTimeRange.newerEventDate = new Date(eventsTimeRange.newerEventDate.getTime() + 1000 * 60 * 60 * 24);
       this.timeSliderMinDate = eventsTimeRange.olderEventDate;
       this.timeSliderMaxDate = eventsTimeRange.newerEventDate;
-      this.onTimeSliderValueChanged({selectedStartDate: this.timeSliderMinDate, selectedEndDate: this.timeSliderMaxDate});
-      this.changeDetectorRef.detectChanges();
     });
   }
 
@@ -73,19 +70,23 @@ export class EventGroupPieChartComponent extends RxUnsubscribe implements OnInit
   }
 
   private getEventsTimeRange(events: Event[]): { olderEventDate: Date, newerEventDate: Date } {
-    let minDate = Number.MAX_SAFE_INTEGER;
-    let maxDate = 1;
+    if (events) {
+      let minDate = Number.MAX_SAFE_INTEGER;
+      let maxDate = 1;
 
-    for (const event of events) {
-      const eventTime = new Date(event.startDatetime).getTime();
-      if (eventTime < minDate) {
-        minDate = eventTime;
+      for (const event of events) {
+        const eventTime = new Date(event.startDatetime).getTime();
+        if (eventTime < minDate) {
+          minDate = eventTime;
+        }
+        if (eventTime > maxDate) {
+          maxDate = eventTime;
+        }
       }
-      if (eventTime > maxDate) {
-        maxDate = eventTime;
-      }
+      return {olderEventDate: new Date(minDate), newerEventDate: new Date(maxDate)};
+    } else {
+      return {olderEventDate: new Date('2010-05-24T19:12:14.301Z'), newerEventDate: new Date('2020-05-24T19:12:14.301Z')};
     }
-    return {olderEventDate: new Date(minDate), newerEventDate: new Date(maxDate)};
   }
 
   private filterEventsByDate(startDate: Date, endDate: Date): Event[] {
@@ -116,8 +117,6 @@ export class EventGroupPieChartComponent extends RxUnsubscribe implements OnInit
       for (const eventGroupId of eventGroupIds) {
         labels.push([eventGroupMap.get(eventGroupId).name]);
         data.push(stat.get(eventGroupId));
-        // enable if need to look OK
-        // data.push(Math.ceil(Math.random() * 1000));
       }
       this.pieChartLabels = labels;
       this.pieChartData = data;
