@@ -69,6 +69,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {EventsEffects} from './store/events/effects/events.effects';
 
 
 const appRoutes: Routes = [
@@ -161,7 +162,7 @@ const appRoutes: Routes = [
     LayoutModule,
     MatToolbarModule,
     MatListModule,
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, EventsEffects]),
     StoreModule.forRoot(reducers, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 10

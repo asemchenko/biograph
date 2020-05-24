@@ -10,21 +10,32 @@
             <mat-form-field>
               <mat-label>Choose metric</mat-label>
               <mat-select #metricConfigurationSelector>
-                <mat-option *ngFor="let metric of (allMetrics | async)" [value]="metric">{{metric.name}}</mat-option>
+                <mat-option *ngFor="let config of configuration" [value]="config">{{config.attribute.name}}</mat-option>
               </mat-select>
               <mat-hint>Select & configure</mat-hint>
             </mat-form-field>
           </div>
           <div *ngIf="metricConfigurationSelector.value"
                class="metrics-monitoring-root__content__config-bar__main-section__metric-configuration">
-            <mat-slide-toggle class="extra-small-y-margin" matTooltip="Should metric be shown on the chart">Display
-              metric
+            <mat-slide-toggle
+              [(ngModel)]="metricConfigurationSelector.value.isDisplayed"
+              class="extra-small-y-margin"
+              matTooltip="Should metric be shown on the chart"
+            >Display metric
             </mat-slide-toggle>
-            <mat-slide-toggle class="extra-small-y-margin" matTooltip="Convert metrics values to %">Normalize metric
+            <mat-slide-toggle
+              [(ngModel)]="metricConfigurationSelector.value.isNormalized"
+              class="extra-small-y-margin"
+              matTooltip="Convert metrics values to %"
+            >
+              Normalize metric
             </mat-slide-toggle>
             <mat-form-field class="extra-small-y-margin">
               <mat-label>Aggregation function</mat-label>
-              <mat-select #aggregationFunctionSelect required>
+              <mat-select
+                #aggregationFunctionSelect
+                [(ngModel)]="metricConfigurationSelector.value.aggregationFunction"
+                required>
                 <mat-option *ngFor="let aggregationFunction of aggregationFunctions"
                             [value]="aggregationFunction">{{aggregationFunction.name}}</mat-option>
               </mat-select>

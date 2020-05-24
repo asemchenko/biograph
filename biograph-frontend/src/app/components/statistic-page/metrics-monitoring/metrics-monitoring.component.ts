@@ -1,15 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
 import {Attribute} from '../../../models/Attribute';
 import {AttributeService} from '../../../services/attribute/attribute.service';
 import {AggregationService} from '../../../services/aggregation/aggregation.service';
+import {RxUnsubscribe} from '../../../common/RxUnsubscribe';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-metrics-monitoring',
   templateUrl: './metrics-monitoring.component.html',
   styleUrls: ['./metrics-monitoring.component.less']
 })
-export class MetricsMonitoringComponent implements OnInit {
+export class MetricsMonitoringComponent extends RxUnsubscribe implements OnInit {
   readonly lineChartOptions = {
     // options
     legend: true,
@@ -24,17 +25,18 @@ export class MetricsMonitoringComponent implements OnInit {
     timeline: true,
   };
   data: ChartDataEntry[];
-  allMetrics: Observable<Attribute[]>;
   aggregationFunctions: AggregationFunction[];
+  configuration: MetricConfiguration[];
 
   constructor(
     private attributeService: AttributeService,
     private aggregationService: AggregationService,
   ) {
+    super();
   }
 
   ngOnInit(): void {
-    this.data = [
+    /*this.data = [
       {
         name: 'Cardio',
         series: [
@@ -91,9 +93,19 @@ export class MetricsMonitoringComponent implements OnInit {
           value: 59
         }, {name: 'Nov', value: 88}, {name: 'Dec', value: 17}]
       }
-    ];
-    this.allMetrics = this.attributeService.getAttributesOwnedByCurrentUser();
+    ];*/
+    this.attributeService.getAttributesOwnedByCurrentUser().pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((attributes: Attribute[]) => {
+      this.configuration = attributes.map((attribute: Attribute) => {
+        return {attribute, aggregationFunction: this.getDefaultAggregationFunction(), isDisplayed: false, isNormalized: false};
+      });
+    });
     this.aggregationFunctions = this.aggregationService.getAllAggregationFunctions();
+  }
+
+  private getDefaultAggregationFunction(): AggregationFunction {
+    return this.aggregationService.averageAggregationFunction;
   }
 
 }

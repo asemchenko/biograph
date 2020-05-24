@@ -6,6 +6,7 @@
     "start": "ng serve",
     "start-prod": "ng serve --configuration=production",
     "start-global": "ng serve --host 192.168.1.7",
+    "start-global-prod": "ng serve --host 192.168.1.7 --environment",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
