@@ -1,9 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Attribute} from '../../../models/Attribute';
 import {AttributeService} from '../../../services/attribute/attribute.service';
-import {AggregationService} from '../../../services/aggregation/aggregation.service';
+import {AggregationService, DateStepType} from '../../../services/aggregation/aggregation.service';
 import {RxUnsubscribe} from '../../../common/RxUnsubscribe';
 import {takeUntil} from 'rxjs/operators';
+import {Event} from '../../../models/Event';
+import {AppState, getAllEvents} from '../../../store/app.state';
+import {Store} from '@ngrx/store';
+import {LoadAllEvents} from '../../../store/events/actions/event.actions';
 
 @Component({
   selector: 'app-metrics-monitoring',
@@ -27,10 +31,12 @@ export class MetricsMonitoringComponent extends RxUnsubscribe implements OnInit 
   data: ChartDataEntry[];
   aggregationFunctions: AggregationFunction[];
   configuration: MetricConfiguration[];
+  allEvents: Event[] = [];
 
   constructor(
     private attributeService: AttributeService,
     private aggregationService: AggregationService,
+    private store$: Store<AppState>,
   ) {
     super();
   }
@@ -94,6 +100,12 @@ export class MetricsMonitoringComponent extends RxUnsubscribe implements OnInit 
         }, {name: 'Nov', value: 88}, {name: 'Dec', value: 17}]
       }
     ];*/
+    this.store$.dispatch(new LoadAllEvents());
+    this.store$.select(getAllEvents).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((events: Event[]) => {
+      this.allEvents = events;
+    });
     this.attributeService.getAttributesOwnedByCurrentUser().pipe(
       takeUntil(this.destroy$),
     ).subscribe((attributes: Attribute[]) => {
@@ -104,10 +116,22 @@ export class MetricsMonitoringComponent extends RxUnsubscribe implements OnInit 
     this.aggregationFunctions = this.aggregationService.getAllAggregationFunctions();
   }
 
+  onConfigurationApply($event: MouseEvent): void {
+    console.log('Applying configuration...');
+    const dateRange = this.aggregationService.getEventsTimeRange(this.allEvents);
+    this.data = this.aggregationService.aggregate(this.allEvents,
+      {
+        metricConfiguration: this.configuration,
+        startDate: dateRange.olderEventDate,
+        endDate: dateRange.newerEventDate,
+        step: {type: DateStepType.MONTH, amount: 1},
+      });
+    console.log('[metrics-monitoring] Got data: ', this.data);
+  }
+
   private getDefaultAggregationFunction(): AggregationFunction {
     return this.aggregationService.averageAggregationFunction;
   }
-
 }
 
 export interface ChartDataEntry {

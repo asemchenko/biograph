@@ -33,6 +33,6 @@ export interface Attribute {
 }
 
 export enum AttributeType {
-  NUMBER = 'NUMBER,',
+  NUMBER = 'NUMBER',
   ENUMERATION = 'ENUMERATION',
 }

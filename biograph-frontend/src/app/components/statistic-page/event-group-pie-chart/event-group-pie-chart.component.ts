@@ -10,6 +10,7 @@ import {AppState, getAllEvents} from '../../../store/app.state';
 import {Store} from '@ngrx/store';
 import {LoadAllEvents} from '../../../store/events/actions/event.actions';
 import {RxUnsubscribe} from '../../../common/RxUnsubscribe';
+import {AggregationService} from '../../../services/aggregation/aggregation.service';
 
 // TODO asem переписать в реактивном стиле, а то тут чет вообще ниочем получилось
 @Component({
@@ -40,6 +41,7 @@ export class EventGroupPieChartComponent extends RxUnsubscribe implements OnInit
     private eventService: EventService,
     private changeDetectorRef: ChangeDetectorRef,
     private store$: Store<AppState>,
+    private aggregationService: AggregationService,
   ) {
     super();
     monkeyPatchChartJsTooltip();
@@ -53,7 +55,7 @@ export class EventGroupPieChartComponent extends RxUnsubscribe implements OnInit
     ).subscribe((events: Event[]) => {
       console.log('[event-group-pie-chart] Got all events: ', events);
       this.allEvents = events;
-      const eventsTimeRange = this.getEventsTimeRange(events);
+      const eventsTimeRange = this.aggregationService.getEventsTimeRange(events);
       eventsTimeRange.olderEventDate = new Date(eventsTimeRange.olderEventDate.getTime() - 1000 * 60 * 60 * 24);
       eventsTimeRange.newerEventDate = new Date(eventsTimeRange.newerEventDate.getTime() + 1000 * 60 * 60 * 24);
       this.timeSliderMinDate = eventsTimeRange.olderEventDate;
@@ -66,26 +68,6 @@ export class EventGroupPieChartComponent extends RxUnsubscribe implements OnInit
     if (this.chart) {
       const filteredEvents = this.filterEventsByDate($event.selectedStartDate, $event.selectedEndDate);
       this.displayChart(filteredEvents);
-    }
-  }
-
-  private getEventsTimeRange(events: Event[]): { olderEventDate: Date, newerEventDate: Date } {
-    if (events) {
-      let minDate = Number.MAX_SAFE_INTEGER;
-      let maxDate = 1;
-
-      for (const event of events) {
-        const eventTime = new Date(event.startDatetime).getTime();
-        if (eventTime < minDate) {
-          minDate = eventTime;
-        }
-        if (eventTime > maxDate) {
-          maxDate = eventTime;
-        }
-      }
-      return {olderEventDate: new Date(minDate), newerEventDate: new Date(maxDate)};
-    } else {
-      return {olderEventDate: new Date('2010-05-24T19:12:14.301Z'), newerEventDate: new Date('2020-05-24T19:12:14.301Z')};
     }
   }
 

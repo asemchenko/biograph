@@ -15,12 +15,15 @@ import {Parameter} from '../../models/Parameter';
 export class AggregationService {
   public readonly averageAggregationFunction: AggregationFunction = {
     name: 'Average', description: 'Average value of data', apply(range: number[]): number {
-      return range.reduce((a: number, b: number) => (a + b)) / range.length;
+      if (range && range.length > 0) {
+        return range.reduce((a: number, b: number) => (a + b)) / range.length;
+      }
+      return 0;
     }
   };
   public readonly totalAggregationFunction: AggregationFunction = {
     name: 'Total', description: 'Sum of all data values', apply(range: number[]): number {
-      return range.reduce((a: number, b: number) => (a + b));
+      return range.reduce((a: number, b: number) => (a + b), 0);
     }
   };
   public readonly countAggregationFunction: AggregationFunction = {
@@ -30,12 +33,18 @@ export class AggregationService {
   };
   public readonly minAggregationFunction: AggregationFunction = {
     name: 'Min', description: 'Minimum value of data', apply(range: number[]): number {
-      return range.reduce((a: number, b: number) => Math.min(a, b));
+      if (range && range.length > 0) {
+        return range.reduce((a: number, b: number) => Math.min(a, b));
+      }
+      return 0;
     }
   };
   public readonly maxAggregationFunction: AggregationFunction = {
     name: 'Max', description: 'Maximum value of data', apply(range: number[]): number {
-      return range.reduce((a: number, b: number) => Math.max(a, b));
+      if (range && range.length > 0) {
+        return range.reduce((a: number, b: number) => Math.max(a, b));
+      }
+      return 0;
     }
   };
 
@@ -60,6 +69,26 @@ export class AggregationService {
     });
     this.applyAggregationFunction(result);
     return result;
+  }
+
+  public getEventsTimeRange(events: Event[]): { olderEventDate: Date, newerEventDate: Date } {
+    if (events) {
+      let minDate = Number.MAX_SAFE_INTEGER;
+      let maxDate = 1;
+
+      for (const event of events) {
+        const eventTime = new Date(event.startDatetime).getTime();
+        if (eventTime < minDate) {
+          minDate = eventTime;
+        }
+        if (eventTime > maxDate) {
+          maxDate = eventTime;
+        }
+      }
+      return {olderEventDate: new Date(minDate), newerEventDate: new Date(maxDate)};
+    } else {
+      return {olderEventDate: new Date('2010-05-24T19:12:14.301Z'), newerEventDate: new Date('2020-05-24T19:12:14.301Z')};
+    }
   }
 
   public getAllAggregationFunctions(): AggregationFunction[] {
@@ -88,10 +117,10 @@ export class AggregationService {
     dataEntries.forEach((entry: MetricDataEntry) => {
       entry.series.forEach((series: MetricSeries) => {
         switch (entry.metricConfiguration.attribute.attributeType) {
-          case AttributeType.NUMBER:
+          case AttributeType.NUMBER.toString():
             series.value = entry.metricConfiguration.aggregationFunction.apply(series._valueAccumulator.map((value: string) => +value));
             break;
-          case AttributeType.ENUMERATION:
+          case AttributeType.ENUMERATION.toString():
             // TODO asem think about ENUMERATION attributes support
             throw new Error('Unsupported attribute type: ' + entry.metricConfiguration.attribute.attributeType);
           default:
