@@ -110,7 +110,13 @@ export class MetricsMonitoringComponent extends RxUnsubscribe implements OnInit 
       takeUntil(this.destroy$),
     ).subscribe((attributes: Attribute[]) => {
       this.configuration = attributes.map((attribute: Attribute) => {
-        return {attribute, aggregationFunction: this.getDefaultAggregationFunction(), isDisplayed: false, isNormalized: false};
+        return {
+          attribute,
+          aggregationFunction: this.getDefaultAggregationFunction(),
+          normalizationFunction: this.getDefaultNormalizationFunction(),
+          isDisplayed: false,
+          isNormalized: false
+        };
       });
     });
     this.aggregationFunctions = this.aggregationService.getAllAggregationFunctions();
@@ -132,6 +138,10 @@ export class MetricsMonitoringComponent extends RxUnsubscribe implements OnInit 
   private getDefaultAggregationFunction(): AggregationFunction {
     return this.aggregationService.averageAggregationFunction;
   }
+
+  private getDefaultNormalizationFunction(): NormalizationFunction {
+    return this.aggregationService.minMaxNormalizationFunction;
+  }
 }
 
 export interface ChartDataEntry {
@@ -149,6 +159,7 @@ export interface MetricConfiguration {
   isDisplayed: boolean;
   isNormalized: boolean;
   aggregationFunction: AggregationFunction;
+  normalizationFunction: NormalizationFunction;
 }
 
 export abstract class AggregationFunction {
@@ -157,3 +168,26 @@ export abstract class AggregationFunction {
 
   public abstract apply(range: number[]): number;
 }
+
+export abstract class NormalizationFunction {
+  name: string;
+  description: string;
+
+  /**
+   * Calculates normalization parameters, that must be used in future ( by passing as method parameter )
+   * normalization. It is optimization, to avoid recalculation this parameter for each 'normalize' method call
+   * ( also allows this class methods to be pure functions )
+   * @param data normalization parameters
+   */
+  public abstract calculateNormalizationParameters(data: { value: number }[]): any;
+
+  /**
+   * Accepts pre-calculated for dataset normalization parameters & value for
+   * normalization.
+   * @param value value to be normalized
+   * @param normalizationParameters pre-calculated normalization parameters
+   */
+  public abstract normalize(value: number, normalizationParameters: any): number;
+}
+
+

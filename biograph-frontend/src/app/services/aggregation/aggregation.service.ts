@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {
   AggregationFunction,
   ChartDataEntry,
-  MetricConfiguration
+  MetricConfiguration,
+  NormalizationFunction
 } from '../../components/statistic-page/metrics-monitoring/metrics-monitoring.component';
 import * as moment from 'moment';
 import {Attribute, AttributeType} from '../../models/Attribute';
@@ -13,6 +14,7 @@ import {Parameter} from '../../models/Parameter';
   providedIn: 'root'
 })
 export class AggregationService {
+  // supported aggregation functions
   public readonly averageAggregationFunction: AggregationFunction = {
     name: 'Average', description: 'Average value of data', apply(range: number[]): number {
       if (range && range.length > 0) {
@@ -47,6 +49,50 @@ export class AggregationService {
       return 0;
     }
   };
+  // supported normalization functions
+  public readonly standardScoreNormalizationFunction: NormalizationFunction = {
+    name: 'Standard score',
+    description: 'Normalization function based on mean and standard deviation',
+    calculateNormalizationParameters(data: { value: number }[]): { mean: number, standardDeviation: number } {
+      const calcMean = (d: { value: number }[]): number => {
+        if (d && d.length > 0) {
+          const sum = d.map((v) => v.value).reduce((a, b) => a + b, 0);
+          return sum / d.length;
+        }
+        return 0;
+      };
+      // calculations
+      const mean = calcMean(data);
+      // calc standard deviation
+      let standardDeviation = 0;
+      for (const dataEntry of data) {
+        standardDeviation += (dataEntry.value - mean) * (dataEntry.value - mean);
+      }
+      standardDeviation = Math.sqrt(standardDeviation / (data.length - 1));
+      return {mean, standardDeviation};
+    },
+
+    normalize(value: number, normalizationParameters: any): number {
+      const mean = normalizationParameters.mean;
+      const standardDeviation = normalizationParameters.standardDeviation;
+      // normalizing
+      return (value - mean) / standardDeviation;
+    }
+  };
+  public readonly minMaxNormalizationFunction: NormalizationFunction = {
+    name: 'Min max normalization',
+    description: 'Normalization based on minimum and maximum value from data set',
+    calculateNormalizationParameters(data: { value: number }[]): { min: number, max: number } {
+      const minValue = data.map((v) => v.value).reduce((a, b) => Math.min(a, b));
+      const maxValue = data.map((v) => v.value).reduce((a, b) => Math.max(a, b));
+      return {min: minValue, max: maxValue};
+    },
+    normalize(value: number, normalizationParameters: any): number {
+      const min = normalizationParameters.min;
+      const max = normalizationParameters.max;
+      return (value - min) / (max - min);
+    }
+  };
 
   constructor() {
   }
@@ -68,6 +114,7 @@ export class AggregationService {
       });
     });
     this.applyAggregationFunction(result);
+    this.applyNormalizationFunction(result);
     return result;
   }
 
@@ -127,6 +174,16 @@ export class AggregationService {
             throw new Error('Unsupported attribute type: ' + entry.metricConfiguration.attribute.attributeType);
         }
       });
+    });
+  }
+
+
+  private applyNormalizationFunction(dataEntries: MetricDataEntry[]) {
+    dataEntries.forEach((entry: MetricDataEntry) => {
+      // check that normalization is required
+      if (entry.metricConfiguration.isNormalized) {
+        // pre-calculate normalization parameters
+      }
     });
   }
 
