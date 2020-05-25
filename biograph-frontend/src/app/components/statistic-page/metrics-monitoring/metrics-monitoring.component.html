@@ -26,8 +26,7 @@
             <mat-slide-toggle
               [(ngModel)]="metricConfigurationSelector.value.isNormalized"
               class="extra-small-y-margin"
-              matTooltip="Convert metrics values to %"
-            >
+              #isNormalizedSlideToggle matTooltip="Convert metrics values to %">
               Normalize metric
             </mat-slide-toggle>
             <mat-form-field class="extra-small-y-margin">
@@ -40,6 +39,16 @@
                             [value]="aggregationFunction">{{aggregationFunction.name}}</mat-option>
               </mat-select>
               <mat-hint>{{aggregationFunctionSelect.value ? aggregationFunctionSelect.value.description : 'The way data are aggregated'}}</mat-hint>
+            </mat-form-field>
+            <mat-form-field *ngIf="isNormalizedSlideToggle.checked" class="extra-small-y-margin">
+              <mat-label>Normalization function</mat-label>
+              <mat-select
+                #normalizationFunctionSelect
+                [(ngModel)]="metricConfigurationSelector.value.normalizationFunction" required>
+                <mat-option *ngFor="let normalizationFunction of normalizationFunctions"
+                            [value]="normalizationFunction">{{normalizationFunction.name}}</mat-option>
+              </mat-select>
+              <mat-hint>{{normalizationFunctionSelect.value ? normalizationFunctionSelect.value.description : 'The way data are normalized'}}</mat-hint>
             </mat-form-field>
           </div>
         </div>

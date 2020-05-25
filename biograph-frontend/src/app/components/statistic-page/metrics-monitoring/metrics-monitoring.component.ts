@@ -30,6 +30,7 @@ export class MetricsMonitoringComponent extends RxUnsubscribe implements OnInit 
   };
   data: ChartDataEntry[];
   aggregationFunctions: AggregationFunction[];
+  normalizationFunctions: NormalizationFunction[];
   configuration: MetricConfiguration[];
   allEvents: Event[] = [];
 
@@ -120,6 +121,7 @@ export class MetricsMonitoringComponent extends RxUnsubscribe implements OnInit 
       });
     });
     this.aggregationFunctions = this.aggregationService.getAllAggregationFunctions();
+    this.normalizationFunctions = this.aggregationService.getAllNormalizationFunctions();
   }
 
   onConfigurationApply($event: MouseEvent): void {

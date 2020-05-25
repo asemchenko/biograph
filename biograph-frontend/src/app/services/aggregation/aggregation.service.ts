@@ -148,6 +148,13 @@ export class AggregationService {
     ];
   }
 
+  public getAllNormalizationFunctions(): NormalizationFunction[] {
+    return [
+      this.minMaxNormalizationFunction,
+      this.standardScoreNormalizationFunction
+    ];
+  }
+
   public generateEmptyMetricDataEntry(config: AggregationConfiguration): MetricDataEntry[] {
     return config.metricConfiguration
       .filter((metricConfig: MetricConfiguration) => metricConfig.isDisplayed)
@@ -178,11 +185,16 @@ export class AggregationService {
   }
 
 
-  private applyNormalizationFunction(dataEntries: MetricDataEntry[]) {
+  private applyNormalizationFunction(dataEntries: MetricDataEntry[]): void {
     dataEntries.forEach((entry: MetricDataEntry) => {
       // check that normalization is required
       if (entry.metricConfiguration.isNormalized) {
         // pre-calculate normalization parameters
+        const curNormalizationFunction = entry.metricConfiguration.normalizationFunction;
+        const parameters = curNormalizationFunction.calculateNormalizationParameters(entry.series);
+        entry.series.forEach((series: MetricSeries) => {
+          series.value = curNormalizationFunction.normalize(series.value, parameters);
+        });
       }
     });
   }
