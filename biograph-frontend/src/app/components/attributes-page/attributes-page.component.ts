@@ -21,7 +21,7 @@ export class AttributesPageComponent implements OnInit {
    * List of attributes that is displayed ( attributes are filtered according to search bar content )
    */
   filteredAttributes: Attribute[];
-  columnsToDisplay = ['name', 'attributeType', 'totalMeasurements', 'totalCategories', 'creationTime'];
+  columnsToDisplay = ['name', 'attributeType', 'totalMeasurements', 'totalCategories', /*'creationTime'*/];
   /**
    * String that is currently entered in search bar
    */

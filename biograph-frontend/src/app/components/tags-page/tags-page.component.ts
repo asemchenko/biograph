@@ -16,7 +16,7 @@ import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
 export class TagsPageComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatTable, {static: true}) table: MatTable<Tag>;
-  readonly columnsToDisplay = ['name', 'totalEvents', 'creationTime', 'color'];
+  readonly columnsToDisplay = ['name', 'totalEvents', /*'creationTime',*/ 'color'];
   dataSource: MatTableDataSource<Tag> = new MatTableDataSource<Tag>([]);
   private tags$ = new BehaviorSubject<Tag[]>([]);
   private currentSearchQuery = '';

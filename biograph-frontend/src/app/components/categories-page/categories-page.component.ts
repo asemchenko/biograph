@@ -14,7 +14,7 @@ import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
   styleUrls: ['./categories-page.component.less']
 })
 export class CategoriesPageComponent implements OnInit {
-  readonly columnsToDisplay = ['name', 'creationTime', 'totalEvents', 'attributes', 'color'];
+  readonly columnsToDisplay = ['name', /*'creationTime',*/ 'totalEvents', 'attributes', 'color'];
   allCategories: Category[] = [];
   // TODO asem maybe it is better to make data source reactive ( no need to call table.renderRows() each time )
   dataSource = new MatTableDataSource(this.allCategories);
