@@ -70,6 +70,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {EventsEffects} from './store/events/effects/events.effects';
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {environment} from '../environments/environment';
 
 
 const appRoutes: Routes = [
@@ -190,6 +192,7 @@ const appRoutes: Routes = [
     MatProgressBarModule,
     MatSlideToggleModule,
     MatPaginatorModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
   ],
   providers: [
     {
