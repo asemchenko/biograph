@@ -25,7 +25,7 @@ public class Category {
     private String description;
     private String color;
     private Instant creationTime;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany
     @JoinTable(
             name = "category_attributes",
             joinColumns = {@JoinColumn(name = "category_id")},

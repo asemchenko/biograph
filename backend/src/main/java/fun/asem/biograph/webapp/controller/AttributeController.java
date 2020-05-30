@@ -3,6 +3,7 @@ package fun.asem.biograph.webapp.controller;
 import fun.asem.biograph.webapp.domain.Attribute;
 import fun.asem.biograph.webapp.domain.User;
 import fun.asem.biograph.webapp.dto.mapper.AttributeMapper;
+import fun.asem.biograph.webapp.dto.model.ServerResponse;
 import fun.asem.biograph.webapp.dto.model.attribute.CreateAttributeDto;
 import fun.asem.biograph.webapp.dto.model.attribute.ResponseAttributeDto;
 import fun.asem.biograph.webapp.service.attribute.AttributeService;
@@ -47,6 +48,14 @@ public class AttributeController extends BaseController {
         User user = getUser(principal);
         checkAccess(userId, user);
         return convertToDto(attributeService.create(attribute, user));
+    }
+
+    @DeleteMapping("/users/{userId}/attributes/{attributeId}")
+    public ServerResponse deleteAttribute(@PathVariable Long userId, @PathVariable Long attributeId, Principal principal) {
+        User currentUser = getUser(principal);
+        checkAccess(userId, currentUser);
+        attributeService.delete(attributeId, currentUser);
+        return ServerResponse.builder().status(ServerResponse.ResponseStatus.OK).build();
     }
 
     private User getUser(Principal principal) {

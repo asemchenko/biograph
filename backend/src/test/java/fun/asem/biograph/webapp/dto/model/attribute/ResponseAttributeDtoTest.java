@@ -31,6 +31,8 @@ class ResponseAttributeDtoTest {
                         19.
                 ),
                 Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
                 0L,
                 0L
         );

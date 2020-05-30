@@ -26,7 +26,7 @@ public class Attribute {
     private Instant creationTime;
     @Enumerated(EnumType.STRING)
     private AttributeType attributeType;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "constraint_id")
     private Constraint constraint;
     @JsonIgnore
@@ -35,6 +35,12 @@ public class Attribute {
             mappedBy = "attribute",
             fetch = FetchType.LAZY)
     private List<Grant> grants;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "attributes", fetch = FetchType.LAZY)
+    private List<Category> categories;
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "attribute", fetch = FetchType.LAZY)
+    private List<Parameter> parameters;
     @Formula("( SELECT COUNT(*) FROM parameters WHERE parameters.attribute_id = attribute_id )")
     private Long totalMeasurements;
     @Formula("( SELECT COUNT(*) FROM category_attributes ca WHERE ca.attribute_id = attribute_id )")

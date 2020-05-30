@@ -3,6 +3,7 @@ package fun.asem.biograph.webapp.service.attribute;
 import fun.asem.biograph.webapp.domain.Attribute;
 import fun.asem.biograph.webapp.domain.Grant;
 import fun.asem.biograph.webapp.domain.User;
+import fun.asem.biograph.webapp.exception.UnauthorizedException;
 import fun.asem.biograph.webapp.repository.AttributeRepository;
 import fun.asem.biograph.webapp.service.grant.GrantService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,28 @@ public class AttributeServiceImpl implements AttributeService {
         attribute.setTotalCategories(0L);
         attribute.setTotalMeasurements(0L);
         return attribute;
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long attributeId, User user) {
+        Attribute attribute = attributeRepository
+                .findByAttributeId(attributeId)
+                .orElseThrow(() -> new NoSuchElementException("No such attribute with id=" + attributeId));
+        checkOwnerAccess(attribute, user);
+        attribute.getCategories().forEach(category -> category.getAttributes().remove(attribute));
+        attributeRepository.delete(attribute);
+    }
+
+    @Override
+    public void checkOwnerAccess(Attribute attribute, User user) throws UnauthorizedException {
+        if (attributeRepository.findByAttributeId(attribute.getAttributeId())
+                .orElseThrow(() -> new NoSuchElementException("No attribute with attributeId=" + attribute.getAttributeId()))
+                .getGrants()
+                .stream()
+                .noneMatch(grant -> grant.getAccessType() == Grant.AccessType.OWNER && grant.getUser().getUserId().equals(user.getUserId()))) {
+            throw new UnauthorizedException("You are not authorized to access attribute with attributeId=" + attribute.getAttributeId());
+        }
     }
 
     @Transactional
