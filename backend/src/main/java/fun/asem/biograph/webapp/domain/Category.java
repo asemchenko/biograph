@@ -34,10 +34,13 @@ public class Category {
     private List<Attribute> attributes;
     @JsonIgnore
     @OneToMany(
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.REMOVE,
             mappedBy = "category",
             fetch = FetchType.LAZY)
     private List<Grant> grants;
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "category", fetch = FetchType.LAZY)
+    private List<Event> events;
     @Formula("( SELECT COUNT(*) FROM events WHERE events.category_id = category_id )")
     private Long totalEvents;
 }

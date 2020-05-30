@@ -1,6 +1,7 @@
 package fun.asem.biograph.webapp.controller;
 
 import fun.asem.biograph.webapp.domain.User;
+import fun.asem.biograph.webapp.dto.model.ServerResponse;
 import fun.asem.biograph.webapp.dto.model.event.CreateEventDto;
 import fun.asem.biograph.webapp.dto.model.event.ResponseEventDto;
 import fun.asem.biograph.webapp.service.event.EventService;
@@ -38,5 +39,13 @@ public class EventController extends BaseController {
         User currentUser = userService.getUserByUserDetails(principal.getName());
         checkAccess(userId, currentUser);
         return eventService.getUserEvents(currentUser);
+    }
+
+    @DeleteMapping("/users/{userId}/events/{eventId}")
+    public ServerResponse delete(@PathVariable Long userId, @PathVariable Long eventId, Principal principal) {
+        User currentUser = getUser(principal, userService);
+        checkAccess(userId, currentUser);
+        eventService.delete(eventId, currentUser);
+        return ServerResponse.builder().status(ServerResponse.ResponseStatus.OK).build();
     }
 }

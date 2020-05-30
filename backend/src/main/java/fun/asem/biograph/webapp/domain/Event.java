@@ -28,10 +28,10 @@ public class Event {
     private Instant creationTime;
     private Instant lastModifiedTime;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
     private List<Parameter> parameters;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "event")
     private List<Attachment> attachments;
     @ManyToMany
     @JoinTable(

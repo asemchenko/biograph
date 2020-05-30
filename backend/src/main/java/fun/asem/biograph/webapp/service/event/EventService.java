@@ -10,4 +10,6 @@ public interface EventService {
     ResponseEventDto create(CreateEventDto eventDto, User owner);
 
     List<ResponseEventDto> getUserEvents(User owner);
+
+    void delete(Long eventId, User user);
 }

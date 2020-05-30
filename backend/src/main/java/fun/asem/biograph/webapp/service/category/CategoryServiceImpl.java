@@ -29,7 +29,6 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final AttributeService attributeService;
     private final GrantService grantService;
-
     @Transactional
     @Override
     public ResponseCategoryDto create(CreateCategoryDto categoryDto, User user) {
@@ -80,6 +79,17 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Optional<Category> findCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long categoryId, User user) {
+        Category category = categoryRepository
+                .findById(categoryId)
+                .orElseThrow(() -> new NoSuchElementException("No such category with id=" + categoryId));
+        checkOwnerAccess(category, user);
+        category.getAttributes().forEach(attribute -> attribute.getCategories().remove(category));
+        categoryRepository.delete(category);
     }
 
     @Override

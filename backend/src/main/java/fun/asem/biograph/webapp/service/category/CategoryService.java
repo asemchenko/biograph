@@ -18,5 +18,7 @@ public interface CategoryService {
 
     Category getById(Long categoryId);
 
+    void delete(Long categoryId, User user);
+
     void checkOwnerAccess(Category category, User user) throws UnauthorizedException;
 }

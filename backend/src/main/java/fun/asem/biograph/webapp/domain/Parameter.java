@@ -18,7 +18,7 @@ public class Parameter {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long parameterId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", referencedColumnName = "event_id")
+    @JoinColumn(name = "event_id", referencedColumnName = "eventId")
     private Event event;
     private String value;
     @ManyToOne

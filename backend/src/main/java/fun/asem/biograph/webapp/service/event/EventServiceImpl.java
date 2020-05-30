@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -48,7 +49,7 @@ public class EventServiceImpl implements EventService {
     }
 
     private void check(User owner, Event event) {
-        checkAccess(event, owner);
+        checkCreateAccess(event, owner);
         // saving parameters
         setCyclicRelationship(event);
         validateParameters(event.getParameters(), categoryService.getById(event.getCategory().getCategoryId()));
@@ -77,8 +78,28 @@ public class EventServiceImpl implements EventService {
         event.getParameters().forEach((parameter -> parameter.setEvent(event)));
     }
 
+    @Override
+    public void delete(Long eventId, User user) {
+        Event event = eventRepository
+                .findById(eventId)
+                .orElseThrow(() -> new NoSuchElementException("No such event with eventId=" + eventId));
+        checkOwnerAccess(event, user);
+        event.getTags().forEach(tag -> tag.getEvents().remove(event));
+        eventRepository.delete(event);
+    }
 
-    private void checkAccess(Event event, User user) throws UnauthorizedException {
+    private void checkOwnerAccess(Event event, User user) throws UnauthorizedException {
+        if (eventRepository
+                .findById(event.getEventId())
+                .orElseThrow(() -> new NoSuchElementException("No event with eventId=" + event.getEventId()))
+                .getGrants()
+                .stream()
+                .noneMatch(grant -> grant.getAccessType() == Grant.AccessType.OWNER && grant.getUser().getUserId().equals(user.getUserId()))) {
+            throw new UnauthorizedException("You are not authorized to access attribute with attributeId=" + event.getEventId());
+        }
+    }
+
+    private void checkCreateAccess(Event event, User user) throws UnauthorizedException {
         categoryService.checkOwnerAccess(event.getCategory(), user);
         event.getTags().forEach(tag -> {
             tagService.checkOwnerAccess(tag, user);
