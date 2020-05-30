@@ -58,6 +58,14 @@ public class TagServiceImpl implements TagService {
         return tagRepository.findById(id);
     }
 
+    @Transactional
+    @Override
+    public void delete(Long tagId, User user) {
+        Tag tag = tagRepository.findById(tagId).get();
+        checkOwnerAccess(tag, user);
+        tagRepository.deleteById(tag.getTagId());
+    }
+
     @Override
     public void checkOwnerAccess(Tag tag, User user) throws UnauthorizedException {
         if (tagRepository.findById(tag.getTagId())

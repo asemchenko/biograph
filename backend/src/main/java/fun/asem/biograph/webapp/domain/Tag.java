@@ -30,7 +30,6 @@ public class Tag {
     @JsonIgnore
     @OneToMany(
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
             mappedBy = "tag",
             fetch = FetchType.LAZY)
     private List<Grant> grants;

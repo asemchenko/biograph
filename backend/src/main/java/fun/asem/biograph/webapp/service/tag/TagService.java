@@ -16,5 +16,7 @@ public interface TagService {
 
     Optional<Tag> findTagById(Long id);
 
+    void delete(Long tagId, User user);
+
     void checkOwnerAccess(Tag tag, User user) throws UnauthorizedException;
 }

@@ -1,6 +1,7 @@
 package fun.asem.biograph.webapp.controller;
 
 import fun.asem.biograph.webapp.domain.User;
+import fun.asem.biograph.webapp.dto.model.ServerResponse;
 import fun.asem.biograph.webapp.dto.model.tag.CreateTagDto;
 import fun.asem.biograph.webapp.dto.model.tag.ResponseTagDto;
 import fun.asem.biograph.webapp.service.tag.TagService;
@@ -33,5 +34,13 @@ public class TagController extends BaseController {
         User currentUser = userService.getUserByUserDetails(principal.getName());
         checkAccess(userId, currentUser);
         return tagService.createTag(createTagDto, currentUser);
+    }
+
+    @DeleteMapping("/users/{userId}/tags/{tagId}")
+    public ServerResponse delete(@PathVariable Long userId, @PathVariable Long tagId, Principal principal) {
+        User currentUser = getUser(principal, userService);
+        checkAccess(userId, currentUser);
+        tagService.delete(tagId, currentUser);
+        return ServerResponse.builder().status(ServerResponse.ResponseStatus.OK).build();
     }
 }

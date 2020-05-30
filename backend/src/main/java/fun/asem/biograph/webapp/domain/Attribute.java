@@ -32,7 +32,6 @@ public class Attribute {
     @JsonIgnore
     @OneToMany(
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
             mappedBy = "attribute",
             fetch = FetchType.LAZY)
     private List<Grant> grants;

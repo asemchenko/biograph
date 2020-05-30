@@ -35,7 +35,6 @@ public class Category {
     @JsonIgnore
     @OneToMany(
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
             mappedBy = "category",
             fetch = FetchType.LAZY)
     private List<Grant> grants;

@@ -2,20 +2,18 @@
 
 .metrics-monitoring-root {
   text-align: center;
-  width: 90vw;
-  height: 80vh;
-
-  &__line-chart {
-    width: 100%;
-    height: 100%;
-  }
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 
   &__content {
     margin: auto @normal-margin;
 
     &__config-bar {
       margin: auto;
-      width: 40vw;
+      max-width: 500px;
 
       &__header {
         .text;
@@ -42,3 +40,19 @@
     }
   }
 }
+
+.line-chart {
+  width: 90%;
+  //width: ~'max(90vw, ';
+  //height: 50vh;
+  //height: ~'calc(90vh - 280px)';
+}
+/*
+@media screen and (max-device-height: 700px) {
+  .line-chart {
+    width: 90vw;
+    height: 50vh;
+  }
+}
+*/
+
