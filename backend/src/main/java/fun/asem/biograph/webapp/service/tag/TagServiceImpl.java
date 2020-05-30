@@ -63,6 +63,7 @@ public class TagServiceImpl implements TagService {
     public void delete(Long tagId, User user) {
         Tag tag = tagRepository.findById(tagId).get();
         checkOwnerAccess(tag, user);
+        tag.getEvents().forEach(event -> event.getTags().remove(tag));
         tagRepository.deleteById(tag.getTagId());
     }
 

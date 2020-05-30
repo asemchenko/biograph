@@ -33,4 +33,7 @@ public class Tag {
             mappedBy = "tag",
             fetch = FetchType.LAZY)
     private List<Grant> grants;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    private List<Event> events;
 }
