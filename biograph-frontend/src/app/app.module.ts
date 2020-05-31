@@ -74,6 +74,7 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import {QuestionDialogComponent} from './components/modals/question-dialog/question-dialog.component';
 import {SafeDeleteDialogComponent} from './components/modals/safe-delete-dialog/safe-delete-dialog.component';
+import {CategoryEffects} from './store/categories/effects/category.effects';
 
 
 const appRoutes: Routes = [
@@ -168,7 +169,7 @@ const appRoutes: Routes = [
     LayoutModule,
     MatToolbarModule,
     MatListModule,
-    EffectsModule.forRoot([AuthEffects, EventsEffects]),
+    EffectsModule.forRoot([AuthEffects, EventsEffects, CategoryEffects]),
     StoreModule.forRoot(reducers, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 10

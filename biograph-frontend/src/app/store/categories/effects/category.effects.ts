@@ -3,7 +3,13 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {catchError, exhaustMap, map, tap, withLatestFrom} from 'rxjs/operators';
 import {Action, Store} from '@ngrx/store';
 import {AppState, getCategoriesState} from '../../app.state';
-import {HideProgressBar, HideSpinner, ShowProgressBar, ShowSpinner} from '../../progress-indicators/actions/progress-indicators.actions';
+import {
+  HideProgressBar,
+  HideSpinner,
+  ProgressIndicatorType,
+  ShowProgressBar,
+  ShowSpinner
+} from '../../progress-indicators/actions/progress-indicators.actions';
 import {of} from 'rxjs';
 import {SnackBarService} from '../../../services/snack-bar/snack-bar.service';
 import {
@@ -11,6 +17,9 @@ import {
   CreateCategory,
   CreateCategoryFailure,
   CreateCategorySuccess,
+  DeleteCategory,
+  DeleteCategoryFailure,
+  DeleteCategorySuccess,
   LoadAllCategories,
   LoadAllCategoriesFailure,
   LoadAllCategoriesFromBackend,
@@ -18,6 +27,7 @@ import {
 } from '../actions/category.actions';
 import {CategoryService} from '../../../services/category/category.service';
 import {Category} from '../../../models/Category';
+import {LoadAllEventsFromBackend} from '../../events/actions/event.actions';
 
 @Injectable()
 export class CategoryEffects {
@@ -88,6 +98,52 @@ export class CategoryEffects {
       );
     })
   );
+
+  @Effect()
+  DeleteCategory = this.actions$.pipe(
+    ofType<DeleteCategory>(CategoryActionsTypes.DELETE_CATEGORY),
+    tap(() => {
+      this.store.dispatch(new ShowProgressBar());
+    }),
+    exhaustMap((action: Action) => {
+      const category = (action as DeleteCategory).category;
+      return this.categoryService.deleteCategory(category).pipe(
+        tap(() => {
+          this.store.dispatch(new HideProgressBar());
+        }),
+        map(() => {
+          return new DeleteCategorySuccess(category);
+        }),
+        catchError(() => {
+          return of(new DeleteCategoryFailure(category));
+        })
+      );
+    })
+  );
+
+  @Effect({dispatch: false})
+  DeleteCategoryFailure = this.actions$
+    .pipe(
+      ofType<DeleteCategoryFailure>(CategoryActionsTypes.DELETE_CATEGORY_FAILURE),
+      tap(() => {
+        this.store.dispatch(new HideProgressBar());
+      }),
+      tap((action: DeleteCategoryFailure) => {
+        this.snackBarService.openErrorSnackBar('Category deletion failed');
+      }),
+    );
+
+  @Effect()
+  DeleteCategorySuccess = this.actions$
+    .pipe(
+      ofType<DeleteCategorySuccess>(CategoryActionsTypes.DELETE_CATEGORY_SUCCESS),
+      tap((action: DeleteCategorySuccess) => {
+        this.snackBarService.openSuccessSnackBar('Category was successfully deleted');
+      }),
+      map(() => {
+        return new LoadAllEventsFromBackend(ProgressIndicatorType.PROGRESS_BAR);
+      }),
+    );
 
   @Effect()
   CreateCategorySuccess = this.actions$

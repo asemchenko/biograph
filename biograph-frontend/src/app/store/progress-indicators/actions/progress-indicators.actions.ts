@@ -35,8 +35,31 @@ export class HideProgressBar implements Action {
   }
 }
 
+export enum ProgressIndicatorType {
+  SPINNER = 'SPINNER',
+  PROGRESS_BAR = 'PROGRESS_BAR'
+}
+
 export type AnyProgressIndicatorActions =
   | ShowSpinner
   | HideSpinner
   | ShowProgressBar
   | HideProgressBar;
+
+export function getShowProgressIndicatorAction(indicatorType: ProgressIndicatorType): AnyProgressIndicatorActions {
+  switch (indicatorType) {
+    case ProgressIndicatorType.SPINNER:
+      return new ShowSpinner();
+    case ProgressIndicatorType.PROGRESS_BAR:
+      return new ShowProgressBar();
+  }
+}
+
+export function getHideProgressIndicatorAction(indicatorType: ProgressIndicatorType): AnyProgressIndicatorActions {
+  switch (indicatorType) {
+    case ProgressIndicatorType.SPINNER:
+      return new HideSpinner();
+    case ProgressIndicatorType.PROGRESS_BAR:
+      return new HideProgressBar();
+  }
+}

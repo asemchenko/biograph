@@ -1,5 +1,6 @@
 import {Action} from '@ngrx/store';
 import {Event} from '../../../models/Event';
+import {ProgressIndicatorType} from '../../progress-indicators/actions/progress-indicators.actions';
 
 export enum EventActionsTypes {
   CREATE_EVENT = '[Events] Create event',
@@ -38,17 +39,23 @@ export class CreateEventFailure implements Action {
 
 export class LoadAllEventsFromBackend implements Action {
   readonly type = EventActionsTypes.LOAD_ALL_EVENTS_FROM_BACKEND;
+
+  constructor(public progressIndicator: ProgressIndicatorType) {
+  }
 }
 
 export class LoadAllEventsSuccess implements Action {
   readonly type = EventActionsTypes.LOAD_ALL_EVENTS_SUCCESS;
 
-  constructor(public events: Event[]) {
+  constructor(public events: Event[], public progressIndicator: ProgressIndicatorType) {
   }
 }
 
 export class LoadAllEventsFailure implements Action {
   readonly type = EventActionsTypes.LOAD_ALL_EVENTS_FAILURE;
+
+  constructor(public progressIndicator: ProgressIndicatorType) {
+  }
 }
 
 

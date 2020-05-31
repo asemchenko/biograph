@@ -5,11 +5,15 @@ import {MatDialog} from '@angular/material/dialog';
 import {NewCategoryDialogComponent} from './new-category-dialog/new-category-dialog.component';
 import {Category} from '../../models/Category';
 import {CategoryService} from '../../services/category/category.service';
-import {mergeMap, take, takeUntil} from 'rxjs/operators';
+import {map, take, takeUntil} from 'rxjs/operators';
 import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
 import {DialogService} from '../../services/dialog/dialog.service';
 import {RxUnsubscribe} from '../../common/RxUnsubscribe';
 import {SafeDeleteDialogResponse} from '../modals/safe-delete-dialog/safe-delete-dialog.component';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {AppState, getAllCategories} from '../../store/app.state';
+import {CreateCategory, DeleteCategory, LoadAllCategories} from '../../store/categories/actions/category.actions';
 
 @Component({
   selector: 'app-categories-page',
@@ -18,30 +22,36 @@ import {SafeDeleteDialogResponse} from '../modals/safe-delete-dialog/safe-delete
 })
 export class CategoriesPageComponent extends RxUnsubscribe implements OnInit {
   readonly columnsToDisplay = ['name', /*'creationTime',*/ 'totalEvents', 'attributes', 'color', 'actions'];
-  allCategories: Category[] = [];
-  // TODO asem maybe it is better to make data source reactive ( no need to call table.renderRows() each time )
-  dataSource = new MatTableDataSource(this.allCategories);
-  currentSearchQuery = '';
+  dataSource = new MatTableDataSource([]);
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatTable, {static: true}) table: MatTable<Category>;
+  searchQuery$ = new BehaviorSubject('');
+  filteredCategories$: Observable<Category[]>;
 
   constructor(
     public dialog: MatDialog,
     private categoryService: CategoryService,
     private snackBarService: SnackBarService,
     private dialogService: DialogService,
+    private store: Store<AppState>,
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.dataSource.sort = this.sort;
-    this.categoryService.getCategoriesOwnedByCurrentUser().pipe(
-      take(1),
-    ).subscribe((categories: Category[]) => {
-      this.allCategories = categories;
-      this.updateTableView(this.allCategories);
-    });
+    // dirty hack - waiting for MatTable loading
+    setTimeout(() => {
+      this.store.dispatch(new LoadAllCategories());
+      this.filteredCategories$ = combineLatest(this.searchQuery$, this.store.select(getAllCategories)).pipe(
+        takeUntil(this.destroy$),
+        map(([searchQuery, categories]) => {
+          return this.search(searchQuery, categories);
+        }),
+      );
+      this.filteredCategories$.subscribe((categories: Category[]) => {
+        this.updateTableView(categories);
+      });
+    }, 100);
   }
 
   openNewCategoryDialog() {
@@ -53,25 +63,23 @@ export class CategoriesPageComponent extends RxUnsubscribe implements OnInit {
     );
     dialogRef.afterClosed().pipe(
       take(1),
-      mergeMap((newCategory: Category) => {
-        return this.categoryService.createCategory(newCategory);
-      })
-    ).subscribe((createdCategory: Category) => {
-      if (createdCategory) {
-        this.snackBarService.openSuccessSnackBar('Category successfully created');
-        this.allCategories.push(createdCategory);
-        this.search(this.currentSearchQuery);
+      takeUntil(this.destroy$),
+    ).subscribe((category: Category) => {
+      if (category) {
+        this.store.dispatch(new CreateCategory(category));
       }
     });
   }
 
-  search(searchQuery: string) {
-    this.currentSearchQuery = searchQuery;
+  onSearchQueryChanged(searchQuery: string): void {
+    this.searchQuery$.next(searchQuery);
+  }
+
+  search(searchQuery: string, categories: Category[]) {
     const searchQueryLowerCase = searchQuery.toLowerCase();
-    const filteredCategories = this.allCategories.filter(category => {
+    return categories.filter(category => {
       return category.name.toLowerCase().includes(searchQueryLowerCase);
     });
-    this.updateTableView(filteredCategories);
   }
 
   onViewCategoryClicked(category: Category): void {
@@ -107,7 +115,7 @@ export class CategoriesPageComponent extends RxUnsubscribe implements OnInit {
         take(1),
       ).subscribe((response: SafeDeleteDialogResponse) => {
       if (response && response.isDeleteClicked) {
-        console.log('Removing category...');
+        this.store.dispatch(new DeleteCategory(category));
       }
     });
 

@@ -5,6 +5,8 @@ import {Observable, of} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {catchError, map, mergeMap, take} from 'rxjs/operators';
 import {API_URLS, insertUserInUrl} from '../../../api-urls';
+import {ServerResponse} from '../../models/ServerResponse';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +30,16 @@ export class CategoryService {
             return of(null);
           })
         );
+      })
+    );
+  }
+
+  deleteCategory(category: Category): Observable<ServerResponse> {
+    return this.authService.getCurrentUser().pipe(
+      take(1),
+      map(user => user.userId),
+      mergeMap((userId: number) => {
+        return this.http.delete<ServerResponse>(`${environment.BASE_URL}/api/users/${userId}/categories/${category.categoryId}`);
       })
     );
   }

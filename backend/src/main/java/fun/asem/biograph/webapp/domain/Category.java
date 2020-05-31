@@ -34,7 +34,7 @@ public class Category {
     private List<Attribute> attributes;
     @JsonIgnore
     @OneToMany(
-            cascade = CascadeType.REMOVE,
+            cascade = CascadeType.ALL,
             mappedBy = "category",
             fetch = FetchType.LAZY)
     private List<Grant> grants;

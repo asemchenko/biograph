@@ -1,6 +1,12 @@
 import {AnyAuthAction, AuthActionTypes} from '../../auth/actions/auth.actions';
 import {Category} from '../../../models/Category';
-import {AnyCategoryAction, CategoryActionsTypes, CreateCategorySuccess, LoadAllCategoriesSuccess} from '../actions/category.actions';
+import {
+  AnyCategoryAction,
+  CategoryActionsTypes,
+  CreateCategorySuccess,
+  DeleteCategorySuccess,
+  LoadAllCategoriesSuccess
+} from '../actions/category.actions';
 
 export interface CategoriesState {
   isLoaded: boolean;
@@ -21,6 +27,11 @@ export function reducer(state = initialState, action: AnyCategoryAction | AnyAut
       return {isLoaded: false, categories: []};
     case CategoryActionsTypes.CREATE_CATEGORY_SUCCESS:
       return {isLoaded: true, categories: [...state.categories, (action as CreateCategorySuccess).createdCategory]};
+    case CategoryActionsTypes.DELETE_CATEGORY_SUCCESS:
+      return {
+        isLoaded: true,
+        categories: [...state.categories.filter(c => c.categoryId !== (action as DeleteCategorySuccess).category.categoryId)]
+      };
     case AuthActionTypes.LOGOUT:
       return initialState;
     default: {

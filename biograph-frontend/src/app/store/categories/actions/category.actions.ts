@@ -3,6 +3,9 @@ import {Action} from '@ngrx/store';
 
 export enum CategoryActionsTypes {
   CREATE_CATEGORY = '[Categories] Create category',
+  DELETE_CATEGORY = '[Categories] Delete category',
+  DELETE_CATEGORY_SUCCESS = '[Categories] Delete category success',
+  DELETE_CATEGORY_FAILURE = '[Categories] Delete category failure',
   CREATE_CATEGORY_SUCCESS = '[Categories] Create category success',
   CREATE_CATEGORY_FAILURE = '[Categories] Create category failure',
   LOAD_ALL_CATEGORIES = '[Categories] Load all categories',
@@ -17,6 +20,27 @@ export class LoadAllCategories implements Action {
 
 export class CreateCategory implements Action {
   readonly type = CategoryActionsTypes.CREATE_CATEGORY;
+
+  constructor(public category: Category) {
+  }
+}
+
+export class DeleteCategory implements Action {
+  readonly type = CategoryActionsTypes.DELETE_CATEGORY;
+
+  constructor(public category: Category) {
+  }
+}
+
+export class DeleteCategorySuccess implements Action {
+  readonly type = CategoryActionsTypes.DELETE_CATEGORY_SUCCESS;
+
+  constructor(public category: Category) {
+  }
+}
+
+export class DeleteCategoryFailure implements Action {
+  readonly type = CategoryActionsTypes.DELETE_CATEGORY_FAILURE;
 
   constructor(public category: Category) {
   }
@@ -57,6 +81,9 @@ export type AnyCategoryAction =
   | LoadAllCategoriesFromBackend
   | CreateCategorySuccess
   | CreateCategoryFailure
+  | DeleteCategory
+  | DeleteCategorySuccess
+  | DeleteCategoryFailure
   | LoadAllCategoriesSuccess
   | LoadAllCategoriesFailure
   | CreateCategory;

@@ -1,6 +1,6 @@
 <div class="container">
   <h1 class="categories-header"> Categories </h1>
-  <app-search-bar (valueChanged)="search($event)" class="search-bar"></app-search-bar>
+  <app-search-bar (valueChanged)="onSearchQueryChanged($event)" class="search-bar"></app-search-bar>
   <button (click)="openNewCategoryDialog()" class="create-category-button" color="primary" mat-raised-button>New
   </button>
   <table [dataSource]="dataSource" class="mat-elevation-z8 categories-table" mat-table matSort>

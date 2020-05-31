@@ -15,9 +15,16 @@ import {catchError, exhaustMap, map, tap, withLatestFrom} from 'rxjs/operators';
 import {Action, Store} from '@ngrx/store';
 import {AppState, getEventsState} from '../../app.state';
 import {Event} from '../../../models/Event';
-import {HideProgressBar, HideSpinner, ShowProgressBar, ShowSpinner} from '../../progress-indicators/actions/progress-indicators.actions';
+import {
+  getHideProgressIndicatorAction,
+  getShowProgressIndicatorAction,
+  HideProgressBar,
+  ProgressIndicatorType,
+  ShowProgressBar
+} from '../../progress-indicators/actions/progress-indicators.actions';
 import {of} from 'rxjs';
 import {SnackBarService} from '../../../services/snack-bar/snack-bar.service';
+import {EmptyAction} from '../../common/common.actions';
 
 @Injectable()
 export class EventsEffects {
@@ -27,24 +34,24 @@ export class EventsEffects {
     withLatestFrom(this.store.select(getEventsState)),
     map(([action, eventsState]) => {
       if (eventsState.isLoaded) {
-        return new LoadAllEventsSuccess(eventsState.events);
+        return new EmptyAction();
       } else {
-        return new LoadAllEventsFromBackend();
+        return new LoadAllEventsFromBackend(ProgressIndicatorType.SPINNER);
       }
     })
   );
 
   @Effect()
   LoadAllEventsFromBackend = this.actions$.pipe(
-    ofType<LoadAllEvents>(EventActionsTypes.LOAD_ALL_EVENTS_FROM_BACKEND),
-    tap(() => {
-      this.store.dispatch(new ShowSpinner());
+    ofType<LoadAllEventsFromBackend>(EventActionsTypes.LOAD_ALL_EVENTS_FROM_BACKEND),
+    tap((action: LoadAllEventsFromBackend) => {
+      this.store.dispatch(getShowProgressIndicatorAction(action.progressIndicator));
     }),
-    exhaustMap((action: Action) => {
+    exhaustMap((action: LoadAllEventsFromBackend) => {
       return this.eventService.getEventsOwnedByCurrentUser().pipe(
-        map((events: Event[]) => (new LoadAllEventsSuccess(events))),
+        map((events: Event[]) => (new LoadAllEventsSuccess(events, action.progressIndicator))),
         catchError((error) => {
-          return of(new LoadAllEventsFailure());
+          return of(new LoadAllEventsFailure(action.progressIndicator));
         })
       );
     })
@@ -54,8 +61,8 @@ export class EventsEffects {
   LoadAllEventsSuccess = this.actions$
     .pipe(
       ofType<LoadAllEventsSuccess>(EventActionsTypes.LOAD_ALL_EVENTS_SUCCESS),
-      map(() => {
-        return new HideSpinner();
+      map((action: LoadAllEventsSuccess) => {
+        return getHideProgressIndicatorAction(action.progressIndicator);
       }),
     );
 
@@ -63,8 +70,8 @@ export class EventsEffects {
   LoadAllEventsFailure = this.actions$
     .pipe(
       ofType<LoadAllEventsFailure>(EventActionsTypes.LOAD_ALL_EVENTS_FAILURE),
-      tap(() => {
-        this.store.dispatch(new HideSpinner());
+      tap((action: LoadAllEventsFailure) => {
+        this.store.dispatch(getHideProgressIndicatorAction(action.progressIndicator));
       }),
       tap((action: LoadAllEventsFailure) => {
         this.snackBarService.openErrorSnackBar('Loading all events failed');
