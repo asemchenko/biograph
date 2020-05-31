@@ -9,7 +9,7 @@ import {mergeMap, take, takeUntil} from 'rxjs/operators';
 import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
 import {DialogService} from '../../services/dialog/dialog.service';
 import {RxUnsubscribe} from '../../common/RxUnsubscribe';
-import {QuestionDialogResponse} from '../modals/question-dialog/question-dialog.component';
+import {SafeDeleteDialogResponse} from '../modals/safe-delete-dialog/safe-delete-dialog.component';
 
 @Component({
   selector: 'app-categories-page',
@@ -79,9 +79,10 @@ export class CategoriesPageComponent extends RxUnsubscribe implements OnInit {
   }
 
   onDeleteCategoryClicked(category: Category): void {
-    this.dialogService
+    /*this.dialogService
       .openQuestionDialog({
         title: `You are going to delete category "${category.name}". Are you sure?`,
+        content: null,
         primaryButtonTitle: 'No',
         warnButtonTitle: 'Yes, delete'
       })
@@ -93,7 +94,23 @@ export class CategoriesPageComponent extends RxUnsubscribe implements OnInit {
       if (response && response.warnButtonClicked) {
         console.log('Removing category...');
       }
+    });*/
+    const deletePassText = category.name;
+    this.dialogService.openSafeDeleteDialog({
+      title: `You are going to delete category '${category.name}. Are you sure?'`,
+      content: `This will lead to removing all events with category '${category.name}' (${category.totalEvents} events)`,
+      deletePassText,
+    })
+      .afterClosed()
+      .pipe(
+        takeUntil(this.destroy$),
+        take(1),
+      ).subscribe((response: SafeDeleteDialogResponse) => {
+      if (response && response.isDeleteClicked) {
+        console.log('Removing category...');
+      }
     });
+
   }
 
   private updateTableView(filteredCategories: Category[]) {

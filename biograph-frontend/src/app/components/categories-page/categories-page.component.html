@@ -28,7 +28,7 @@
       <td *matCellDef="let category" mat-cell> {{category.attributes.length}} </td>
     </ng-container>
     <ng-container matColumnDef="color">
-      <th *matHeaderCellDef mat-header-cell> Color</th>
+      <th *matHeaderCellDef class="text-center" mat-header-cell> Color</th>
       <td *matCellDef="let category" mat-cell>
         <input [(colorPicker)]="category.color"
                [style.background]="category.color"

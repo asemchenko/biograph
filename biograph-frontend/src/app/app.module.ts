@@ -73,6 +73,7 @@ import {EventsEffects} from './store/events/effects/events.effects';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import {QuestionDialogComponent} from './components/modals/question-dialog/question-dialog.component';
+import {SafeDeleteDialogComponent} from './components/modals/safe-delete-dialog/safe-delete-dialog.component';
 
 
 const appRoutes: Routes = [
@@ -148,6 +149,7 @@ const appRoutes: Routes = [
     MetricsMonitoringComponent,
     DateSliderComponent,
     QuestionDialogComponent,
+    SafeDeleteDialogComponent,
   ],
   imports: [
     BrowserModule,

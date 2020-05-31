@@ -1,0 +1,15 @@
+<h4 class="text-center safe-delete-dialog-title">{{config.title}}</h4>
+<mat-dialog-content class="text-center">
+  <span class="safe-delete-dialog-content-text">{{config.content}}</span>
+  <span class="safe-delete-dialog-content-text">To confirm, enter '{{config.deletePassText}}' below</span>
+  <mat-form-field appearance="fill" class="normal-y-margin">
+    <mat-label>Enter '{{config.deletePassText}}' here</mat-label>
+    <input #passTextInput matInput type="text">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions">
+  <button [disabled]="passTextInput.value !== config.deletePassText" [matDialogClose]="deleteResponse" color="warn"
+          mat-button>Delete
+  </button>
+  <button [matDialogClose]="cancelResponse" color="primary" mat-button>Cancel</button>
+</mat-dialog-actions>

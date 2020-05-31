@@ -1,4 +1,7 @@
 <h4 class="text-center question-dialog-title" mat-dialog-title>{{config.title}}</h4>
+<mat-dialog-content *ngIf="config.content" class="text-center">
+  <span class="question-dialog-content">{{config.content}}</span>
+</mat-dialog-content>
 <mat-dialog-actions class="dialog-actions">
   <button [matDialogClose]="warnButtonClickedResponse" color="warn" mat-button>{{config.warnButtonTitle}}</button>
   <button [matDialogClose]="primaryButtonClickedResponse" color="primary"

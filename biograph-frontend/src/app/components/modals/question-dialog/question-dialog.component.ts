@@ -20,6 +20,7 @@ export class QuestionDialogComponent implements OnInit {
 
 export interface QuestionDialogConfiguration {
   title: string;
+  content: string;
   primaryButtonTitle: string;
   warnButtonTitle: string;
 }
