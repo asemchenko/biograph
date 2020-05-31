@@ -72,6 +72,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {EventsEffects} from './store/events/effects/events.effects';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
+import {QuestionDialogComponent} from './components/modals/question-dialog/question-dialog.component';
 
 
 const appRoutes: Routes = [
@@ -146,6 +147,7 @@ const appRoutes: Routes = [
     EventGroupPieChartComponent,
     MetricsMonitoringComponent,
     DateSliderComponent,
+    QuestionDialogComponent,
   ],
   imports: [
     BrowserModule,

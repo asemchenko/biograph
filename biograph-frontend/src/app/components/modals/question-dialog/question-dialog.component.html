@@ -1,0 +1,6 @@
+<h4 class="text-center question-dialog-title" mat-dialog-title>{{config.title}}</h4>
+<mat-dialog-actions class="dialog-actions">
+  <button [matDialogClose]="warnButtonClickedResponse" color="warn" mat-button>{{config.warnButtonTitle}}</button>
+  <button [matDialogClose]="primaryButtonClickedResponse" color="primary"
+          mat-button>{{config.primaryButtonTitle}}</button>
+</mat-dialog-actions>

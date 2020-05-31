@@ -4,6 +4,7 @@ import {EventDialogComponent} from '../../components/events-page/event-dialog/ev
 import {Event} from '../../models/Event';
 import {TagDialogComponent} from '../../components/tags-page/tag-dialog/tag-dialog.component';
 import {Tag} from '../../models/Tag';
+import {QuestionDialogComponent, QuestionDialogConfiguration} from '../../components/modals/question-dialog/question-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,9 @@ export class DialogService {
 
   public openTagDialog(tag: Tag): MatDialogRef<TagDialogComponent> {
     return this.dialog.open(TagDialogComponent, {...this.configuration, data: {tag}});
+  }
+
+  public openQuestionDialog(config: QuestionDialogConfiguration): MatDialogRef<QuestionDialogComponent> {
+    return this.dialog.open(QuestionDialogComponent, {width: 'min(500px, 95vw)', data: config});
   }
 }
