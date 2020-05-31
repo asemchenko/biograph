@@ -8,6 +8,9 @@ import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validat
 import {ParameterInfo} from './parameter/parameter.component';
 import {Parameter} from '../../../models/Parameter';
 import {Tag} from '../../../models/Tag';
+import {AppState, getAllCategories} from '../../../store/app.state';
+import {Store} from '@ngrx/store';
+import {LoadAllCategories} from '../../../store/categories/actions/category.actions';
 
 @Component({
   selector: 'app-event-dialog',
@@ -39,6 +42,7 @@ export class EventDialogComponent implements OnInit {
     private categoryService: CategoryService,
     private formBuilder: FormBuilder,
     private changeDetector: ChangeDetectorRef,
+    private store: Store<AppState>,
   ) {
   }
 
@@ -78,7 +82,8 @@ export class EventDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categories$ = this.categoryService.getCategoriesOwnedByCurrentUser();
+    this.store.dispatch(new LoadAllCategories());
+    this.categories$ = this.store.select(getAllCategories);
     // cloning event object
     this.event = JSON.parse(JSON.stringify(this.dialogData.event));
     this.formGroup = this.createFormGroup();

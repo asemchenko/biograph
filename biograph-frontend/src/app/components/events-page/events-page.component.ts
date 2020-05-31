@@ -3,7 +3,7 @@ import {EventService} from '../../services/event/event.service';
 import {DialogService} from '../../services/dialog/dialog.service';
 import {Event, getStubEmptyEvent} from '../../models/Event';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
-import {map, mergeMap, take} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {SnackBarService} from '../../services/snack-bar/snack-bar.service';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {AppState, getAllEvents} from '../../store/app.state';
@@ -54,9 +54,6 @@ export class EventsPageComponent implements OnInit {
     const dialogRef = this.dialogService.openEventDialog(getStubEmptyEvent());
     dialogRef.afterClosed().pipe(
       take(1),
-      mergeMap((newEvent: Event) => {
-        return this.eventService.create(newEvent);
-      }),
     ).subscribe((event: Event) => {
       if (event) {
         this.store$.dispatch(new CreateEvent(event));
