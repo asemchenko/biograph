@@ -1,0 +1,38 @@
+version: "3.3"
+services:
+  biograph_backend:
+    build: ./backend
+    depends_on:
+      - "biograph_database"
+    environment:
+      - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
+      - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
+      - JDBC_DATABASE_URL=jdbc:postgresql://biograph_database:5432/biograph
+      - JDBC_DATABASE_USERNAME=postgres
+      - JDBC_DATABASE_PASSWORD=postgres
+      - JWT_SECRET=${JWT_SECRET}
+      - DDL_MODE=${DDL_MODE}
+    ports:
+      - "8080:8080"
+
+  biograph_frontend:
+    build: ./biograph-frontend
+    depends_on:
+      - "biograph_backend"
+    ports:
+      - "${BIOGRAPH_FRONTEND_PORT}:80"
+
+  biograph_database:
+    build: ./biograph-database
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - biograph_db_volume:/var/lib/postgresql/data
+
+volumes:
+  biograph_db_volume:
+    external: true
